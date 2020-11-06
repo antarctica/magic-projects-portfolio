@@ -1,0 +1,10 @@
+---
+version: "2"
+
+services:
+  app:
+    image: magic-portfolio:latest
+    command: "flask run"
+    env_file: .env
+    ports:
+      - 9002:9002

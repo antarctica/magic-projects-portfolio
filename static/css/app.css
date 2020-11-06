@@ -1,0 +1,14 @@
+.app-alert-black-text {
+  color: #333;
+}
+.app-project-group-page-header {
+  margin-top: 40px;
+}
+
+.app-project {
+  padding: 15px;
+  margin-bottom: 5px;
+  background-color:#F7F7F7;
+  border-left: 4px #999999;
+  width: 30%;
+}

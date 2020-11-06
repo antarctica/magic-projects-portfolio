@@ -1,0 +1,4 @@
+airtable-python-wrapper==0.15.1
+bas-style-kit-jinja-templates==0.5.0
+Flask==1.1.2
+waitress==1.4.4

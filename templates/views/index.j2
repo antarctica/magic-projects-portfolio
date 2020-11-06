@@ -1,0 +1,38 @@
+{% extends 'app/layouts/app.j2' %}
+
+{% block main_content %}
+<header>
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for context, message in messages %}
+      <div class="bsk-alert bsk-alert-{{context}} bsk-alert-solid bsk-alert-dismissible">
+        <button type="button" class="bsk-close" data-dismiss="alert" aria-label="Close">&times;</button>
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endwith %}
+  <div class="bsk-alert bsk-alert-info bsk-alert-highlight app-alert-black-text">These are the things we're working on grouped by {{ group_property | replace('-', ' ') | title }}.</div>
+  <div class="bsk-btn-toolbar" role="toolbar">
+    <div class="bsk-dropdown">
+      <button class="bsk-btn bsk-btn-default bsk-dropdown-toggle" type="button" id="dropdown-menu-1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        Group by <span class="bsk-caret"></span>
+      </button>
+      <ul class="bsk-dropdown-menu" aria-labelledby="dropdown-menu-1">
+        <li><a href="{{ url_for('projects', group_property='strategic-objectives') }}">Strategic objectives</a></li>
+        <li><a href="{{ url_for('projects', group_property='activity-areas') }}">Activity areas</a></li>
+        <li><a href="{{ url_for('projects', group_property='project-lead') }}">Project lead</a></li>
+      </ul>
+    </div>
+    <a class="bsk-btn bsk-btn-success" href="https://airtable.com/shrRJ0xbxHrgXljSb" target="_blank"><i class="far fa-fw fa-plus" aria-hidden="true"></i> Add new project</a>
+  </div>
+</header>
+<section>
+  {% for grouped_property_value, grouped_property_projects in projects.items() %}
+    <h2 class="bsk-page-header">{{ grouped_property_value }}</h2>
+    {% for project in grouped_property_projects %}
+      <div class="app-project">
+        <a href="{{ url_for('project', project_id=project.id) }}">{{ project.fields.Title }}</a>
+      </div>
+    {% endfor %}
+  {% endfor %}
+</section>
+{% endblock %}

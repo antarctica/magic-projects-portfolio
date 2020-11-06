@@ -1,0 +1,43 @@
+{% extends 'app/layouts/app.j2' %}
+{% from 'bas_style_kit/macros/bsk_pattern_item_type_header.j2' import pattern_item_type_header %}
+
+{% block main_content %}
+{{ pattern_item_type_header('project', project.fields.Title) }}
+
+<div class="bsk-row">
+  <div class="bsk-col-12-md-8">
+    <p class="bsk-lead">{{ project.fields.Description }}</p>
+  </div>
+  <div class="bsk-col-12-md-4">
+    <aside class="bsk-sidebar bsk-sidebar-default">
+      <dl class="bsk-dl-lg">
+        <dt>Strategic objectives</dt>
+        {% for stragetic_objective in project.fields['Strategic Objectives'] %}
+          <dd>{{ stragetic_objective }}</dd>
+        {% endfor %}
+        <dt>Activity areas</dt>
+        {% for activity_area in project.fields['Activity Areas'] %}
+          <dd>{{ activity_area }}</dd>
+        {% endfor %}
+        <dt>Project lead</dt>
+        <dd>
+          {% if project.fields.Owner == 'Adrian' %}
+            Adrian Fox
+          {% elif project.fields.Owner == 'Andrew' %}
+            Andrew Fleming
+          {% elif project.fields.Owner == 'Elena' %}
+            Elena Field
+          {% elif project.fields.Owner == 'Felix' %}
+            Felix Fennell
+          {% elif project.fields.Owner == 'Louise' %}
+            Louise Ireland
+          {% else %}
+            <mark>Not sure</mark>
+          {% endif %}
+        </dd>
+      </dl>
+    </aside>
+    <a class="bsk-btn bsk-btn-block bsk-btn-danger" href="{{ url_for('delete_project', project_id=project.id) }}"><i class="far fa-fw fa-minus" aria-hidden="true"></i> Remove project</a>
+  </div>
+</div>
+{% endblock %}
