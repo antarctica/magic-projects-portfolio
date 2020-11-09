@@ -30,11 +30,15 @@ app.config['BSK_TEMPLATES'].bsk_site_nav_launcher.append({'value': 'MAGIC Team (
 
 app.config['airtable_key'] = environ.get('AIRTABLE_KEY', None)
 app.config['airtable_base'] = environ.get('AIRTABLE_BASE', None)
-app.config['airtable_table'] = 'Projects'
 
-airtable = Airtable(
+airtable_projects = Airtable(
     base_key=app.config['airtable_base'],
-    table_name=app.config['airtable_table'],
+    table_name='Projects',
+    api_key=app.config['airtable_key']
+)
+airtable_project_links = Airtable(
+    base_key=app.config['airtable_base'],
+    table_name='Project Links',
     api_key=app.config['airtable_key']
 )
 
@@ -62,17 +66,29 @@ def projects(group_property: str):
 
 @app.route('/projects/<string:project_id>/-/delete')
 def delete_project(project_id: str):
-    project = airtable.get(record_id=project_id)
-    airtable.delete(record_id=project_id)
+    project = airtable_projects.get(record_id=project_id)
+    airtable_projects.delete(record_id=project_id)
     flash(f"Project '{project['fields']['Title']}' removed successfully", "success")
     # noinspection PyUnresolvedReferences
     return redirect(url_for('projects', group_property="strategic-objectives"))
 
 
+@app.route('/project-links/<string:link_id>/-/delete')
+def delete_project_link(link_id: str):
+    link = airtable_project_links.get(record_id=link_id)
+    project = airtable_projects.get(record_id=link['fields']['Project'][0])
+    airtable_project_links.delete(record_id=link_id)
+    flash(f"Link '{link['fields']['Title']}' removed successfully", "success")
+    # noinspection PyUnresolvedReferences
+    return redirect(url_for('project', project_id=project['id']))
+
+
 @app.route('/projects/<string:project_id>')
 def project(project_id: str):
+    project = airtable_projects.get(record_id=project_id)
+    project_links = airtable_project_links.search(field_name='Project', field_value=project['fields']['Title'])
     # noinspection PyUnresolvedReferences
-    return render_template(f"app/views/project.j2", project=airtable.get(record_id=project_id))
+    return render_template(f"app/views/project.j2", project=project, project_links=project_links)
 
 
 @app.route('/legal/cookies')

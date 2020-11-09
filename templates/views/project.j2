@@ -35,9 +35,23 @@
             <mark>Not sure</mark>
           {% endif %}
         </dd>
+        <dt>Links</dt>
+        {% if project_links | length > 0 %}
+          <dd>
+            {% for link in project_links %}
+              <div>
+                <a href="{{ link.fields.Link }}">{{ link.fields.Title }}</a>
+                <a class="bsk-pull-right" href="{{ url_for('delete_project_link', link_id=link.id) }}"><i class="far fa-fw fa-unlink bsk-text-danger" aria-hidden="true"></i></a>
+              </div>
+            {% endfor %}
+          </dd>
+        {% endif %}
       </dl>
     </aside>
-    <a class="bsk-btn bsk-btn-block bsk-btn-danger" href="{{ url_for('delete_project', project_id=project.id) }}"><i class="far fa-fw fa-minus" aria-hidden="true"></i> Remove project</a>
+    <div>
+      <a class="bsk-btn bsk-btn-block bsk-btn-default" href="https://airtable.com/shr0V33m1Y3zTncaQ" target="_blank"><i class="far fa-fw fa-link" aria-hidden="true"></i> Add Link</a>
+      <a class="bsk-btn bsk-btn-block bsk-btn-danger" href="{{ url_for('delete_project', project_id=project.id) }}"><i class="far fa-fw fa-minus" aria-hidden="true"></i> Delete Project</a>
+    </div>
   </div>
 </div>
 {% endblock %}
