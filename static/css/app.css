@@ -9,8 +9,13 @@
   padding: 15px;
   margin-bottom: 5px;
   background-color:#F7F7F7;
-  border-left: 4px #999999;
+  border-left: 4px solid #999999;
   width: 30%;
+}
+
+.bsk-alert .bsk-btn {
+  position: relative;
+  top: -7px;
 }
 
 .app-exp-banner {
