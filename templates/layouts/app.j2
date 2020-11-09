@@ -1,1 +1,18 @@
 {% extends 'bas_style_kit/layouts/bsk_standard.j2' %}
+
+{% block main_content %}
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% for context, message in messages %}
+      <div class="bsk-alert bsk-alert-{{context}} bsk-alert-solid bsk-alert-dismissible">
+        <button type="button" class="bsk-close" data-dismiss="alert" aria-label="Close">&times;</button>
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endwith %}
+  {% block app_main_content %}
+  {% endblock %}
+  <div class="bsk-alert bsk-alert-experimental bsk-alert-solid bsk-text-center app-exp-banner">
+    <strong><i class="fas fa-fw fa-flask" aria-hidden="true"></i> Heads up!</strong>
+    This is a very early prototype, content, layout and functionality may change at any time and some things may not work or look odd.
+  </div>
+{% endblock %}

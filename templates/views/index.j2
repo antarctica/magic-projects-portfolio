@@ -1,15 +1,7 @@
 {% extends 'app/layouts/app.j2' %}
 
-{% block main_content %}
+{% block app_main_content %}
 <header>
-  {% with messages = get_flashed_messages(with_categories=true) %}
-    {% for context, message in messages %}
-      <div class="bsk-alert bsk-alert-{{context}} bsk-alert-solid bsk-alert-dismissible">
-        <button type="button" class="bsk-close" data-dismiss="alert" aria-label="Close">&times;</button>
-        {{ message }}
-      </div>
-    {% endfor %}
-  {% endwith %}
   <div class="bsk-alert bsk-alert-info bsk-alert-highlight app-alert-black-text">These are the things we're working on grouped by {{ group_property | replace('-', ' ') | title }}.</div>
   <div class="bsk-btn-toolbar" role="toolbar">
     <div class="bsk-dropdown">
