@@ -56,10 +56,12 @@ def index():
 
 @app.route('/projects/-/group/<string:group_property>')
 def projects(group_property: str):
+    projects = airtable_projects.get_all()
     # noinspection PyUnresolvedReferences
     return render_template(
         f"app/views/index.j2",
-        projects=_group_projects(projects=airtable.get_all(), group_property=group_property),
+        projects=_group_projects(projects=projects, group_property=group_property),
+        projects_total=len(projects),
         group_property=group_property
     )
 
