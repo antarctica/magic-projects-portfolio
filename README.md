@@ -350,7 +350,42 @@ Dependencies will be checked for vulnerabilities using [Safety](https://pyup.io/
 $ poetry export --dev --format=requirements.txt --without-hashes | safety check --stdin
 ```
 
+### Code standards
 
+All files should exclude trailing whitespace and include an empty final line.
+
+Python code should be linted using [Flake8](https://flake8.pycqa.org/en/latest/):
+
+```shell
+$ poetry run flake8 src tests
+```
+
+This will check various aspects including:
+
+* type annotations (except tests)
+* doc blocks (pep257 style)
+* consistent import ordering
+* code formatting (against Black)
+* estimated code complexity
+* python anti-patterns
+* possibly insecure code (this targets long hanging fruit only)
+
+Python code should follow PEP-8 (except line length), using the [Black](https://black.readthedocs.io) code formatter:
+
+```shell
+$ poetry run black src tests
+```
+
+These conventions and standards are enforced automatically using a combination of:
+
+* local Git [pre-commit hooks](https://pre-commit.com/) hooks/scripts (Flake8 checks only)
+* remote [Continuous Integration](#continuous-integration) (all checks)
+
+To run pre-commit hooks manually:
+
+```shell
+$ pre-commit run --all-files
+```
 
 ### Templates
 
