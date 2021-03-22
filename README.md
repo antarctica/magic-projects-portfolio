@@ -421,7 +421,8 @@ See the [GitLab mirror repository](#gitlab-mirror-repository) section for more i
 
 ### Continuous Deployment
 
-Not Configured.
+All tagged commits will trigger a Continuous Deployment process using GitLab's CI/CD platform, configured in
+`.gitlab-ci.yml`.
 
 ## Release procedure
 
