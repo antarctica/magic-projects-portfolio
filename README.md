@@ -243,14 +243,6 @@ file.
 | `FLASK_ENV`          | Flask environment name                                                     | valid Flask environment name                                                               | `production`                                                    |
 | `FLASK_SESSION_KEY`  | Encryption key used to secure Flask sessions                               | [valid Flask session key](https://flask.palletsprojects.com/en/1.1.x/quickstart/#sessions) | `1ca0cb3f8b07fb0a116e4ba9382ea7695e97c4efba50cd7c` [1]          |
 
-These settings only apply to [Development Environments](#development-environment):
-
-| Configuration Option | Description                                                                | Allowed Values                                                                             | Example Value                                                   |
-| -------------------- | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ | --------------------------------------------------------------- |
-| `FLASK_RUN_PORT`     | Port to use for internal Flask webserver                                   | Free OS port number                                                                        | `5000`                                                          |
-| `FLASK_RUN_HOST`     | Network interface to use for internal Flask webserver                      | valid network interface address                                                            | `0.0.0.0`                                                       |
-| `FLASK_SKIP_DOTENV`  | Whether Flask should try to load configuration options from an `.env` file | Boolean as an integer (`0` or `1`)                                                         | `1`                                                             |
-
 [1] Generate with `python3 -c 'import os; print(os.urandom(24).hex())'`.
 
 ## Setup
