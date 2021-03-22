@@ -306,21 +306,58 @@ Once provisioned the following steps need to be taken manually:
 
 ## Development
 
-```shell
-$ git clone https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio.git
-$ cd magic-projects-portfolio
-```
-
 ### Development environment
 
-...
+A local Python virtual environment managed by [Poetry](https://python-poetry.org) is used for development.
+
+```shell
+# install pyenv as per https://github.com/pyenv/pyenv#installation and/or install Python 3.8.x
+# install Poetry as per https://python-poetry.org/docs/#installation
+# install pre-commit as per https://pre-commit.com/
+$ poetry config virtualenvs.in-project true
+$ git clone https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio.git
+$ cd magic-projects-portfolio
+$ poetry install
+```
+
+**Note:** Use the correct [Python Version](#python-version) for this project.
+
+**Note:** To ensure the correct Python version is used, install Poetry using it's installer, not as a Pip package.
+
+**Note:** Running `poetry config virtualenvs.in-project true` is optional but recommended to keep all project components
+grouped together.
+
+**Note:** Read & write access to this source repository is restricted. Contact the project maintainer to request access.
+
+To run a local version of the application:
+
+```shell
+$ cp .env.example .env
+# update .env with valid configuration option values (e.g. replace any `xxx` values)
+$ poetry run flask run
+```
 
 ### Dependencies
 
-Python dependencies for this project are managed with [Poetry](https://python-poetry.org) in `pyproject.toml`.
+Python dependencies are managed using [Poetry](https://python-poetry.org) which are recorded in `pyproject.toml`.
 
-Non-code files, such as static files, can also be included in the [Python package](#python-package) using the
-`include` key in `pyproject.toml`.
+* use `poetry add` to add new dependencies (use `poetry add --dev` for development dependencies)
+* use `poetry update` to update all dependencies to latest allowed versions
+
+Ensure the `poetry.lock` file is included in the project repository.
+
+Ensure the `requirements.txt` file is updated whenever non-development dependencies are changed
+`poetry export --format=requirements.txt`. See the [Application Docker Image](#application-docker-image) section for
+more information.
+
+Dependencies will be checked for vulnerabilities using [Safety](https://pyup.io/safety/) automatically in
+[Continuous Integration](#continuous-integration). Dependencies can also be checked manually:
+
+```shell
+$ poetry export --dev --format=requirements.txt --without-hashes | safety check --stdin
+```
+
+
 
 ### Templates
 

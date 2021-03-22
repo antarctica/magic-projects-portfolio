@@ -1,2 +1,4 @@
 provisioning/terraform/.terraform
 .env
+.venv
+__pycache__

@@ -1,0 +1,43 @@
+[tool.poetry]
+name = "bas-magic-projects-portfolio"
+version = "0.1.0"
+description = "Proof of concept projects portfolio implementation for MAGIC."
+license = "OGL-UK-3.0"
+authors = [
+    "Felix Fennell <ffennell@mapaction.org>"
+]
+readme = "README.md"
+homepage = "https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio"
+repository = "https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio.git"
+documentation = "https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio"
+classifiers = [
+    "Development Status :: 3 - Alpha"
+]
+
+[tool.poetry.dependencies]
+python = "^3.8.0"
+airtable-python-wrapper = "^0.15.2"
+bas-style-kit-jinja-templates = "^0.6.0"
+Flask = "^1.1.2"
+waitress = "^2.0.0"
+
+[tool.poetry.dev-dependencies]
+black = "^20.8b1"
+darglint = "^1.7.0"
+flake8 = "^3.9.0"
+flake8-annotations = "^2.6.1"
+flake8-bandit = "^2.1.2"
+flake8-black = "^0.2.1"
+flake8-bugbear = "^21.3.2"
+flake8-docstrings = "^1.6.0"
+flake8-import-order = "^0.18.1"
+python-dotenv = "^0.15.0"
+safety = "^1.10.3"
+
+## retained for future type checking improvements
+# mypy = "^0.812"
+# typeguard = "^2.11.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
