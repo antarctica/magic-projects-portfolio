@@ -31,5 +31,5 @@ test:
     - poetry install
     - poetry export --dev --format=requirements.txt --without-hashes --output requirements-safety.txt
   script:
-    - safety check --file requirements-safety.txt
+    - poetry run safety check --file requirements-safety.txt
     - poetry run flake8 src tests
