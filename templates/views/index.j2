@@ -6,13 +6,13 @@
     These are the things we're working on grouped by <strong>{{ group_property | replace('-', ' ') | title }}</strong>
     (View by
     {% if group_property != 'strategic-objectives' %}
-      <a href="{{ url_for('projects', group_property='strategic-objectives') }}">Strategic Objectives</a>,
+      <a href="{{ url_for('all_projects', group_property='strategic-objectives') }}">Strategic Objectives</a>,
     {% endif %}
     {% if group_property != 'activity-areas' %}
-      <a href="{{ url_for('projects', group_property='activity-areas') }}">Activity Areas</a>{% if group_property != 'project-lead' %},{% else %}){% endif %}
+      <a href="{{ url_for('all_projects', group_property='activity-areas') }}">Activity Areas</a>{% if group_property != 'project-lead' %},{% else %}){% endif %}
     {% endif %}
     {% if group_property != 'project-lead' %}
-      <a href="{{ url_for('projects', group_property='project-lead') }}">Project Lead</a>)
+      <a href="{{ url_for('all_projects', group_property='project-lead') }}">Project Lead</a>)
     {% endif %}
     <a class="bsk-btn bsk-btn-success bsk-pull-right" href="https://airtable.com/shrRJ0xbxHrgXljSb" target="_blank"><i class="far fa-fw fa-plus" aria-hidden="true"></i> Add Project</a>
   </div>
@@ -22,7 +22,7 @@
     <h2 class="bsk-page-header app-project-group-page-header">{% if grouped_property_value == 'none' %}(Unknown){% else %}{{ grouped_property_value }}{% endif %}</h2>
     {% for project in grouped_property_projects %}
       <div class="app-project">
-        <a href="{{ url_for('project', project_id=project.id) }}">{{ project.fields.Title }}</a>
+        <a href="{{ url_for('single_project', project_id=project.id) }}">{{ project.fields.Title }}</a>
       </div>
     {% endfor %}
   {% endfor %}

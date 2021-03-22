@@ -134,7 +134,7 @@ def delete_project(project_id: str) -> Response:
     airtable_projects.delete(record_id=project_id)
     flash(f"Project '{project['fields']['Title']}' removed successfully", "success")
     # noinspection PyUnresolvedReferences
-    return redirect(url_for("projects", group_property="strategic-objectives"))
+    return redirect(url_for("all_projects", group_property="strategic-objectives"))
 
 
 @app.route("/project-links/<string:link_id>/-/delete")
@@ -154,7 +154,7 @@ def delete_project_link(link_id: str) -> Response:
     airtable_project_links.delete(record_id=link_id)
     flash(f"Link '{link['fields']['Title']}' removed successfully", "success")
     # noinspection PyUnresolvedReferences
-    return redirect(url_for("project", project_id=project["id"]))
+    return redirect(url_for("single_project", project_id=project["id"]))
 
 
 @app.route("/projects/<string:project_id>")
