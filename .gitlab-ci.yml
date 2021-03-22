@@ -1,0 +1,35 @@
+---
+
+# == Notes ==
+
+# GitLab automatically passes artifacts from previous stages by default
+
+# This CI definition uses a GitLab provided include template
+
+
+# == Includes ==
+
+include:
+  - template: 'Workflows/MergeRequest-Pipelines.gitlab-ci.yml'
+
+# == Global settings ==
+
+stages:
+  - 🧪 test
+
+image:
+  name: python:3.8-slim
+  entrypoint: [""]
+
+# == Jobs ==
+
+test:
+  stage: 🧪 test
+  before_script:
+    - python -m pip install --upgrade pip
+    - python -m pip install poetry==1.1.4
+    - poetry install
+    - poetry export --dev --format=requirements.txt --without-hashes --output requirements-safety.txt
+  script:
+    - poetry run safety check --file requirements-safety.txt
+    - poetry run flake8 src tests

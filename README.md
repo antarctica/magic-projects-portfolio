@@ -193,6 +193,7 @@ The App Platform automatically builds and deploys a container for running the *w
 `requirements.txt` file to exist within the repository.
 
 This is why when [Python dependencies](#dependencies) are changed, a requirements file needs to be exported from Poetry.
+(see [#17](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues/17) for more information).
 
 It is possible to simulate the docker image DigitalOcean will build locally if needed for debugging etc.:
 
@@ -239,17 +240,9 @@ file.
 | -------------------- | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ | --------------------------------------------------------------- |
 | `AIRTABLE_KEY`       | Airtable API key                                                           | valid Airtable API key                                                                     | `keyrD2ea764604m6uQ`                                            |
 | `AIRTABLE_BASE`      | Airtable Base ID                                                           | valid Airtable base ID                                                                     | `appKn6jdVjvP75eUC`                                             |
-| `FLASK_APP`          | Entry point to Flask application                                           | valid reference to Python module/me                                                        | `app`                                                           |
+| `FLASK_APP`          | Entry point to Flask application                                           | valid reference to Python module/me                                                        | `bas_magic_projects_portfolio.app`                              |
 | `FLASK_ENV`          | Flask environment name                                                     | valid Flask environment name                                                               | `production`                                                    |
 | `FLASK_SESSION_KEY`  | Encryption key used to secure Flask sessions                               | [valid Flask session key](https://flask.palletsprojects.com/en/1.1.x/quickstart/#sessions) | `1ca0cb3f8b07fb0a116e4ba9382ea7695e97c4efba50cd7c` [1]          |
-
-These settings only apply to [Development Environments](#development-environment):
-
-| Configuration Option | Description                                                                | Allowed Values                                                                             | Example Value                                                   |
-| -------------------- | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ | --------------------------------------------------------------- |
-| `FLASK_RUN_PORT`     | Port to use for internal Flask webserver                                   | Free OS port number                                                                        | `5000`                                                          |
-| `FLASK_RUN_HOST`     | Network interface to use for internal Flask webserver                      | valid network interface address                                                            | `0.0.0.0`                                                       |
-| `FLASK_SKIP_DOTENV`  | Whether Flask should try to load configuration options from an `.env` file | Boolean as an integer (`0` or `1`)                                                         | `1`                                                             |
 
 [1] Generate with `python3 -c 'import os; print(os.urandom(24).hex())'`.
 
@@ -259,7 +252,7 @@ These settings only apply to [Development Environments](#development-environment
 
 Terraform is used for configuring:
 
-* a GitLab project in GitLab.com as a deployment source for the DigitalOcean App Platform
+* the [GitLab project in GitLab.com](#gitlab-mirror-repository) as a deployment source for the DigitalOcean App Platform
 * DigitalOcean App Platform application
 
 Access to the [BAS DigitalOcean account](https://gitlab.data.bas.ac.uk/WSF/bas-do) are required to provision these
@@ -306,21 +299,93 @@ Once provisioned the following steps need to be taken manually:
 
 ## Development
 
-```shell
-$ git clone https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio.git
-$ cd magic-projects-portfolio
-```
-
 ### Development environment
 
-...
+A local Python virtual environment managed by [Poetry](https://python-poetry.org) is used for development.
+
+```shell
+# install pyenv as per https://github.com/pyenv/pyenv#installation and/or install Python 3.8.x
+# install Poetry as per https://python-poetry.org/docs/#installation
+# install pre-commit as per https://pre-commit.com/
+$ poetry config virtualenvs.in-project true
+$ git clone https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio.git
+$ cd magic-projects-portfolio
+$ poetry install
+```
+
+**Note:** Use the correct [Python Version](#python-version) for this project.
+
+**Note:** To ensure the correct Python version is used, install Poetry using it's installer, not as a Pip package.
+
+**Note:** Running `poetry config virtualenvs.in-project true` is optional but recommended to keep all project components
+grouped together.
+
+**Note:** Read & write access to this source repository is restricted. Contact the project maintainer to request access.
+
+To run a local version of the application:
+
+```shell
+$ cp .env.example .env
+# update .env with valid configuration option values (e.g. replace any `xxx` values)
+$ poetry run flask run
+```
 
 ### Dependencies
 
-Python dependencies for this project are managed with [Poetry](https://python-poetry.org) in `pyproject.toml`.
+Python dependencies are managed using [Poetry](https://python-poetry.org) which are recorded in `pyproject.toml`.
 
-Non-code files, such as static files, can also be included in the [Python package](#python-package) using the
-`include` key in `pyproject.toml`.
+* use `poetry add` to add new dependencies (use `poetry add --dev` for development dependencies)
+* use `poetry update` to update all dependencies to latest allowed versions
+
+Ensure the `poetry.lock` file is included in the project repository.
+
+Ensure the `requirements.txt` file is updated whenever non-development dependencies are changed
+`poetry export --format=requirements.txt`. See the [Application Docker Image](#application-docker-image) section for
+more information.
+
+Dependencies will be checked for vulnerabilities using [Safety](https://pyup.io/safety/) automatically in
+[Continuous Integration](#continuous-integration). Dependencies can also be checked manually:
+
+```shell
+$ poetry export --dev --format=requirements.txt --without-hashes | safety check --stdin
+```
+
+### Code standards
+
+All files should exclude trailing whitespace and include an empty final line.
+
+Python code should be linted using [Flake8](https://flake8.pycqa.org/en/latest/):
+
+```shell
+$ poetry run flake8 src tests
+```
+
+This will check various aspects including:
+
+* type annotations (except tests)
+* doc blocks (pep257 style)
+* consistent import ordering
+* code formatting (against Black)
+* estimated code complexity
+* python anti-patterns
+* possibly insecure code (this targets long hanging fruit only)
+
+Python code should follow PEP-8 (except line length), using the [Black](https://black.readthedocs.io) code formatter:
+
+```shell
+$ poetry run black src tests
+```
+
+These conventions and standards are enforced automatically using a combination of:
+
+* local Git [pre-commit hooks](https://pre-commit.com/) hooks/scripts (Flake8 checks only)
+* remote [Continuous Integration](#continuous-integration) (all checks)
+
+To run pre-commit hooks manually:
+
+```shell
+$ pre-commit run --all-files
+```
 
 ### Templates
 
