@@ -3,6 +3,7 @@ from os import environ
 from flask import Flask, render_template, redirect, url_for, flash
 from jinja2 import PrefixLoader, PackageLoader, FileSystemLoader
 from bas_style_kit_jinja_templates import BskTemplates
+# noinspection PyPackageRequirements
 from airtable import Airtable
 
 app = Flask(__name__)
@@ -14,19 +15,30 @@ app.jinja_loader = PrefixLoader({
 })
 app.config['BSK_TEMPLATES'] = BskTemplates()
 app.config['BSK_TEMPLATES'].site_title = 'MAGIC Projects Portfolio'
-app.config['BSK_TEMPLATES'].site_description = 'Portfolio of projects undertaken, or planned to be undertaken, by the BAS Mapping and Geographic Information Centre (MAGIC)'
+app.config['BSK_TEMPLATES'].site_description = 'Portfolio of projects undertaken, or planned to be undertaken, by ' \
+                                               'the BAS Mapping and Geographic Information Centre (MAGIC)'
 app.config['BSK_TEMPLATES'].bsk_site_nav_brand_text = 'MAGIC Projects Portfolio'
 app.config['BSK_TEMPLATES'].bsk_site_development_phase = 'alpha'
-app.config['BSK_TEMPLATES'].bsk_site_feedback_href = 'https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues/new'
+app.config['BSK_TEMPLATES'].bsk_site_feedback_href = 'https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/' \
+                                                     'issues/new'
 app.config['BSK_TEMPLATES'].bsk_site_footer_policies_cookies_href = '/legal/cookies'
 app.config['BSK_TEMPLATES'].bsk_site_footer_policies_copyright_href = '/legal/copyright'
 app.config['BSK_TEMPLATES'].bsk_site_footer_policies_privacy_href = '/legal/privacy'
 app.config['BSK_TEMPLATES'].site_styles.append({'href': '/static/css/app.css'})
-app.config['BSK_TEMPLATES'].site_styles.append({"href": "https://cdn.web.bas.ac.uk/libs/font-awesome-pro/5.13.0/css/all.min.css", "integrity": "sha256-DjbUjEiuM4tczO997cVF1zbf91BC9OzycscGGk/ZKks="})
+app.config['BSK_TEMPLATES'].site_styles.append({
+    "href": "https://cdn.web.bas.ac.uk/libs/font-awesome-pro/5.13.0/css/all.min.css",
+    "integrity": "sha256-DjbUjEiuM4tczO997cVF1zbf91BC9OzycscGGk/ZKks="
+})
 
 app.config['BSK_TEMPLATES'].bsk_container_classes = ['bsk-container-fluid']
-app.config['BSK_TEMPLATES'].bsk_site_nav_launcher.append({'value': 'MAGIC Team (BAS Digital Workspace)', 'href': 'https://nercacuk.sharepoint.com/sites/BASDigitalw/people-teams/magic/Pages/default.aspx'})
-app.config['BSK_TEMPLATES'].bsk_site_nav_launcher.append({'value': 'MAGIC Team (BAS Public Website)', 'href': 'https://www.bas.ac.uk/team/magic'})
+app.config['BSK_TEMPLATES'].bsk_site_nav_launcher.append({
+    'value': 'MAGIC Team (BAS Digital Workspace)',
+    'href': 'https://nercacuk.sharepoint.com/sites/BASDigitalw/people-teams/magic/Pages/default.aspx'
+})
+app.config['BSK_TEMPLATES'].bsk_site_nav_launcher.append({
+    'value': 'MAGIC Team (BAS Public Website)',
+    'href': 'https://www.bas.ac.uk/team/magic'
+})
 
 app.config['airtable_key'] = environ.get('AIRTABLE_KEY', None)
 app.config['airtable_base'] = environ.get('AIRTABLE_BASE', None)
@@ -43,6 +55,7 @@ airtable_project_links = Airtable(
 )
 
 
+# noinspection PyUnusedLocal
 @app.errorhandler(404)
 def page_not_found(e):
     # noinspection PyUnresolvedReferences
@@ -55,7 +68,7 @@ def index():
 
 
 @app.route('/projects/-/group/<string:group_property>')
-def projects(group_property: str):
+def all_projects(group_property: str):
     projects = airtable_projects.get_all()
     # noinspection PyUnresolvedReferences
     return render_template(
@@ -86,7 +99,7 @@ def delete_project_link(link_id: str):
 
 
 @app.route('/projects/<string:project_id>')
-def project(project_id: str):
+def single_project(project_id: str):
     project = airtable_projects.get(record_id=project_id)
     project_links = airtable_project_links.search(field_name='Project', field_value=project['fields']['Title'])
     # noinspection PyUnresolvedReferences
