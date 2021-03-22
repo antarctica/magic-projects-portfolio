@@ -193,6 +193,7 @@ The App Platform automatically builds and deploys a container for running the *w
 `requirements.txt` file to exist within the repository.
 
 This is why when [Python dependencies](#dependencies) are changed, a requirements file needs to be exported from Poetry.
+(see [#17](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues/17) for more information).
 
 It is possible to simulate the docker image DigitalOcean will build locally if needed for debugging etc.:
 
@@ -251,7 +252,7 @@ file.
 
 Terraform is used for configuring:
 
-* a GitLab project in GitLab.com as a deployment source for the DigitalOcean App Platform
+* the [GitLab project in GitLab.com](#gitlab-mirror-repository) as a deployment source for the DigitalOcean App Platform
 * DigitalOcean App Platform application
 
 Access to the [BAS DigitalOcean account](https://gitlab.data.bas.ac.uk/WSF/bas-do) are required to provision these
