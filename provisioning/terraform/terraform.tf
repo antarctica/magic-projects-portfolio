@@ -52,19 +52,19 @@ provider "gitlab" {
   base_url = "https://gitlab.com/api/v4/"
 }
 
-# MAGIC Projects Portfolio - GitLab project
+# MAGIC Projects Portfolio - GitLab mirror
 #
 # Note: The SAAS GitLab instance is used here rather than the BAS GitLab instance because the DigitalOcean App Platform
 # only supports remotes from a limited number of domains. This project will be linked to a corresponding project in the
 # BAS GitLab instance using repository mirroring.
 #
-# Note: The namespace 479725 is a personal/user namespace, in this case for @felnne. This will be changed to a group.
+# Note: The namespace 479738 corresponds to the `antarctica` group.
 #
 # GitLab source: https://docs.gitlab.com/ee/user/project/
 # Terraform source: https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/resources/project
-resource "gitlab_project" "magic_projects_portfolio" {
+resource "gitlab_project" "magic_projects_portfolio_mirror" {
   path             = "magic-projects-portfolio"
-  namespace_id     = 479725
+  namespace_id     = 479738
   default_branch   = "main"
   visibility_level = "private"
 
@@ -91,23 +91,28 @@ resource "gitlab_project" "magic_projects_portfolio" {
 #
 # GitLab source: https://docs.gitlab.com/ee/user/project/deploy_tokens/
 # Terraform source: https://registry.terraform.io/providers/gitlabhq/gitlab/latest/docs/resources/deploy_token
-resource "gitlab_deploy_token" "magic_projects_portfolio_do_app" {
-  project  = gitlab_project.magic_projects_portfolio.id
-  name     = "DigitalOcean App Platform"
-  username = "digitalocean"
+resource "gitlab_deploy_token" "magic_projects_portfolio_mirror_do_app" {
+  project    = gitlab_project.magic_projects_portfolio_mirror.id
+  name       = "DigitalOcean App Platform"
+  username   = "digitalocean"
   expires_at = "2100-01-01T00:00:00Z"
-  scopes   = ["read_repository"]
+  scopes     = ["read_repository"]
 }
 
-# MAGIC Projects Portfolio - DigitalOcean Application
+# MAGIC Projects Portfolio - DigitalOcean App Platform Application
 #
-# Note: As Terraform and the DigitalOcean AppSpec use the same syntax for variable interpolation (${}), eacaping is
-# used using the `$${}` syntax.
+# = Variable interpolation
+# As Terraform and the DigitalOcean AppSpec use the same syntax for variable interpolation (${}), escaping is used
+# using the `$${}` syntax.
 # Source: https://www.terraform.io/docs/configuration/expressions.html#string-literals (end of section)
+#
+# = Encrypted variables
+# on first run, encrypted variables need to be set using cleartext values. They will be encrypted by DigitalOcean and
+# then appear in ciphertext in returned state. Values should then be updated to use these ciphertext values.
 #
 # DigitalOcean source: https://www.digitalocean.com/docs/app-platform/
 # Terraform source: https://registry.terraform.io/providers/digitalocean/digitalocean/latest/docs/resources/app
-resource "digitalocean_app" "scratch-felnne3" {
+resource "digitalocean_app" "magic_projects_portfolio" {
   spec {
     name   = "magic-projects-portfolio"
     region = "ams"
@@ -120,16 +125,10 @@ resource "digitalocean_app" "scratch-felnne3" {
       source_dir         = "provisioning/do-app-platform"
 
       git {
-        repo_clone_url = replace(gitlab_project.magic_projects_portfolio.http_url_to_repo, "https://", "https://${gitlab_deploy_token.magic_projects_portfolio_do_app.username}:${gitlab_deploy_token.magic_projects_portfolio_do_app.token}@")
+        repo_clone_url = replace(gitlab_project.magic_projects_portfolio_mirror.http_url_to_repo, "https://", "https://${gitlab_deploy_token.magic_projects_portfolio_mirror_do_app.username}:${gitlab_deploy_token.magic_projects_portfolio_mirror_do_app.token}@")
         branch         = "main"
       }
 
-      env {
-        key   = "FLASK_APP"
-        value = "app"
-        scope = "RUN_AND_BUILD_TIME"
-        type  = "GENERAL"
-      }
       env {
         key   = "FLASK_ENV"
         value = "production"

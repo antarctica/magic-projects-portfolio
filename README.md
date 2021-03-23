@@ -242,16 +242,27 @@ Terraform is used for configuring:
 * the [GitLab project in GitLab.com](#gitlab-mirror-repository) as a deployment source for the DigitalOcean App Platform
 * DigitalOcean App Platform application
 
-Access to the [BAS DigitalOcean account](https://gitlab.data.bas.ac.uk/WSF/bas-do) are required to provision these
+Access to the [BAS DigitalOcean account](https://gitlab.data.bas.ac.uk/WSF/bas-do) is required to provision these
 resources.
 
-```
+**Note:** This Terraform configuration needs to be applied in stages as resources need to be manually configured before
+others are created.
+
+```shell
 $ cd provisioning/terraform
 $ docker-compose run terraform
 
 $ terraform init
 $ terraform validate
 $ terraform fmt
+
+$ terraform apply --target gitlab_project.magic_projects_portfolio_mirror
+$ terraform apply --target gitlab_deploy_token.magic_projects_portfolio_mirror_do_app
+# configure repository mirroring (see manual steps)
+# set DigitalOcean encrypted variables to initial cleartext values (see notes in Terraform.tf)
+$ terraform apply --target digitalocean_app.magic_projects_portfolio
+# retrieve ciphertext values for app spec from DigitalOcean console and update configuration to match
+# ensure all changes are in sync
 $ terraform apply
 
 $ exit
@@ -282,7 +293,8 @@ permissions to remote state are enforced.
 Once provisioned the following steps need to be taken manually:
 
 1. configure [repository mirroring](https://gitlab.data.bas.ac.uk/WSF/bas-gitlab#repository-mirroring) between the
-   BAS GitLab instance and the corresponding GitLab.com repository created by Terraform
+   BAS GitLab instance and the corresponding GitLab.com repository created by Terraform by creating a personal 
+   access token in GitLab.com
 
 ## Development
 
