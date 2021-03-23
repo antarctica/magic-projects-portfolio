@@ -117,6 +117,7 @@ resource "digitalocean_app" "scratch-felnne3" {
       environment_slug   = "python"
       instance_count     = 1
       instance_size_slug = "basic-xxs"
+      source_dir         = "provisioning/do-app-platform"
 
       git {
         repo_clone_url = replace(gitlab_project.magic_projects_portfolio.http_url_to_repo, "https://", "https://${gitlab_deploy_token.magic_projects_portfolio_do_app.username}:${gitlab_deploy_token.magic_projects_portfolio_do_app.token}@")
