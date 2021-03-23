@@ -137,24 +137,24 @@ resource "digitalocean_app" "magic_projects_portfolio" {
       }
       env {
         key   = "FLASK_SESSION_KEY"
-        value = "EV[1:Y2OtcdC1BMSNelhi5MR562HxGZX4dC4f:u7u73RNmvg+qs0LLnQUxhHzlUy49UZhit9RnITBpsuRhtubAfRvreKi0tCI9SB/V5he5tu/L7Bv5LYTPUhHE9ap/a+8=]"
+        value = "EV[1:4JbEmGp8j+7vyGQ8upixL1TxhrhPdRf1:J4gWTzZGj4H1WJ2u0EXm1BLOUcZiw8ArYwpisx+9QZBGMzxvTyPkhoiUUcUMKwLU3AgwxTw9BFuDL8h/KeHa6w==]"
         scope = "RUN_AND_BUILD_TIME"
         type  = "SECRET"
       }
       env {
         key   = "AIRTABLE_KEY"
-        value = "EV[1:BjS8O1pnh+ulAqJyshWCHmtsosTrDU0+:avK74jKXv6O/N16RWWe6eLSL+zqXvmyiu+hLLR1rUuWa]"
+        value = "EV[1:TwjSE/c5G3A/MXoy6mZ08gzce9y1zRR2:iHgKJphlDPI/zgKi6VcdXzzlB95uz4OpZPYANA6GupHh]"
         scope = "RUN_AND_BUILD_TIME"
         type  = "SECRET"
       }
       env {
         key   = "AIRTABLE_BASE"
-        value = "EV[1:weZwyJvXM7grrV72PTKvaqDRkvXD++js:ZE72JVPxy4IcSYlwB6QrgaYV7TsKwUMQ9WDHTaDCBW8C]"
+        value = "appCn6jjVdvP75UbN"
         scope = "RUN_AND_BUILD_TIME"
-        type  = "SECRET"
+        type  = "GENERAL"
       }
 
-      run_command = "waitress-serve --port $PORT app:app"
+      run_command = "waitress-serve --port $PORT bas_magic_projects_portfolio.app:app"
     }
   }
 }
