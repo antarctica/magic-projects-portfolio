@@ -64,20 +64,20 @@ test:
     - job: setup
       artifacts: true
 
-#package:
-#  stage: 📦 package
-#  before_script:
-#    - python -m pip install --upgrade pip
-#    - python -m pip install poetry==1.1.4
-#    - poetry config virtualenvs.in-project true
-#  script:
-#    - poetry publish --build --repository bas-gitlab --username gitlab-ci-token --password ${CI_JOB_TOKEN}
-#  needs:
-#    - job: test
-#    - job: setup
-#      artifacts: true
-#  rules:
-#    - if: '$CI_COMMIT_TAG != null'
+package:
+  stage: 📦 package
+  before_script:
+    - python -m pip install --upgrade pip
+    - python -m pip install poetry==1.1.4
+    - poetry config virtualenvs.in-project true
+  script:
+    - poetry publish --build --repository bas-gitlab --username gitlab-ci-token --password ${CI_JOB_TOKEN}
+  needs:
+    - job: test
+    - job: setup
+      artifacts: true
+  rules:
+    - if: '$CI_COMMIT_TAG != null'
 
 deploy:
   stage: 🚀 deploy

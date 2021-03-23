@@ -189,11 +189,9 @@ configures:
 #### Application Docker Image
 
 The App Platform automatically builds and deploys a container for running the *website* component using
-[Cloud Native Buildpacks](https://buildpacks.io). For this application, the Python buildpack is used, which requires a
-`requirements.txt` file to exist within the repository.
+[Cloud Native Buildpacks](https://buildpacks.io). For this application, the Python buildpack is used using the
+[`provisioning/do-app-platform/requirements.txt`](/provisioning/do-app-platform/requirements.txt) requirements file.
 
-This is why when [Python dependencies](#dependencies) are changed, a requirements file needs to be exported from Poetry.
-(see [#17](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues/17) for more information).
 
 It is possible to simulate the docker image DigitalOcean will build locally if needed for debugging etc.:
 
@@ -206,6 +204,7 @@ $ docker-compose up
 
 **Note:** Environment variables will be loaded from the local `.env` file used in
 [Development Environments](#development-environment).
+This file depends on the [Application Python Package](#python-package).
 
 #### GitLab mirror repository
 
@@ -339,10 +338,6 @@ Python dependencies are managed using [Poetry](https://python-poetry.org) which 
 
 Ensure the `poetry.lock` file is included in the project repository.
 
-Ensure the `requirements.txt` file is updated whenever non-development dependencies are changed
-`poetry export --format=requirements.txt`. See the [Application Docker Image](#application-docker-image) section for
-more information.
-
 Dependencies will be checked for vulnerabilities using [Safety](https://pyup.io/safety/) automatically in
 [Continuous Integration](#continuous-integration). Dependencies can also be checked manually:
 
@@ -411,6 +406,26 @@ Not configured.
 All commits will trigger a Continuous Integration process using GitLab's CI/CD platform, configured in `.gitlab-ci.yml`.
 
 ## Deployment
+
+### Python Package
+
+This project is distributed as a Python package, available through the 
+[BAS GitLab Python registry](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/packages), installable 
+using Pip.
+
+Both source and binary (Python wheel) packages are built automatically during 
+[Continuous Deployment](#continuous-deployment) for all tagged releases.
+
+A shared public access deploy token is used to allow this Python package to installed anonymously:
+
+* username: `anonymous-public-access`
+* password: `PxsyfybkCmKDNYWUXCzs`
+
+To install using Pip:
+
+```shell
+$ python3 -m pip install bas-magic-projects-portfolio --extra-index-url https://anonymous-public-access:PxsyfybkCmKDNYWUXCzs@gitlab.data.bas.ac.uk/api/v4/projects/853/packages/pypi/simple
+```
 
 ### DigitalOcean App Platform (Deployment)
 
