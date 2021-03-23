@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.1.2] - 2021-03-23
+
+### Fixed
+
+* DigitalOcean App Platform deployments
+  [#20](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues/20)
+
 ## [0.1.1] - 2021-03-23
 
 ### Fixed
