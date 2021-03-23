@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+* Black formatting watcher in PyCharm
+  [#21](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues/21)
+
 ### Changed
 
 * Switching to V2 tables in Airtable for existing properties
