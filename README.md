@@ -430,8 +430,14 @@ $ python3 -m pip install bas-magic-projects-portfolio --extra-index-url https://
 ### DigitalOcean App Platform (Deployment)
 
 Commits made against the master branch will be mirrored to the 
-[GitLab.com mirror repository](#gitlab-mirror-repository), commits to which will automatically trigger a deployment of
-the DigitalOcean App Platform app.
+[GitLab.com mirror repository](#gitlab-mirror-repository), which will update the `requirements.txt` file used to 
+specify which version of the application [Application Python Package](#python-package) is installed.
+
+A forced deployment of the DigitalOcean App Platform app will be triggered automatically during
+[Continuous Deployment](#continuous-deployment) for all tagged releases.
+
+A force deployment is used to ensure the [Deployment Docker Container](#application-docker-image) is updated to use the 
+application [Application Python Package](#python-package) version specified in the `requirements.txt` file.
 
 ### Continuous Deployment
 
