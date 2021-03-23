@@ -445,8 +445,9 @@ All tagged commits will trigger a Continuous Deployment process using GitLab's C
 For all releases:
 
 1. create a release branch
-2. close release in `CHANGELOG.md`
-3. push changes, merge the release branch into `master` and tag with version
+1. close release in `CHANGELOG.md`
+1. bump package version using `poetry version`
+1. push changes, merge the release branch into `master` and tag with version
 
 ## Feedback
 
