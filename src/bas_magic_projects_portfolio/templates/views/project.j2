@@ -21,27 +21,7 @@
         {% endfor %}
         <dt>Project lead</dt>
         <dd>
-          {% if project.fields.Owner == 'Adrian' %}
-            Adrian Fox
-          {% elif project.fields.Owner == 'Andreas' %}
-            Andreas Cziferszky
-          {% elif project.fields.Owner == 'Andrew' %}
-            Andrew Fleming
-          {% elif project.fields.Owner == 'Elena' %}
-            Elena Field
-          {% elif project.fields.Owner == 'Felix' %}
-            Felix Fennell
-          {% elif project.fields.Owner == 'Laura' %}
-            Laura Gerrish
-          {% elif project.fields.Owner == 'Louise' %}
-            Louise Ireland
-          {% elif project.fields.Owner == 'Nathan' %}
-            Nathan Fenney
-          {% elif project.fields.Owner == 'Peter' %}
-            Peter Fretwell
-          {% else %}
             <mark>Unknown</mark>
-          {% endif %}
         </dd>
         <dt>Links</dt>
         {% if project_links | length > 0 %}
