@@ -414,10 +414,11 @@ All commits will trigger a Continuous Integration process using GitLab's CI/CD p
 
 ### DigitalOcean App Platform (Deployment)
 
-Changes pushed to the project repository (on the BAS GitLab server) will be automatically mirrored to the corresponding
-GitLab.com repository which will trigger a deployment within the DigitalOcean App Platform.
+A forced deployment of the DigitalOcean App Platform app will be triggered automatically during
+[Continuous Deployment](#continuous-deployment) for all tagged releases.
 
-See the [GitLab mirror repository](#gitlab-mirror-repository) section for more information.
+A force deployment is used to ensure the [Deployment Docker Container](#application-docker-image) is updated to use the 
+latest [Application Python Package](#python-package).
 
 ### Continuous Deployment
 
