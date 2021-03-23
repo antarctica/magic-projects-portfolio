@@ -2,7 +2,7 @@
 #
 # Terraform source: https://www.terraform.io/docs/configuration/terraform.html
 terraform {
-  required_version = "~> 0.13"
+  required_version = "~> 0.14"
 
   required_providers {
     digitalocean = {
