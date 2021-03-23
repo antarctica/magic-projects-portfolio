@@ -16,6 +16,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 
+* Switching to forms for V2 Airtable tables
+  [#23](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues23)
 * Switching to V2 tables in Airtable for existing properties
   [#21](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues/21)
 
