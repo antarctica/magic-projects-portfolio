@@ -1,6 +1,6 @@
 services:
   terraform:
-    image: hashicorp/terraform:0.13.4
+    image: hashicorp/terraform:0.14.8
     entrypoint: ash
     working_dir: /workspace
     volumes:

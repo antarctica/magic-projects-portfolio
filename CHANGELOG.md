@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
+* Python package [#18](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues/18)
 * Continuous Integration [#14](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues/14)
 * Code linting [#14](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues/14)
 * Project README [#1](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues/1)

@@ -189,23 +189,10 @@ configures:
 #### Application Docker Image
 
 The App Platform automatically builds and deploys a container for running the *website* component using
-[Cloud Native Buildpacks](https://buildpacks.io). For this application, the Python buildpack is used, which requires a
-`requirements.txt` file to exist within the repository.
+[Cloud Native Buildpacks](https://buildpacks.io). For this application, the Python buildpack is used using the
+[`provisioning/do-app-platform/requirements.txt`](/provisioning/do-app-platform/requirements.txt) requirements file.
 
-This is why when [Python dependencies](#dependencies) are changed, a requirements file needs to be exported from Poetry.
-(see [#17](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues/17) for more information).
-
-It is possible to simulate the docker image DigitalOcean will build locally if needed for debugging etc.:
-
-```shell
-# install `pack` cli https://buildpacks.io/docs/tools/pack/
-$ pack build magic-portfolio:latest
-$ cd support/buildpacks/
-$ docker-compose up
-```
-
-**Note:** Environment variables will be loaded from the local `.env` file used in
-[Development Environments](#development-environment).
+This file depends on the [Application Python Package](#python-package).
 
 #### GitLab mirror repository
 
@@ -255,16 +242,27 @@ Terraform is used for configuring:
 * the [GitLab project in GitLab.com](#gitlab-mirror-repository) as a deployment source for the DigitalOcean App Platform
 * DigitalOcean App Platform application
 
-Access to the [BAS DigitalOcean account](https://gitlab.data.bas.ac.uk/WSF/bas-do) are required to provision these
+Access to the [BAS DigitalOcean account](https://gitlab.data.bas.ac.uk/WSF/bas-do) is required to provision these
 resources.
 
-```
+**Note:** This Terraform configuration needs to be applied in stages as resources need to be manually configured before
+others are created.
+
+```shell
 $ cd provisioning/terraform
 $ docker-compose run terraform
 
 $ terraform init
 $ terraform validate
 $ terraform fmt
+
+$ terraform apply --target gitlab_project.magic_projects_portfolio_mirror
+$ terraform apply --target gitlab_deploy_token.magic_projects_portfolio_mirror_do_app
+# configure repository mirroring (see manual steps)
+# set DigitalOcean encrypted variables to initial cleartext values (see notes in Terraform.tf)
+$ terraform apply --target digitalocean_app.magic_projects_portfolio
+# retrieve ciphertext values for app spec from DigitalOcean console and update configuration to match
+# ensure all changes are in sync
 $ terraform apply
 
 $ exit
@@ -295,7 +293,8 @@ permissions to remote state are enforced.
 Once provisioned the following steps need to be taken manually:
 
 1. configure [repository mirroring](https://gitlab.data.bas.ac.uk/WSF/bas-gitlab#repository-mirroring) between the
-   BAS GitLab instance and the corresponding GitLab.com repository created by Terraform
+   BAS GitLab instance and the corresponding GitLab.com repository created by Terraform by creating a personal 
+   access token in GitLab.com
 
 ## Development
 
@@ -338,10 +337,6 @@ Python dependencies are managed using [Poetry](https://python-poetry.org) which 
 * use `poetry update` to update all dependencies to latest allowed versions
 
 Ensure the `poetry.lock` file is included in the project repository.
-
-Ensure the `requirements.txt` file is updated whenever non-development dependencies are changed
-`poetry export --format=requirements.txt`. See the [Application Docker Image](#application-docker-image) section for
-more information.
 
 Dependencies will be checked for vulnerabilities using [Safety](https://pyup.io/safety/) automatically in
 [Continuous Integration](#continuous-integration). Dependencies can also be checked manually:
@@ -412,12 +407,33 @@ All commits will trigger a Continuous Integration process using GitLab's CI/CD p
 
 ## Deployment
 
+### Python Package
+
+This project is distributed as a Python package, available through the 
+[BAS GitLab Python registry](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/packages), installable 
+using Pip.
+
+Both source and binary (Python wheel) packages are built automatically during 
+[Continuous Deployment](#continuous-deployment) for all tagged releases.
+
+A shared public access deploy token is used to allow this Python package to installed anonymously:
+
+* username: `anonymous-public-access`
+* password: `PxsyfybkCmKDNYWUXCzs`
+
+To install using Pip:
+
+```shell
+$ python3 -m pip install bas-magic-projects-portfolio --extra-index-url https://anonymous-public-access:PxsyfybkCmKDNYWUXCzs@gitlab.data.bas.ac.uk/api/v4/projects/853/packages/pypi/simple
+```
+
 ### DigitalOcean App Platform (Deployment)
 
-Changes pushed to the project repository (on the BAS GitLab server) will be automatically mirrored to the corresponding
-GitLab.com repository which will trigger a deployment within the DigitalOcean App Platform.
+A forced deployment of the DigitalOcean App Platform app will be triggered automatically during
+[Continuous Deployment](#continuous-deployment) for all tagged releases.
 
-See the [GitLab mirror repository](#gitlab-mirror-repository) section for more information.
+A force deployment is used to ensure the [Deployment Docker Container](#application-docker-image) is updated to use the 
+latest [Application Python Package](#python-package).
 
 ### Continuous Deployment
 
