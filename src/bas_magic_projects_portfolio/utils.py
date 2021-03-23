@@ -95,7 +95,6 @@ def group_projects(projects: list, group_property: str) -> dict:
     group_properties = {
         "strategic-objectives": "Strategic Objectives",
         "activity-areas": "Activity Areas",
-        "project-lead": "Owner",
     }
     grouped_projects = {"none": []}
 

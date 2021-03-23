@@ -29,12 +29,12 @@ app.config["airtable_base"] = environ.get("AIRTABLE_BASE", None)
 
 airtable_projects = Airtable(
     base_key=app.config["airtable_base"],
-    table_name="Projects",
+    table_name="Projects (V2)",
     api_key=app.config["airtable_key"],
 )
 airtable_project_links = Airtable(
     base_key=app.config["airtable_base"],
-    table_name="Project Links",
+    table_name="Project Links (V2)",
     api_key=app.config["airtable_key"],
 )
 
