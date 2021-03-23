@@ -192,18 +192,6 @@ The App Platform automatically builds and deploys a container for running the *w
 [Cloud Native Buildpacks](https://buildpacks.io). For this application, the Python buildpack is used using the
 [`provisioning/do-app-platform/requirements.txt`](/provisioning/do-app-platform/requirements.txt) requirements file.
 
-
-It is possible to simulate the docker image DigitalOcean will build locally if needed for debugging etc.:
-
-```shell
-# install `pack` cli https://buildpacks.io/docs/tools/pack/
-$ pack build magic-portfolio:latest
-$ cd support/buildpacks/
-$ docker-compose up
-```
-
-**Note:** Environment variables will be loaded from the local `.env` file used in
-[Development Environments](#development-environment).
 This file depends on the [Application Python Package](#python-package).
 
 #### GitLab mirror repository
