@@ -85,7 +85,7 @@ deploy:
     name: digitalocean/doctl:1-latest
     entrypoint: [ "" ]
   script:
-    - doctl apps create-deployment $DO_APP_PLATFORM_APP_ID --force-rebuild
+    - /app/doctl apps create-deployment $DO_APP_PLATFORM_APP_ID --force-rebuild
   needs:
     - job: package
 #  rules:
