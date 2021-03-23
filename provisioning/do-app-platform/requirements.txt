@@ -1,2 +1,2 @@
 --extra-index-url https://anonymous-public-access:PxsyfybkCmKDNYWUXCzs@gitlab.data.bas.ac.uk/api/v4/projects/853/packages/pypi/simple
-bas-magic-projects-portfolio
+bas-magic-projects-portfolio==0.1.1
