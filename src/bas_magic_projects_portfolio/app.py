@@ -3,7 +3,7 @@ from os import environ
 # noinspection PyPackageRequirements
 from airtable import Airtable
 from flask import flash, Flask, redirect, render_template, url_for
-from jinja2 import FileSystemLoader, PackageLoader, PrefixLoader
+from jinja2 import PackageLoader, PrefixLoader
 from werkzeug import Response
 
 from bas_magic_projects_portfolio.utils import (
@@ -18,7 +18,7 @@ app.secret_key = str(environ.get("FLASK_SESSION_KEY")).encode()
 
 app.jinja_loader = PrefixLoader(
     {
-        "app": FileSystemLoader("templates"),
+        "app": PackageLoader("bas_magic_projects_portfolio"),
         "bas_style_kit": PackageLoader("bas_style_kit_jinja_templates"),
     }
 )

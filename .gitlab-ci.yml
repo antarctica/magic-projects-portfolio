@@ -15,7 +15,9 @@ include:
 # == Global settings ==
 
 stages:
+  - 💥 setup
   - 🧪 test
+  - 📦 package
 
 image:
   name: python:3.8-slim
@@ -23,13 +25,44 @@ image:
 
 # == Jobs ==
 
+setup:
+  stage: 💥 setup
+  before_script:
+    - python -m pip install --upgrade pip
+    - python -m pip install poetry==1.1.4
+    - poetry config virtualenvs.in-project true
+  script:
+    - poetry install
+  artifacts:
+    paths:
+      - .venv
+    expire_in: 1 week
+    when: always
+
 test:
   stage: 🧪 test
   before_script:
     - python -m pip install --upgrade pip
     - python -m pip install poetry==1.1.4
-    - poetry install
+    - poetry config virtualenvs.in-project true
     - poetry export --dev --format=requirements.txt --without-hashes --output requirements-safety.txt
   script:
     - poetry run safety check --file requirements-safety.txt
     - poetry run flake8 src tests
+  needs:
+    - job: setup
+      artifacts: true
+
+package:
+  stage: 📦 package
+  before_script:
+    - python -m pip install --upgrade pip
+    - python -m pip install poetry==1.1.4
+    - poetry config virtualenvs.in-project true
+  script:
+    - poetry version prerelease
+    - poetry publish --build --repository bas-gitlab --username gitlab-ci-token --password ${CI_JOB_TOKEN}
+  needs:
+    - job: test
+    - job: setup
+      artifacts: true
