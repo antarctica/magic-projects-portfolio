@@ -1,22 +1,22 @@
 {% extends 'app/layouts/app.j2' %}
 
 {% block app_main_content %}
-<header>
-  <div class="bsk-alert bsk-alert-info bsk-alert-highlight app-alert-black-text">
-    These are the things we're working on grouped by <strong>{{ group_property | replace('-', ' ') | title }}</strong>
-    (View by
-    {% if group_property != 'strategic-objectives' %}
-      <a href="{{ url_for('all_projects', group_property='strategic-objectives') }}">Strategic Objectives</a>,
-    {% endif %}
-    {% if group_property != 'activity-areas' %}
-      <a href="{{ url_for('all_projects', group_property='activity-areas') }}">Activity Areas</a>{% if group_property != 'project-lead' %},{% else %}){% endif %}
-    {% endif %}
-{#    {% if group_property != 'project-lead' %}#}
-{#      <a href="{{ url_for('all_projects', group_property='project-lead') }}">Project Lead</a>)#}
-{#    {% endif %}#}
-    <a class="bsk-btn bsk-btn-success bsk-pull-right" href="https://airtable.com/shraeffFV5201B3zn" target="_blank"><i class="far fa-fw fa-plus" aria-hidden="true"></i> Add Project</a>
-  </div>
-</header>
+    <header>
+        <div class="bsk-alert bsk-alert-info bsk-alert-highlight">
+            These are the things we're working on grouped by
+            <strong>{{ group_property | replace('-', ' ') | title }}</strong>
+            (View by
+            {% if group_property != 'strategic-objectives' %}
+                <a href="{{ url_for('all_projects', group_property='strategic-objectives') }}">Strategic Objectives</a>,
+            {% endif %}
+            {% if group_property != 'activity-areas' %}
+              <a href="{{ url_for('all_projects', group_property='activity-areas') }}">Activity Areas</a>,
+            {% endif %}
+            <a href="{{ url_for('all_projects_by_person') }}">People</a>)
+            <a class="bsk-btn bsk-btn-success bsk-pull-right" href="https://airtable.com/shraeffFV5201B3zn"
+               target="_blank"><i class="far fa-fw fa-plus" aria-hidden="true"></i> Add Project</a>
+        </div>
+    </header>
     <section class="bsk-container-fluid app-status-grid">
         <div class="bsk-row">
             <div class="bsk-col-24-md-4 app-status-wrapper app-status-proposed">
@@ -51,7 +51,7 @@
             </div>
             <div class="bsk-col-24-md-4 app-status-wrapper app-status-open-ended">
                 <header>
-                    <i class="far fa-fw fa-sync-alt" aria-hidden="true"></i>
+                    <i class="far fa-fw fa-sync-alt fa-spin" aria-hidden="true"></i>
                     Open Ended
                 </header>
             </div>

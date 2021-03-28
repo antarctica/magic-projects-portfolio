@@ -142,6 +142,40 @@ def index_people(people: list) -> dict:
     return _people
 
 
+def index_projects(projects: list) -> dict:
+    """
+    Index a list of projects by ID property.
+
+    :type: list
+    :param projects: collection of projects to index
+    :rtype: dict
+    :return: projects indexed by ID property
+    """
+    _projects = {}
+
+    for project in projects:
+        _projects[project["id"]] = project
+
+    return _projects
+
+
+def index_project_roles(roles: list) -> dict:
+    """
+    Index a list of project roles by ID property.
+
+    :type: list
+    :param roles: collection of project roles to index
+    :rtype: dict
+    :return: project roles indexed by ID property
+    """
+    _roles = {}
+
+    for role in roles:
+        _roles[role["id"]] = role
+
+    return _roles
+
+
 def group_people_by_project_roles(roles: list, people: dict) -> dict:
     """
     Group a set of people by their role in a project.
@@ -166,6 +200,74 @@ def group_people_by_project_roles(roles: list, people: dict) -> dict:
             people_grouped_by_roles["co_investigator"].append(role)
 
     return people_grouped_by_roles
+
+
+def grid_people(people: list, roles: list, projects: list) -> dict:
+    """
+    Structure projects into a 2-dimensional dict (people, role type) containing projects.
+
+    E.g.
+
+    {
+        'person_1_id': {
+            'person': 'person_1_details',
+            'roles': {
+                'principle_investigator': [
+                    'project_1_details',
+                    'project_2_details
+                ],
+                'co_investigator': [
+                    'project_3_details'
+                ]
+            }
+        }
+    }
+
+    :type people: list
+    :param people: collection of people to group projects by
+    :type roles: list
+    :param roles: collection of roles linking people to projects with a role type
+    :type projects: list
+    :param projects: collection of projects to group
+    :rtype: dict
+    :return: projects grouped by person and role type
+    """
+    gridded_people = {}
+
+    _roles = index_project_roles(roles=roles)
+    _projects = index_projects(projects=projects)
+
+    # manually sort people (manager first then first name alphabetically)
+    _people = index_people(people=people)
+    people = [
+        _people["recwIW809DXQYiyHV"],
+        _people["recfnitYBKy20Ebgo"],
+        _people["reciJAhHgJ0KnlMR6"],
+        _people["rec7K5gHzpEHuJHWL"],
+        _people["rec6uoMg3PnU2u5a8"],
+        _people["rechLCe2RLWdoqK6f"],
+        _people["recauYRd4gPkydVg7"],
+        _people["recimanpWZuTAwOpb"],
+        _people["rec6IStBcaX9hCg4h"],
+    ]
+
+    for person in people:
+        gridded_people[person["id"]] = {
+            "person": person,
+            "roles": {"principle_investigator": [], "co_investigator": []},
+        }
+        if "Project Roles (V2)" in person["fields"]:
+            for role_id in person["fields"]["Project Roles (V2)"]:
+                if _roles[role_id]["fields"]["Type"] == "Principle Investigator":
+                    gridded_people[person["id"]]["roles"][
+                        "principle_investigator"
+                    ].append(_projects[_roles[role_id]["fields"]["Project"][0]])
+                elif _roles[role_id]["fields"]["Type"] == "Co-Investigator":
+                    gridded_people[person["id"]]["roles"]["co_investigator"].append(
+                        _projects[_roles[role_id]["fields"]["Project"][0]]
+                    )
+
+    return gridded_people
 
 
 def grid_projects(projects: list, group_property: str) -> dict:

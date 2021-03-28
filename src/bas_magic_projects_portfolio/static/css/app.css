@@ -36,8 +36,16 @@
   background-color: #2B8CC4;
 }
 
+.app-person-group h3 {
+  margin-top: 0;
+  margin-bottom: 40px;
+}
+
 .app-project-group-page-header {
   margin-top: 40px;
+}
+.app-person-group-page-header {
+  margin-bottom: 30px;
 }
 
 .app-project {

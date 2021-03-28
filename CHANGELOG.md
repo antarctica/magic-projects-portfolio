@@ -20,6 +20,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 
+* Improved projects by person view using project roles and people entities
+  [#22](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues/22)
 * Switching to forms for V2 Airtable tables
   [#23](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues23)
 * Switching to V2 tables in Airtable for existing properties
