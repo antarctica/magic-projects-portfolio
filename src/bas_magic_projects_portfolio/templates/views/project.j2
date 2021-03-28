@@ -8,37 +8,26 @@
     {% endif %}
     {{ pattern_item_type_header('project', _title) }}
 
-<div class="bsk-row">
-  <div class="bsk-col-12-md-8">
-    <p class="bsk-lead">{{ project.fields.Description }}</p>
-  </div>
-  <div class="bsk-col-12-md-4">
-    <aside class="bsk-sidebar bsk-sidebar-default">
-      <dl class="bsk-dl-lg">
-        <dt>Strategic objectives</dt>
-        {% for stragetic_objective in project.fields['Strategic Objectives'] %}
-          <dd>{{ stragetic_objective }}</dd>
-        {% endfor %}
-        <dt>Activity areas</dt>
-        {% for activity_area in project.fields['Activity Areas'] %}
-          <dd>{{ activity_area }}</dd>
-        {% endfor %}
-        <dt>Links</dt>
-        {% if project_links | length > 0 %}
-          <dd>
-            {% for link in project_links %}
-              <div>
-                <a href="{{ link.fields.Link }}">{{ link.fields.Title }}</a>
-                <a class="bsk-pull-right" href="{{ url_for('delete_project_link', link_id=link.id) }}"><i class="far fa-fw fa-unlink bsk-text-danger" aria-hidden="true"></i></a>
-              </div>
-            {% endfor %}
-          </dd>
-        {% endif %}
-      </dl>
-    </aside>
-    <div>
-      <a class="bsk-btn bsk-btn-block bsk-btn-default" href="https://airtable.com/shruPZLCOJwSNRk1t" target="_blank"><i class="far fa-fw fa-link" aria-hidden="true"></i> Add Link</a>
-      <a class="bsk-btn bsk-btn-block bsk-btn-danger" href="{{ url_for('delete_project', project_id=project.id) }}"><i class="far fa-fw fa-minus" aria-hidden="true"></i> Delete Project</a>
+    <div class="bsk-row">
+        <div class="bsk-col-12-md-8">
+            <p class="bsk-lead">{{ project.fields.Description }}</p>
+            <p><mark>What goes here?</mark></p>
+        </div>
+        <div class="bsk-col-12-md-4">
+            <aside class="bsk-sidebar bsk-sidebar-default app-project-details">
+                <dl class="bsk-dl-lg">
+                    <dt>Strategic Objectives</dt>
+                    {% for stragetic_objective in project.fields['Strategic Objectives'] %}
+                        <dd>
+                            {{ stragetic_objective }}
+                        </dd>
+                    {% endfor %}
+                    <dt>Activity Areas</dt>
+                    {% for activity_area in project.fields['Activity Areas'] %}
+                        <dd>
+                            {{ activity_area }}
+                        </dd>
+                    {% endfor %}
                     <dt>Project Duration</dt>
                     <dd>
                         {% if project.fields.Duration == 'Open Ended' %}
@@ -100,10 +89,32 @@
                             </dd>
                         {% endfor %}
                     {% endif %}
+                    {% if project_links | length > 0 %}
+                        <dt>Links</dt>
+                        <dd>
+                            {% for link in project_links %}
+                                <div>
+                                    <a href="{{ link.fields.Link }}">{{ link.fields.Title }}</a>
+                                    <a class="bsk-pull-right"
+                                       href="{{ url_for('delete_project_link', link_id=link.id) }}"><i
+                                            class="far fa-fw fa-unlink bsk-text-danger" aria-hidden="true"></i></a>
+                                </div>
+                            {% endfor %}
+                        </dd>
+                    {% endif %}
+                </dl>
+            </aside>
+            <div>
                 <a class="bsk-btn bsk-btn-block bsk-btn-default" href="https://airtable.com/shrCpNmLYlDaOdvSP"
                    target="_blank">
                     <i class="far fa-fw fa-user-plus" aria-hidden="true"></i> Add Role</a>
+                <a class="bsk-btn bsk-btn-block bsk-btn-default" href="https://airtable.com/shruPZLCOJwSNRk1t"
+                   target="_blank">
+                    <i class="far fa-fw fa-link" aria-hidden="true"></i> Add Link</a>
+                <a class="bsk-btn bsk-btn-block bsk-btn-danger"
+                   href="{{ url_for('delete_project', project_id=project.id) }}">
+                    <i class="far fa-fw fa-trash-alt" aria-hidden="true"></i> Delete Project</a>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
 {% endblock %}
