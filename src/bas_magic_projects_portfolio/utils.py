@@ -123,3 +123,47 @@ def group_projects(projects: list, group_property: str) -> dict:
             grouped_projects["none"].append(project)
 
     return grouped_projects
+
+
+def grid_projects(projects: list, group_property: str) -> dict:
+    """
+    Structure projects into a 2-dimensional dict (status, grouped property) containing projects.
+
+    E.g.
+
+    {
+        'status_1': {
+            'category1': [
+                'project1',
+                'project2',
+            ]
+        }
+    }
+
+    :type projects: list
+    :param projects: collection of projects to group
+    :type group_property: str
+    :param group_property: property to group projects by
+    :rtype: dict
+    :return: projects grouped by status and common property
+    """
+    for project in projects:
+        project["fields"]["_status"] = None
+        if project["fields"]["Duration"] == "Fixed Term":
+            project["fields"]["_status"] = (
+                str(project["fields"]["Status"]).lower().replace(" ", "_")
+            )
+        elif project["fields"]["Duration"] == "Open Ended":
+            project["fields"]["_status"] = "open_ended"
+
+    grouped_projects = group_projects(projects=projects, group_property=group_property)
+
+    gridded_projects = {}
+    for group, projects_in_group in grouped_projects.items():
+        gridded_projects[group] = {}
+        for project in projects_in_group:
+            if project["fields"]["_status"] not in gridded_projects[group].keys():
+                gridded_projects[group][project["fields"]["_status"]] = []
+            gridded_projects[group][project["fields"]["_status"]].append(project)
+
+    return gridded_projects

@@ -9,7 +9,7 @@ from werkzeug import Response
 from bas_magic_projects_portfolio.utils import (
     configure_bas_style_kit_templates,
     FlaskResponseType,
-    group_projects,
+    grid_projects,
 )
 
 
@@ -78,10 +78,11 @@ def all_projects(group_property: str) -> FlaskResponseType:
     :return: Jinja view
     """
     projects = airtable_projects.get_all()
+
     # noinspection PyUnresolvedReferences
     return render_template(
         "app/views/index.j2",
-        projects=group_projects(projects=projects, group_property=group_property),
+        projects=grid_projects(projects=projects, group_property=group_property),
         projects_total=len(projects),
         group_property=group_property,
     )
