@@ -2,7 +2,11 @@
 {% from 'bas_style_kit/macros/bsk_pattern_item_type_header.j2' import pattern_item_type_header %}
 
 {% block app_main_content %}
-{{ pattern_item_type_header('project', project.fields.Title) }}
+    {% set _title = project.fields.Title %}
+    {% if project.fields.Acronym %}
+        {% set _title = project.fields.Acronym + ' - ' + _title %}
+    {% endif %}
+    {{ pattern_item_type_header('project', _title) }}
 
 <div class="bsk-row">
   <div class="bsk-col-12-md-8">
@@ -39,6 +43,35 @@
     <div>
       <a class="bsk-btn bsk-btn-block bsk-btn-default" href="https://airtable.com/shruPZLCOJwSNRk1t" target="_blank"><i class="far fa-fw fa-link" aria-hidden="true"></i> Add Link</a>
       <a class="bsk-btn bsk-btn-block bsk-btn-danger" href="{{ url_for('delete_project', project_id=project.id) }}"><i class="far fa-fw fa-minus" aria-hidden="true"></i> Delete Project</a>
+                    <dt>Project Duration</dt>
+                    <dd>
+                        {% if project.fields.Duration == 'Open Ended' %}
+                            <i class="far fa-fw fa-sync-alt" aria-hidden="true"></i>
+                        {% elif project.fields.Duration == 'Fixed Term' %}
+                            <i class="far fa-fw fa-tachometer-average" aria-hidden="true"></i>
+                        {% endif %}
+                        {{ project.fields.Duration }}</dd>
+                    {% if project.fields.Duration == 'Fixed Term' %}
+                        <dt>Project Status</dt>
+                        <dd class="app-project-status">
+                            {% if project.fields.Status == 'Proposed' %}
+                                <i class="far fa-fw fa-lightbulb app-status-proposed" aria-hidden="true"></i>
+                                <span class="app-status-proposed">Idea/Concept</span>
+                            {% elif project.fields.Status == 'Under Development' %}
+                                <i class="far fa-fw fa-pencil-paintbrush app-status-under-development" aria-hidden="true"></i>
+                                <span class="app-status-under-development">Under Development</span>
+                            {% elif project.fields.Status == 'On Going' %}
+                                <i class="far fa-fw fa-cog fa-spin app-status-on-going" aria-hidden="true"></i>
+                                <span class="app-status-on-going">Active</span>
+                            {% elif project.fields.Status == 'Complete' %}
+                                <i class="far fa-fw fa-check app-status-complete" aria-hidden="true"></i>
+                                <span class="app-status-complete">Completed</span>
+                            {% elif project.fields.Status == 'Historical Archive' %}
+                                <i class="far fa-fw fa-boxes-alt app-status-historical-archive" aria-hidden="true"></i>
+                                <span class="app-status-historical-archive">Archived</span>
+                            {% endif %}
+                        </dd>
+                    {% endif %}
     </div>
   </div>
 </div>

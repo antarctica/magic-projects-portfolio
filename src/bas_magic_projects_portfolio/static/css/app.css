@@ -2,6 +2,40 @@
   color: #333;
 }
 
+.app-status-grid {
+  margin: 60px 0 40px;
+}
+
+.app-status-grid .app-status-wrapper header {
+  padding: 20px 10px;
+  text-align: center;
+  color: #ffffff;
+}
+
+.app-status-grid .app-status-wrapper.app-status-proposed header {
+  background-color: #2E358B;
+}
+
+.app-status-grid .app-status-wrapper.app-status-under-development header {
+  background-color: #F47738;
+}
+
+.app-status-grid .app-status-wrapper.app-status-complete header {
+  background-color: #379245;
+}
+
+.app-status-grid .app-status-wrapper.app-status-on-going header {
+  background-color: #AAB437;
+}
+
+.app-status-grid .app-status-wrapper.app-status-historical-archive header {
+  background-color: #555555;
+}
+
+.app-status-grid .app-status-wrapper.app-status-open-ended header {
+  background-color: #2B8CC4;
+}
+
 .app-project-group-page-header {
   margin-top: 40px;
 }
@@ -11,7 +45,68 @@
   margin-bottom: 5px;
   background-color:#F7F7F7;
   border-left: 4px solid #999999;
-  width: 30%;
+}
+
+.app-project a {
+  color: #333333;
+}
+
+.app-status-lane {
+  border-right: 1px dashed #cccccc;
+  min-height: 100px;
+}
+
+.app-duration-lane {
+  border-left: 2px solid #aaa;
+  min-height: 100px;
+}
+
+.app-status-grid .app-status-wrapper.app-status-proposed .app-project {
+  border-left-color: #2E358B;
+}
+
+.app-status-grid .app-status-wrapper.app-status-under-development .app-project {
+  border-left-color: #F47738;
+}
+
+.app-status-grid .app-status-wrapper.app-status-complete .app-project {
+  border-left-color: #379245;
+}
+
+.app-status-grid .app-status-wrapper.app-status-on-going .app-project {
+  border-left-color: #AAB437;
+}
+
+.app-status-grid .app-status-wrapper.app-status-historical-archive .app-project {
+  border-left-color: #555555;
+}
+
+.app-status-grid .app-status-wrapper.app-status-open-ended .app-project {
+  border-left-color: #2B8CC4;
+}
+
+.app-project-details .app-project-status .app-status-proposed {
+  color: #2E358B;
+}
+
+.app-project-details .app-project-status .app-status-under-development {
+  color: #A35026;
+}
+
+.app-project-details .app-project-status .app-status-complete {
+  color: #25622E;
+}
+
+.app-project-details .app-project-status .app-status-on-going {
+  color: #727925;
+}
+
+.app-project-details .app-project-status .app-status-historical-archive {
+  color: #555555;
+}
+
+.app-project-details .app-project-status .app-status-open-ended {
+  color: #1D5E83;
 }
 
 .bsk-alert .bsk-btn {
