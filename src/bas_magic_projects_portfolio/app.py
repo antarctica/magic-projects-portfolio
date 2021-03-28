@@ -9,6 +9,7 @@ from werkzeug import Response
 from bas_magic_projects_portfolio.utils import (
     configure_bas_style_kit_templates,
     FlaskResponseType,
+    grid_people,
     grid_projects,
     group_people_by_project_roles,
     index_people,
@@ -77,6 +78,27 @@ def index() -> Response:
     return redirect(url_for("all_projects", group_property="strategic-objectives"))
 
 
+@app.route("/people")
+def all_projects_by_person() -> FlaskResponseType:
+    """
+    Show people page.
+
+    People are loaded from Airtable with projects they have a role in.
+
+    :rtype: FlaskResponseType
+    :return: Jinja view
+    """
+    people = airtable_people.get_all()
+    roles = airtable_project_roles.get_all()
+    projects = airtable_projects.get_all()
+
+    # noinspection PyUnresolvedReferences
+    return render_template(
+        "app/views/people.j2",
+        projects=grid_people(people=people, roles=roles, projects=projects),
+    )
+
+
 @app.route("/projects/-/group/<string:group_property>")
 def all_projects(group_property: str) -> FlaskResponseType:
     """
@@ -93,7 +115,7 @@ def all_projects(group_property: str) -> FlaskResponseType:
 
     # noinspection PyUnresolvedReferences
     return render_template(
-        "app/views/index.j2",
+        "app/views/projects.j2",
         projects=grid_projects(projects=projects, group_property=group_property),
         projects_total=len(projects),
         group_property=group_property,

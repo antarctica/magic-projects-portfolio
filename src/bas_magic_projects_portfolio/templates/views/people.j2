@@ -1,0 +1,38 @@
+{% extends 'app/layouts/app.j2' %}
+
+{% block app_main_content %}
+    <header>
+        <div class="bsk-alert bsk-alert-info bsk-alert-highlight">
+            These are the things we're working on grouped by
+            <strong>Person</strong>
+            (View by
+            <a href="{{ url_for('all_projects', group_property='strategic-objectives') }}">Strategic Objectives</a>,
+            <a href="{{ url_for('all_projects', group_property='activity-areas') }}">Activity Areas</a>)
+            <a class="bsk-btn bsk-btn-success bsk-pull-right" href="https://airtable.com/shraeffFV5201B3zn"
+               target="_blank"><i class="far fa-fw fa-plus" aria-hidden="true"></i> Add Project</a>
+        </div>
+    </header>
+    {% for person in projects.values() %}
+        <section class="app-person-group">
+            <h2 class="bsk-page-header app-person-group-page-header">{{ person.person.fields.Name }}</h2>
+            <div class="bsk-row">
+                <div class="bsk-col-12-md-6">
+                    <h3><i class="far fa-fw fa-user-crown" aria-hidden="true"></i> Project Lead</h3>
+                    {% for project in person.roles.principle_investigator %}
+                        <div class="app-project">
+                            <a href="{{ url_for('single_project', project_id=project.id) }}">{{ project.fields.Title }}</a>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="bsk-col-12-md-6">
+                    <h3><i class="far fa-fw fa-user" aria-hidden="true"></i> Project Member</h3>
+                    {% for project in person.roles.co_investigator %}
+                        <div class="app-project">
+                            <a href="{{ url_for('single_project', project_id=project.id) }}">{{ project.fields.Title }}</a>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+    {% endfor %}
+{% endblock %}
