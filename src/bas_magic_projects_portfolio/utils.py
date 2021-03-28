@@ -272,15 +272,15 @@ def grid_people(people: list, roles: list, projects: list) -> dict:
 
 def grid_projects(projects: list, group_property: str) -> dict:
     """
-    Structure projects into a 2-dimensional dict (status, grouped property) containing projects.
+    Structure projects into a 2-dimensional dict (grouped property, status) containing projects.
 
     E.g.
 
     {
-        'status_1': {
-            'category1': [
-                'project1',
-                'project2',
+        'category_1_name': {
+            'status_1_slug': [
+                'project_1_details',
+                'project_2_details',
             ]
         }
     }
