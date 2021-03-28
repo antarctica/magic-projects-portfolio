@@ -10,6 +10,8 @@ from bas_magic_projects_portfolio.utils import (
     configure_bas_style_kit_templates,
     FlaskResponseType,
     grid_projects,
+    group_people_by_project_roles,
+    index_people,
 )
 
 
@@ -35,6 +37,16 @@ airtable_projects = Airtable(
 airtable_project_links = Airtable(
     base_key=app.config["airtable_base"],
     table_name="Project Links (V2)",
+    api_key=app.config["airtable_key"],
+)
+airtable_project_roles = Airtable(
+    base_key=app.config["airtable_base"],
+    table_name="Project Roles (V2)",
+    api_key=app.config["airtable_key"],
+)
+airtable_people = Airtable(
+    base_key=app.config["airtable_base"],
+    table_name="People (V2)",
     api_key=app.config["airtable_key"],
 )
 
@@ -141,9 +153,18 @@ def single_project(project_id: str) -> FlaskResponseType:
     project_links = airtable_project_links.search(
         field_name="Project", field_value=project["fields"]["Title"]
     )
+    project_roles = airtable_project_roles.search(
+        field_name="Project", field_value=project["fields"]["Title"]
+    )
+    people_indexed = index_people(people=airtable_people.get_all())
     # noinspection PyUnresolvedReferences
     return render_template(
-        "app/views/project.j2", project=project, project_links=project_links
+        "app/views/project.j2",
+        project=project,
+        project_links=project_links,
+        project_roles=group_people_by_project_roles(
+            roles=project_roles, people=people_indexed
+        ),
     )
 
 

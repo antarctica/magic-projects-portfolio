@@ -9,8 +9,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
+* New project entities (People, Project Roles)
+  [#25](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues/25)
 * New project properties (acronym, status, duration)
-  [#24](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues/21)
+  [#24](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues/24)
 * CI Environment definition
   [#21](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues/21)
 * Black formatting watcher in PyCharm

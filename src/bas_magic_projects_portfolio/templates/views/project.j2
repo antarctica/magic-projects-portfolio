@@ -23,10 +23,6 @@
         {% for activity_area in project.fields['Activity Areas'] %}
           <dd>{{ activity_area }}</dd>
         {% endfor %}
-        <dt>Project lead</dt>
-        <dd>
-            <mark>Unknown</mark>
-        </dd>
         <dt>Links</dt>
         {% if project_links | length > 0 %}
           <dd>
@@ -72,6 +68,41 @@
                             {% endif %}
                         </dd>
                     {% endif %}
+                    {% if project_roles.principle_investigator | length == 1 %}
+                        <dt>Project Lead</dt>
+                        <dd>
+                            <i class="far fa-fw fa-user-crown" aria-hidden="true"></i>
+                            {{ project_roles.principle_investigator[0].person.fields['Name'] }}
+                        </dd>
+                    {% elif project_roles.principle_investigator | length > 1 %}
+                        <dt>Project Leads</dt>
+                        {% for pi in project_roles.principle_investigator %}
+                            <dd>
+                                <i class="far fa-fw fa-user-crown" aria-hidden="true"></i>
+                                {{ pi.person.fields['Name'] }}
+                            </dd>
+                        {% endfor %}
+                    {% else %}
+                        <dt>Project Lead</dt>
+                        <dd>
+                            <a href="https://airtable.com/shrCpNmLYlDaOdvSP" target="_blank">
+                                <i class="far fa-fw fa-user-plus" aria-hidden="true"></i>
+                                Set Project Lead
+                            </a>
+                        </dd>
+                    {% endif %}
+                    {% if project_roles.co_investigator | length > 0 %}
+                        <dt>Project Members</dt>
+                        {% for co_i in project_roles.co_investigator %}
+                            <dd>
+                                <i class="far fa-fw fa-user" aria-hidden="true"></i>
+                                {{ co_i.person.fields['Name'] }}
+                            </dd>
+                        {% endfor %}
+                    {% endif %}
+                <a class="bsk-btn bsk-btn-block bsk-btn-default" href="https://airtable.com/shrCpNmLYlDaOdvSP"
+                   target="_blank">
+                    <i class="far fa-fw fa-user-plus" aria-hidden="true"></i> Add Role</a>
     </div>
   </div>
 </div>

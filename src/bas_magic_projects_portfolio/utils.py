@@ -125,6 +125,49 @@ def group_projects(projects: list, group_property: str) -> dict:
     return grouped_projects
 
 
+def index_people(people: list) -> dict:
+    """
+    Index a list of people by ID property.
+
+    :type: list
+    :param people: collection of people to index
+    :rtype: dict
+    :return: people indexed by ID property
+    """
+    _people = {}
+
+    for person in people:
+        _people[person["id"]] = person
+
+    return _people
+
+
+def group_people_by_project_roles(roles: list, people: dict) -> dict:
+    """
+    Group a set of people by their role in a project.
+
+    Use the `index_people` method to create a dict of people indexed by their ID.
+
+    :type roles: list
+    :param roles: list of roles
+    :type people: dict
+    :param people: dict of people indexed by their ID
+    :rtype: dict
+    :return: people grouped by their role type
+    """
+    people_grouped_by_roles = {"principle_investigator": [], "co_investigator": []}
+
+    for role in roles:
+        if role["fields"]["Type"] == "Principle Investigator":
+            role["person"] = people[role["fields"]["Person"][0]]
+            people_grouped_by_roles["principle_investigator"].append(role)
+        elif role["fields"]["Type"] == "Co-Investigator":
+            role["person"] = people[role["fields"]["Person"][0]]
+            people_grouped_by_roles["co_investigator"].append(role)
+
+    return people_grouped_by_roles
+
+
 def grid_projects(projects: list, group_property: str) -> dict:
     """
     Structure projects into a 2-dimensional dict (status, grouped property) containing projects.
