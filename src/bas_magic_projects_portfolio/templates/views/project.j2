@@ -19,19 +19,49 @@
                     <dt>Strategic Objectives</dt>
                     {% for stragetic_objective in project.fields['Strategic Objectives'] %}
                         <dd>
+                            {% if stragetic_objective == "Support to BAS Operations" %}
+                                <i class="far fa-fw fa-snowplow" aria-hidden="true"></i>
+                            {% elif stragetic_objective == "Support to BAS Science" %}
+                                <i class="far fa-fw fa-vial" aria-hidden="true"></i>
+                            {% elif stragetic_objective == "Support to BAS Infrastructure Modernisation" %}
+                                <i class="far fa-fw fa-warehouse-alt" aria-hidden="true"></i>
+                            {% elif stragetic_objective == "Support to FCDO" %}
+                                <i class="far fa-fw fa-landmark-alt" aria-hidden="true"></i>
+                            {% elif stragetic_objective == "Commissioned research & services" %}
+                                <i class="far fa-fw fa-analytics" aria-hidden="true"></i>
+                            {% elif stragetic_objective == "BAT geospatial Infrastructure" %}
+                                <i class="far fa-fw fa-map-pin" aria-hidden="true"></i>
+                            {% elif stragetic_objective == "UK Antarctic geospatial leadership" %}
+                                <i class="far fa-fw fa-flag-alt" aria-hidden="true"></i>
+                            {% endif %}
                             {{ stragetic_objective }}
                         </dd>
                     {% endfor %}
                     <dt>Activity Areas</dt>
                     {% for activity_area in project.fields['Activity Areas'] %}
                         <dd>
+                            {% if activity_area == "Remote sensing & EO data access/processing" %}
+                                <i class="far fa-fw fa-satellite" aria-hidden="true"></i>
+                            {% elif activity_area == "Topographic mapping & cartography" %}
+                                <i class="far fa-fw fa-map" aria-hidden="true"></i>
+                            {% elif activity_area == "Survey & geomatics" %}
+                                <i class="far fa-fw fa-ruler" aria-hidden="true"></i>
+                            {% elif activity_area == "Geospatial web services & applications" %}
+                                <i class="far fa-fw fa-desktop" aria-hidden="true"></i>
+                            {% elif activity_area == "Operational sea-ice information" %}
+                                <i class="far fa-fw fa-ship" aria-hidden="true"></i>
+                            {% elif activity_area == "Geospatial science projects" %}
+                                <i class="far fa-fw fa-vial" aria-hidden="true"></i>
+                            {% elif activity_area == "Training" %}
+                                <i class="far fa-fw fa-user-graduate" aria-hidden="true"></i>
+                            {% endif %}
                             {{ activity_area }}
                         </dd>
                     {% endfor %}
                     <dt>Project Duration</dt>
                     <dd>
                         {% if project.fields.Duration == 'Open Ended' %}
-                            <i class="far fa-fw fa-sync-alt" aria-hidden="true"></i>
+                            <i class="far fa-fw fa-sync-alt fa-spin" aria-hidden="true"></i>
                         {% elif project.fields.Duration == 'Fixed Term' %}
                             <i class="far fa-fw fa-tachometer-average" aria-hidden="true"></i>
                         {% endif %}
@@ -94,6 +124,15 @@
                         <dd>
                             {% for link in project_links %}
                                 <div>
+                                    {% if link.fields.Type == 'Self' %}
+                                        <i class="far fa-fw fa-globe" aria-hidden="true"></i>
+                                    {% elif link.fields.Type == 'BAS GitLab' %}
+                                        <i class="fab fa-fw fa-gitlab" aria-hidden="true"></i>
+                                    {% elif link.fields.Type == 'GitHub' %}
+                                        <i class="fab fa-fw fa-github" aria-hidden="true"></i>
+                                    {% else %}
+                                        <i class="far fa-fw fa-external-link" aria-hidden="true"></i>
+                                    {% endif %}
                                     <a href="{{ link.fields.Link }}">{{ link.fields.Title }}</a>
                                     <a class="bsk-pull-right"
                                        href="{{ url_for('delete_project_link', link_id=link.id) }}"><i
@@ -105,6 +144,12 @@
                 </dl>
             </aside>
             <div>
+                {% for link in project_links %}
+                    {% if link.fields.Type == 'Self' %}
+                        <a class="bsk-btn bsk-btn-block bsk-btn-primary" href="{{ link.fields.URL }}"
+                   target="_blank"><i class="far fa-fw fa-globe" aria-hidden="true"></i> View Project</a>
+                    {% endif %}
+                {% endfor %}
                 <a class="bsk-btn bsk-btn-block bsk-btn-default" href="https://airtable.com/shrCpNmLYlDaOdvSP"
                    target="_blank">
                     <i class="far fa-fw fa-user-plus" aria-hidden="true"></i> Add Role</a>
