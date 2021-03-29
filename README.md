@@ -2,7 +2,7 @@
 
 Proof of concept projects portfolio implementation for MAGIC.
 
-[View Portfolio](https://magic-projects-portfolio-zax8o.ondigitalocean.app/projects/-/group/strategic-objectives).
+[View Portfolio](https://magic-projects-portfolio-zax8o.ondigitalocean.app).
 
 ## Status
 
@@ -73,33 +73,57 @@ This project therefore aims to index high level information about projects only.
 
 ## Usage
 
+Projects Portfolio (Application): https://magic-projects-portfolio-zax8o.ondigitalocean.app
+
+Projects Portfolio (Airtable, restricted): https://airtable.com/tblMOrCQYic2zq3R8/viwrKc4ALDOaicd7d?blocks=hide
+
 ### To add a project
 
-...
+1. visit the Projects Portfolio (Application)
+2. click the *Add Project* button in the top right
+3. complete the web-form as directed
 
 ### To edit a project
 
-...
+**Note:** This action is restricted to [Project Editors](#project-editors).
+
+1. visit the Projects Portfolio (Airtable)
+2. select the relevant table with the `(V2)` prefix and make adjustments as needed
 
 ### To remove a project
 
-...
+1. visit the Projects Portfolio (Application)
+2. select the relevant project
+3. click the *Delete Project* button from the bottom of the sidebar to the right
 
 ### To add a person to a project
 
-...
+1. visit the Projects Portfolio (Application)
+2. select the relevant project
+3. click the *Add Role* button from the bottom of the sidebar to the right
+4. complete the web-form as directed
 
 ### To remove a person from a project
 
-...
+**Note:** This action is restricted to [Project Editors](#project-editors).
+
+1. see the steps for [Editing Projects](#to-edit-a-project) and remove the relevant association from the 
+   *Project Roles* table
+
+See [#28](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues/28) for making this task self-service.
 
 ### To add a link to a project
 
-...
+1. visit the Projects Portfolio (Application)
+2. select the relevant project
+3. click the *Add Link* button from the bottom of the sidebar to the right
+4. complete the web-form as directed
 
 ### To remove a link to a project
 
-...
+1. visit the Projects Portfolio (Application)
+2. select the relevant project
+3. for the relevant link, select the broken link icon shown to the right of the sidebar
 
 ## Implementation
 
