@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
+* Initial usage documentation on adding/removing Projects, Project Roles and Project Links
+  [#16](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues/16)
 * New project entities (People, Project Roles)
   [#25](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues/25)
 * New project properties (acronym, status, duration)
