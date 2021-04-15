@@ -87,15 +87,15 @@
                             {% endif %}
                         </dd>
                     {% endif %}
-                    {% if project_roles.principle_investigator | length == 1 %}
+                    {% if project_roles.principal_investigator | length == 1 %}
                         <dt>Project Lead</dt>
                         <dd>
                             <i class="far fa-fw fa-user-crown" aria-hidden="true"></i>
-                            {{ project_roles.principle_investigator[0].person.fields['Name'] }}
+                            {{ project_roles.principal_investigator[0].person.fields['Name'] }}
                         </dd>
-                    {% elif project_roles.principle_investigator | length > 1 %}
+                    {% elif project_roles.principal_investigator | length > 1 %}
                         <dt>Project Leads</dt>
-                        {% for pi in project_roles.principle_investigator %}
+                        {% for pi in project_roles.principal_investigator %}
                             <dd>
                                 <i class="far fa-fw fa-user-crown" aria-hidden="true"></i>
                                 {{ pi.person.fields['Name'] }}
