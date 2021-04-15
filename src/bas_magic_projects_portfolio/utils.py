@@ -189,12 +189,12 @@ def group_people_by_project_roles(roles: list, people: dict) -> dict:
     :rtype: dict
     :return: people grouped by their role type
     """
-    people_grouped_by_roles = {"principle_investigator": [], "co_investigator": []}
+    people_grouped_by_roles = {"principal_investigator": [], "co_investigator": []}
 
     for role in roles:
-        if role["fields"]["Type"] == "Principle Investigator":
+        if role["fields"]["Type"] == "Principal Investigator":
             role["person"] = people[role["fields"]["Person"][0]]
-            people_grouped_by_roles["principle_investigator"].append(role)
+            people_grouped_by_roles["principal_investigator"].append(role)
         elif role["fields"]["Type"] == "Co-Investigator":
             role["person"] = people[role["fields"]["Person"][0]]
             people_grouped_by_roles["co_investigator"].append(role)
@@ -212,7 +212,7 @@ def grid_people(people: list, roles: list, projects: list) -> dict:
         'person_1_id': {
             'person': 'person_1_details',
             'roles': {
-                'principle_investigator': [
+                'principal_investigator': [
                     'project_1_details',
                     'project_2_details
                 ],
@@ -254,13 +254,13 @@ def grid_people(people: list, roles: list, projects: list) -> dict:
     for person in people:
         gridded_people[person["id"]] = {
             "person": person,
-            "roles": {"principle_investigator": [], "co_investigator": []},
+            "roles": {"principal_investigator": [], "co_investigator": []},
         }
         if "Project Roles (V2)" in person["fields"]:
             for role_id in person["fields"]["Project Roles (V2)"]:
-                if _roles[role_id]["fields"]["Type"] == "Principle Investigator":
+                if _roles[role_id]["fields"]["Type"] == "Principal Investigator":
                     gridded_people[person["id"]]["roles"][
-                        "principle_investigator"
+                        "principal_investigator"
                     ].append(_projects[_roles[role_id]["fields"]["Project"][0]])
                 elif _roles[role_id]["fields"]["Type"] == "Co-Investigator":
                     gridded_people[person["id"]]["roles"]["co_investigator"].append(
