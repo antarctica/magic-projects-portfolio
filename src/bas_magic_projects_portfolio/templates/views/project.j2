@@ -104,7 +104,7 @@
                     {% else %}
                         <dt>Project Lead</dt>
                         <dd>
-                            <a href="https://airtable.com/shrCpNmLYlDaOdvSP" target="_blank">
+                            <a href="{{ url_for('add_project_role', project_id=project.id) }}" target="_blank">
                                 <i class="far fa-fw fa-user-plus" aria-hidden="true"></i>
                                 Set Project Lead
                             </a>
@@ -150,10 +150,10 @@
                    target="_blank"><i class="far fa-fw fa-globe" aria-hidden="true"></i> View Project</a>
                     {% endif %}
                 {% endfor %}
-                <a class="bsk-btn bsk-btn-block bsk-btn-default" href="https://airtable.com/shrCpNmLYlDaOdvSP"
+                <a class="bsk-btn bsk-btn-block bsk-btn-default" href="{{ url_for('add_project_role', project_id=project.id) }}"
                    target="_blank">
                     <i class="far fa-fw fa-user-plus" aria-hidden="true"></i> Add Role</a>
-                <a class="bsk-btn bsk-btn-block bsk-btn-default" href="https://airtable.com/shruPZLCOJwSNRk1t"
+                <a class="bsk-btn bsk-btn-block bsk-btn-default" href="{{ url_for('add_project_link', project_id=project.id) }}"
                    target="_blank">
                     <i class="far fa-fw fa-link" aria-hidden="true"></i> Add Link</a>
                 <a class="bsk-btn bsk-btn-block bsk-btn-danger"

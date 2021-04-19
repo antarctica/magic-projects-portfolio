@@ -151,6 +151,25 @@ def all_projects(group_property: str) -> FlaskResponseType:
     )
 
 
+@app.route("/projects/add")
+def add_project() -> redirect:
+    """
+    Create new project (authenticated).
+
+    This method is used to enforce permissions checks, if ok the user is redirected to an Airtable form.
+
+    Requires the 'BAS.MAGIC.Portfolio.Projects.Write.All' role.
+
+    :rtype: redirect
+    :return: Redirect to either Airtable form or permissions error page
+    """
+    if not check_permissions(required_roles=["BAS.MAGIC.Portfolio.Projects.Write.All"]):
+        flash("You do not have permission to add projects", "danger")
+        return redirect(url_for("all_projects", group_property="strategic-objectives"))
+
+    return redirect("https://airtable.com/shraeffFV5201B3zn")
+
+
 @app.route("/projects/<string:project_id>/-/delete")
 def delete_project(project_id: str) -> Response:
     """
@@ -178,6 +197,48 @@ def delete_project(project_id: str) -> Response:
     flash(f"Project '{project['fields']['Title']}' removed successfully", "success")
     # noinspection PyUnresolvedReferences
     return redirect(url_for("all_projects", group_property="strategic-objectives"))
+
+
+@app.route("/project-roles/<string:project_id>/add")
+def add_project_role(project_id: str) -> redirect:
+    """
+    Create new project role (authenticated).
+
+    This method is used to enforce permissions checks, if ok the user is redirected to an Airtable form.
+
+    Requires the 'BAS.MAGIC.Portfolio.Projects.Write.All' role.
+
+    :type project_id: str
+    :param project_id: ID of project to associate role with
+    :rtype: redirect
+    :return: Redirect to either Airtable form or permissions error page
+    """
+    if not check_permissions(required_roles=["BAS.MAGIC.Portfolio.Projects.Write.All"]):
+        flash("You do not have permission to add project links", "danger")
+        return redirect(url_for("single_project", project_id=project_id))
+
+    return redirect("https://airtable.com/shrCpNmLYlDaOdvSP")
+
+
+@app.route("/project-links/<string:project_id>/add")
+def add_project_link(project_id: str) -> redirect:
+    """
+    Create new project link (authenticated).
+
+    This method is used to enforce permissions checks, if ok the user is redirected to an Airtable form.
+
+    Requires the 'BAS.MAGIC.Portfolio.Projects.Write.All' role.
+
+    :type project_id: str
+    :param project_id: ID of project to associate link with
+    :rtype: redirect
+    :return: Redirect to either Airtable form or permissions error page
+    """
+    if not check_permissions(required_roles=["BAS.MAGIC.Portfolio.Projects.Write.All"]):
+        flash("You do not have permission to add project links", "danger")
+        return redirect(url_for("single_project", project_id=project_id))
+
+    return redirect("https://airtable.com/shruPZLCOJwSNRk1t")
 
 
 @app.route("/project-links/<string:link_id>/-/delete")
