@@ -42,22 +42,22 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
-* custom CSS not being included in package 
+* custom CSS not being included in package
   [#19](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues/19)
 
 ## [0.1.0] - 2021-03-23
 
 ### Added
 
-* Python package 
+* Python package
   [#18](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues/18)
-* Continuous Integration 
+* Continuous Integration
   [#14](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues/14)
-* Code linting 
+* Code linting
   [#14](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues/14)
-* Project README 
+* Project README
   [#1](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues/1)
-* Project boilerplate files 
+* Project boilerplate files
   [#1](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues/1)
-* Initial version 
+* Initial version
   [#11](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues/11)
