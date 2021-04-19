@@ -1,0 +1,73 @@
+{% import 'bas_style_kit/macros/bsk--nav.j2' as bsk_nav_macros %}
+
+<nav class="bsk-navbar">
+    <div class="{{ content_classes }}">
+        <div class="bsk-navbar-header">
+            <button class="bsk-navbar-toggle bsk-collapsed" type="button" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false">
+                <span class="bsk-sr-only">Toggle navigation</span>
+                <span class="bsk-icon-bar"></span>
+                <span class="bsk-icon-bar"></span>
+                <span class="bsk-icon-bar"></span>
+            </button>
+            {% if config.BSK_TEMPLATES.bsk_site_nav_launcher %}
+                <ul class="bsk-nav bsk-navbar-nav">
+                    <li class="bsk-dropdown">
+                        <a class="bsk-dropdown-toggle" href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">
+                            <i class="far fa-shapes"></i>
+                        </a>
+                        <ul class="bsk-dropdown-menu">
+                            {% for item in config.BSK_TEMPLATES.bsk_site_nav_launcher %}
+                                <li>
+                                    <a {% for attribute, value in item.items() %}{% if attribute != 'value' %}{{ attribute }}="{{ value }}"{% endif %}{% endfor %}>
+                                        {{ item.value }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                </ul>
+                <p class="bsk-navbar-text">|</p>
+            {% endif %}
+            {% if config.BSK_TEMPLATES.bsk_site_nav_brand_img_href %}
+                <a class="bsk-navbar-brand bsk-navbar-brand-image-{{ config.BSK_TEMPLATES.bsk_site_nav_brand_img_size }}" href="{{ config.BSK_TEMPLATES.bsk_site_nav_brand_href }}">
+                    {% if config.BSK_TEMPLATES.bsk_site_nav_brand_text %}
+                        {{ config.BSK_TEMPLATES.bsk_site_nav_brand_text }}
+                        <img src="{{ config.BSK_TEMPLATES.bsk_site_nav_brand_img_href }}" />
+                    {% else %}
+                        <img src="{{ config.BSK_TEMPLATES.bsk_site_nav_brand_img_href }}" />
+                    {% endif %}
+                </a>
+            {% else %}
+                <a class="bsk-navbar-brand" href="{{ config.BSK_TEMPLATES.bsk_site_nav_brand_href }}">{{ config.BSK_TEMPLATES.bsk_site_nav_brand_text }}</a>
+            {% endif %}
+        </div>
+        <div id="navbar-collapse" class="bsk-collapse bsk-navbar-collapse">
+            {% if config.BSK_TEMPLATES.bsk_site_nav_primary %}
+                {{ bsk_nav_macros.nav_menu(config.BSK_TEMPLATES.bsk_site_nav_primary, active_nav_item) }}
+            {% endif %}
+            {% if user %}
+                <ul class="bsk-nav bsk-navbar-nav bsk-navbar-right">
+                    <li class="bsk-dropdown">
+                        <a class="bsk-dropdown-toggle" href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">
+                            {{ user.given_name }}
+                            <span class="bsk-caret"></span>
+                        </a>
+                        <ul class="bsk-dropdown-menu">
+                            <li class="bsk-disabled"><a href="#" disabled>
+                                <i class="fa-fw far fa-user-circle"></i> {{ user.name }}</a>
+                            </li>
+                            <li class="bsk-disabled"><a href="#" disabled>
+                                <i class="fa-fw far fa-at"></i> {{ user.email }}</a>
+                            </li>
+                            <li role="separator" class="bsk-divider"></li>
+                            <li><a href="{{ url_for('auth_sign_out') }}"><i class="far fa-sign-out-alt"></i>  Sign out</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            {% endif %}
+            {% if config.BSK_TEMPLATES.bsk_site_nav_secondary %}
+                {{ bsk_nav_macros.nav_menu(config.BSK_TEMPLATES.bsk_site_nav_secondary, active_nav_item, ['bsk-navbar-right']) }}
+            {% endif %}
+        </div>
+    </div>
+</nav>

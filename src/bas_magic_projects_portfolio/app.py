@@ -117,6 +117,7 @@ def all_projects_by_person() -> FlaskResponseType:
     return render_template(
         "app/views/people.j2",
         projects=grid_people(people=people, roles=roles, projects=projects),
+        user=session.get("user"),
     )
 
 
@@ -148,6 +149,7 @@ def all_projects(group_property: str) -> FlaskResponseType:
         projects=grid_projects(projects=projects, group_property=group_property),
         projects_total=len(projects),
         group_property=group_property,
+        user=session.get("user"),
     )
 
 
@@ -305,6 +307,7 @@ def single_project(project_id: str) -> FlaskResponseType:
         project_roles=group_people_by_project_roles(
             roles=project_roles, people=people_indexed
         ),
+        user=session.get("user"),
     )
 
 
