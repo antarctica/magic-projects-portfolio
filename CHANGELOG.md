@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
+* App authentication and authorisation (auth) to restrict access to members of MAGIC using Azure OAuth
+  [#8](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues/8)
 * Initial usage documentation on adding/removing Projects, Project Roles and Project Links
   [#16](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues/16)
 * New project entities (People, Project Roles)
