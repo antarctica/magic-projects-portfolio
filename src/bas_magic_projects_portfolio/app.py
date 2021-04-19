@@ -373,6 +373,20 @@ def auth_sign_in() -> FlaskResponseType:
     )
 
 
+@app.route("/auth/sign-out")
+def auth_sign_out() -> redirect:
+    """
+    Sign out current user by destroying their session.
+
+    Then redirect the user back to the application homepage.
+
+    :rtype: redirect
+    :return: redirect to app homepage
+    """
+    session.clear()
+    return redirect(url_for("index"))
+
+
 @app.route("/auth/callback")
 def auth_callback() -> FlaskResponseType:
     """
