@@ -1,12 +1,16 @@
 from os import environ
+from typing import Dict, List, Optional, Union
 
 # noinspection PyPackageRequirements
 from airtable import Airtable
-from flask import flash, Flask, redirect, render_template, url_for
+from flask import flash, Flask, redirect, render_template, request, session, url_for
 from jinja2 import PackageLoader, PrefixLoader
+from msal import ConfidentialClientApplication
 from werkzeug import Response
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 from bas_magic_projects_portfolio.utils import (
+    check_permissions,
     configure_bas_style_kit_templates,
     FlaskResponseType,
     grid_people,
@@ -15,9 +19,13 @@ from bas_magic_projects_portfolio.utils import (
     index_people,
 )
 
+app: Flask = Flask(__name__)
+app.config["AUTH_CLIENT_ID"]: str = environ.get("AUTH_CLIENT_ID")
+app.config["AUTH_CLIENT_SECRET"]: str = environ.get("AUTH_CLIENT_SECRET")
+app.config["AUTH_CLIENT_TENANCY"]: str = environ.get("AUTH_CLIENT_TENANCY")
 
-app = Flask(__name__)
 app.secret_key = str(environ.get("FLASK_SESSION_KEY")).encode()
+app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 
 app.jinja_loader = PrefixLoader(
     {
@@ -29,6 +37,11 @@ app.config["BSK_TEMPLATES"] = configure_bas_style_kit_templates()
 
 app.config["airtable_key"] = environ.get("AIRTABLE_KEY", None)
 app.config["airtable_base"] = environ.get("AIRTABLE_BASE", None)
+auth: ConfidentialClientApplication = ConfidentialClientApplication(
+    client_id=app.config["AUTH_CLIENT_ID"],
+    client_credential=app.config["AUTH_CLIENT_SECRET"],
+    authority=app.config["AUTH_CLIENT_TENANCY"],
+)
 
 airtable_projects = Airtable(
     base_key=app.config["airtable_base"],
@@ -81,13 +94,21 @@ def index() -> Response:
 @app.route("/people")
 def all_projects_by_person() -> FlaskResponseType:
     """
-    Show people page.
+    Show people page (authenticated).
 
     People are loaded from Airtable with projects they have a role in.
 
+    Requires the 'BAS.MAGIC.Portfolio.Projects.Read.All' role.
+
     :rtype: FlaskResponseType
-    :return: Jinja view
+    :return: Jinja view or redirect
     """
+    if not session.get("user"):
+        return redirect(url_for("auth_sign_in"))
+    if not check_permissions(required_roles=["BAS.MAGIC.Portfolio.Projects.Read.All"]):
+        # noinspection PyUnresolvedReferences
+        return render_template("app/views/auth/403-permissions.j2")
+
     people = airtable_people.get_all()
     roles = airtable_project_roles.get_all()
     projects = airtable_projects.get_all()
@@ -102,15 +123,23 @@ def all_projects_by_person() -> FlaskResponseType:
 @app.route("/projects/-/group/<string:group_property>")
 def all_projects(group_property: str) -> FlaskResponseType:
     """
-    Show all projects page.
+    Show all projects page (authenticated).
 
     Projects are loaded from Airtable and grouped by a shared property.
+
+    Requires the 'BAS.MAGIC.Portfolio.Projects.Read.All' role.
 
     :type group_property: str
     :param group_property: shared property to group projects by
     :rtype: FlaskResponseType
-    :return: Jinja view
+    :return: Jinja view or redirect
     """
+    if not session.get("user"):
+        return redirect(url_for("auth_sign_in"))
+    if not check_permissions(required_roles=["BAS.MAGIC.Portfolio.Projects.Read.All"]):
+        # noinspection PyUnresolvedReferences
+        return render_template("app/views/auth/403-permissions.j2")
+
     projects = airtable_projects.get_all()
 
     # noinspection PyUnresolvedReferences
@@ -125,16 +154,26 @@ def all_projects(group_property: str) -> FlaskResponseType:
 @app.route("/projects/<string:project_id>/-/delete")
 def delete_project(project_id: str) -> Response:
     """
-    Delete a project specified by its ID.
+    Delete a project specified by its ID (authenticated).
 
     Then redirect the user back to the list of all projects.
+
+    Requires the 'BAS.MAGIC.Portfolio.Projects.Write.All' role.
 
     :type project_id: str
     :param project_id: ID of project to delete
     :rtype: Response
     :return: Redirect back to all projects list
     """
+    if not session.get("user"):
+        return redirect(url_for("auth_sign_in"))
+
     project = airtable_projects.get(record_id=project_id)
+
+    if not check_permissions(required_roles=["BAS.MAGIC.Portfolio.Projects.Write.All"]):
+        flash("You do not have permission to remove projects", "danger")
+        return redirect(url_for("single_project", project_id=project["id"]))
+
     airtable_projects.delete(record_id=project_id)
     flash(f"Project '{project['fields']['Title']}' removed successfully", "success")
     # noinspection PyUnresolvedReferences
@@ -144,17 +183,27 @@ def delete_project(project_id: str) -> Response:
 @app.route("/project-links/<string:link_id>/-/delete")
 def delete_project_link(link_id: str) -> Response:
     """
-    Delete a project link specified by its ID.
+    Delete a project link specified by its ID (authenticated).
 
     Then redirect the user back to the project the project link belonged to.
+
+    Requires the 'BAS.MAGIC.Portfolio.Projects.Write.All' role.
 
     :type link_id: str
     :param link_id: ID of project link to delete
     :rtype: Response
     :return: Redirect back to project link belonged to
     """
+    if not session.get("user"):
+        return redirect(url_for("auth_sign_in"))
+
     link = airtable_project_links.get(record_id=link_id)
     project = airtable_projects.get(record_id=link["fields"]["Project"][0])
+
+    if not check_permissions(required_roles=["BAS.MAGIC.Portfolio.Projects.Write.All"]):
+        flash("You do not have permission to remove project links", "danger")
+        return redirect(url_for("single_project", project_id=project["id"]))
+
     airtable_project_links.delete(record_id=link_id)
     flash(f"Link '{link['fields']['Title']}' removed successfully", "success")
     # noinspection PyUnresolvedReferences
@@ -164,13 +213,21 @@ def delete_project_link(link_id: str) -> Response:
 @app.route("/projects/<string:project_id>")
 def single_project(project_id: str) -> FlaskResponseType:
     """
-    Show details for a specific project specified by its ID.
+    Show details for a specific project specified by its ID (authenticated).
+
+    Requires the 'BAS.MAGIC.Portfolio.Projects.Read.All' role.
 
     :type project_id: str
     :param project_id: ID of project to display
     :rtype: FlaskResponseType
-    :return: Jinja view
+    :return: Jinja view or redirect
     """
+    if not session.get("user"):
+        return redirect(url_for("auth_sign_in"))
+    if not check_permissions(required_roles=["BAS.MAGIC.Portfolio.Projects.Read.All"]):
+        # noinspection PyUnresolvedReferences
+        return render_template("app/views/auth/403-permissions.j2")
+
     project = airtable_projects.get(record_id=project_id)
     project_links = airtable_project_links.search(
         field_name="Project", field_value=project["fields"]["Title"]
@@ -193,7 +250,7 @@ def single_project(project_id: str) -> FlaskResponseType:
 @app.route("/legal/cookies")
 def legal_cookies() -> FlaskResponseType:
     """
-    Show cookies policy page.
+    Show cookies policy page (unauthenticated).
 
     :rtype: FlaskResponseType
     :return: Jinja view
@@ -205,7 +262,7 @@ def legal_cookies() -> FlaskResponseType:
 @app.route("/legal/copyright")
 def legal_copyright() -> FlaskResponseType:
     """
-    Show copyright notice page.
+    Show copyright notice page (unauthenticated).
 
     :rtype: FlaskResponseType
     :return: Jinja view
@@ -217,10 +274,87 @@ def legal_copyright() -> FlaskResponseType:
 @app.route("/legal/privacy")
 def legal_privacy() -> FlaskResponseType:
     """
-    Show privacy policy page.
+    Show privacy policy page (unauthenticated).
 
     :rtype: FlaskResponseType
     :return: Jinja view
     """
     # noinspection PyUnresolvedReferences
     return render_template("app/views/legal/privacy.j2")
+
+
+@app.route("/auth/sign-in")
+def auth_sign_in() -> FlaskResponseType:
+    """
+    Start sign in process by displaying link to an OAuth login URI.
+
+    The MSAL library is used to construct the OAuth request URI, which is then displayed using the
+    'sign in to continue' BAS Style Kit page pattern.
+
+    This represents stage 1 of the 3-legged OAuth authorisation code flow.
+
+    :rtype: FlaskResponseType
+    :return: Jinja view
+    """
+    session["auth_code_flow"]: dict = auth.initiate_auth_code_flow(
+        scopes=[],
+        redirect_uri=url_for("auth_callback", _external=True),
+    )
+    # noinspection PyUnresolvedReferences
+    return render_template(
+        "app/views/auth/sign-in.j2",
+        call_to_action_href=session.get("auth_code_flow")["auth_uri"],
+    )
+
+
+@app.route("/auth/callback")
+def auth_callback() -> FlaskResponseType:
+    """
+    Complete sign in process by checking OAuth login response.
+
+    The MSAL library is used for verifying based response from the OAuth provider and previously stored information
+    from the `auth_sign_in` method, stored in the current session under the 'auth_code_flow' key.
+
+    Once verified, the claims contained in the ID token are stored in the current session under the 'user' key. These
+    are used to enforce permissions via the 'roles' claim, and for displaying the name/email of the active user. The
+    user is then redirected back to the application homepage.
+
+    Where an error occurs processing the response from the OAuth provider, or where the provider returns an error, the
+    user is redirected to an error page.
+
+    This represents stage 3 of the 3-legged OAuth authorisation code flow, where stage 2 is performed within the OAuth
+    provider, in this case Microsoft Azure.
+
+    :rtype: FlaskResponseType
+    :return: Jinja view or redirect
+    """
+    try:
+        result = auth.acquire_token_by_auth_code_flow(
+            auth_code_flow=session.get("auth_code_flow"),
+            auth_response=request.args,
+            scopes=[],
+        )
+        if "error" in result:
+            if "error_uri" in result and "error?code=50105" in result["error_uri"]:
+                # noinspection PyUnresolvedReferences
+                return render_template("app/views/auth/403-access.j2")
+
+            # noinspection PyUnresolvedReferences
+            return render_template(
+                "app/views/auth/403.j2",
+                error=result.get("error"),
+                description=result.get("error_description"),
+                correlation_id=result.get("correlation_id"),
+            )
+
+        id_token_claims: Optional[Dict[str, Union[str, List[str]]]] = result.get(
+            "id_token_claims"
+        )
+        session["user"] = id_token_claims
+        return redirect(url_for("index"))
+    except ValueError as e:
+        # noinspection PyUnresolvedReferences
+        return render_template(
+            "app/views/auth/403.j2",
+            error=str(e),
+        )

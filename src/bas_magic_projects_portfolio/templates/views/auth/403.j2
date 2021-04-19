@@ -1,0 +1,22 @@
+{% extends 'bas_style_kit/layouts/bsk_standard.j2' %}
+
+{% block main_content_classes %}{{ super() }} bsk-pattern-problem-with-service{% endblock %}
+{% block main_content %}
+    <h1 class="bsk-page-header">Sorry, a sign in error occurred</h1>
+    <p class="bsk-lead">{{ error }}</p>
+    {% if description %}
+    <p>{{ description }}</p>
+    {% endif %}
+    <p>
+        For help with this error please contact the
+        <a href="https://nercacuk.sharepoint.com/sites/BASDigitalw/internal-services/service-desk/Pages/magic.aspx">MAGIC Helpdesk</a>
+        and include:
+    </p>
+    <ul>
+        <li>the error message and, if given, description, listed above</li>
+        {% if correlation_id %}
+        <li>this unique reference (correlation ID): <code>{{ correlation_id }}</code></li>
+        {% endif %}
+        <li>a brief description of what you tried to do</li>
+    </ul>
+{% endblock %}

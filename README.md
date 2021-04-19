@@ -68,66 +68,92 @@ The Projects Portfolio is intended to show:
 
 It is expected that in-depth/detailed information about each project will be held elsewhere, either in other BAS tools
 (such as the Digital Workspace or SharePoint generally) or on websites ran by others (e.g. UKRI Gateway to Research).
-
-This project therefore aims to index high level information about projects only.
-
 ## Usage
 
-Projects Portfolio (Application): https://magic-projects-portfolio-zax8o.ondigitalocean.app
+This project therefore aims to index high level information about projects only.
+* [MAGIC Projects Portfolio (Restricted)](https://magic-projects-portfolio-zax8o.ondigitalocean.app).
+* [MAGIC Projects Portfolio database [Airtable] (Restricted)](https://airtable.com/tblMOrCQYic2zq3R8).
 
-Projects Portfolio (Airtable, restricted): https://airtable.com/tblMOrCQYic2zq3R8/viwrKc4ALDOaicd7d?blocks=hide
+### To view projects
+
+**Note:** You need permission to *view projects* to complete this task. See the [Access Control](#access-control)
+section for more information.
+
+1. visit the MAGIC Projects Portfolio
+1. click the *Sign in to Continue* button
+1. if prompted, sign in to your BAS/NERC account (i.e. the account you use for your BAS email)
+1. if promoted, allow the Projects Portfolio to access your basic profile information (only needed once)
 
 ### To add a project
 
-1. visit the Projects Portfolio (Application)
-2. click the *Add Project* button in the top right
-3. complete the web-form as directed
+**Note:** You need permission to *view projects* and *change projects* to complete this task. See the
+[Access Control](#access-control) section for more information.
+
+1. follow the steps to [View Projects](#to-view-projects) to access and sign in to the Projects Portfolio
+1. click the green *Add Project* button in the top right
+1. complete the web-form as directed
 
 ### To edit a project
 
-**Note:** This action is restricted to [Project Editors](#project-editors).
+**Note:** You need permission to *access the backend database* to complete this task. See the
+[Access Control](#access-control) section for more information.
 
-1. visit the Projects Portfolio (Airtable)
-2. select the relevant table with the `(V2)` prefix and make adjustments as needed
+1. visit the MAGIC Projects Portfolio database [Airtable]
+1. select the relevant table with the `(V2)` prefix (consult the 'Data Model (V2)' if unsure which table to edit)
+1. make adjustments as needed
 
 ### To remove a project
 
-1. visit the Projects Portfolio (Application)
-2. select the relevant project
-3. click the *Delete Project* button from the bottom of the sidebar to the right
+**Note:** You need permission to *view projects* and *change projects* to complete this task. See the
+[Access Control](#access-control) section for more information.
+
+1. follow the steps to [View Projects](#to-view-projects) to access and sign in to the Projects Portfolio
+1. click the name of the project to be deleted
+1. on the project details page, click the *Delete Project* button from the bottom of the sidebar to the right
 
 ### To add a person to a project
 
-1. visit the Projects Portfolio (Application)
-2. select the relevant project
-3. click the *Add Role* button from the bottom of the sidebar to the right
-4. complete the web-form as directed
+**Note:** You need permission to *view projects* and *change projects* to complete this task. See the
+[Access Control](#access-control) section for more information.
+
+1. follow the steps to [View Projects](#to-view-projects) to access and sign in to the Projects Portfolio
+1. click the name of the project to be deleted
+1. on the project details page, click the *Add Role* button from the bottom of the sidebar to the right
+1. complete the web-form as directed
 
 ### To remove a person from a project
 
-**Note:** This action is restricted to [Project Editors](#project-editors).
+**Note:** You need permission to *access the backend database* to complete this task. See the
+[Access Control](#access-control) section for more information.
 
-1. see the steps for [Editing Projects](#to-edit-a-project) and remove the relevant association from the 
-   *Project Roles* table
+1. follow the steps to [Edit Projects](#to-edit-a-project) to access Projects Portfolio database
+1. choose the *Project Roles (V2)* table
+1. remove the relevant row associating a person with a project
 
 See [#28](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues/28) for making this task self-service.
 
 ### To add a link to a project
 
-1. visit the Projects Portfolio (Application)
-2. select the relevant project
-3. click the *Add Link* button from the bottom of the sidebar to the right
-4. complete the web-form as directed
+**Note:** You need permission to *view projects* and *change projects* to complete this task. See the
+[Access Control](#access-control) section for more information.
+
+1. follow the steps to [View Projects](#to-view-projects) to access and sign in to the Projects Portfolio
+1. click the name of the project to be deleted
+1. on the project details page, click the *Add Link* button from the bottom of the sidebar to the right
+1. complete the web-form as directed
 
 ### To remove a link to a project
 
-1. visit the Projects Portfolio (Application)
-2. select the relevant project
-3. for the relevant link, select the broken link icon shown to the right of the sidebar
+**Note:** You need permission to *view projects* and *change projects* to complete this task. See the
+[Access Control](#access-control) section for more information.
 
 ## Implementation
+1. follow the steps to [View Projects](#to-view-projects) to access and sign in to the Projects Portfolio
+1. click the name of the project to be deleted
+1. on the project details page, for the relevant link, select the broken link icon shown to the right of the sidebar
 
 This project is comprised of several components:
+### Access control
 
 1. data store
     * for holding information about products
@@ -135,17 +161,30 @@ This project is comprised of several components:
 1. website
     * for displaying projects in the portfolio
     * implemented as a Flask application, hosted in DigitalOcean App Platform
+Different permissions are required to access or change projects within the Portfolio website, and/or the backend
+database, summarised in the table below:
 
 Product information is persisted within the *data store* component using an internally developed
 [Data Model](#data-model).
+| Permission                    | Role (Azure)                             | Role (Airtable) | Assigned To          |
+| ----------------------------- | ---------------------------------------- | --------------- | -------------------- |
+| *view projects*               | `BAS.MAGIC.Portfolio.Projects.Write.All` | N/A             | MAGIC team members   |
+| *change projects*             | `BAS.MAGIC.Portfolio.Projects.Read.All`  | N/A             | MAGIC team members   |
+| *access the backend database* | N/A                                      | *Editor*        | Specific Individuals |
 
 Project information can be managed (created, modified, destroyed) through a User Interface provided by the *data store*
 component, accessible to [Project Editors](#project-editors). Information can also be accessed/managed programmatically
 through an API.
+In most circumstances, only the *view projects* and *change projects* permissions are required to use the Projects
+Portfolio. These permissions are assigned to all MAGIC team members (using the central
+[MAGIC security group (internal)](https://gitlab.data.bas.ac.uk/MAGIC/general/-/wikis/Azure-authentication#magic-security-group)).
 
 Project information is displayed within the *website* component, which retrieves information from the *data store*
 using its API and renders it using templates. It also includes links to create new projects (via web forms provided by
 the *data store* component) and remove existing projects (via the *data store* API).
+The *access the backend database* permission is only needed to access, and update, the backend Airtable database.
+This is not normally needed, and is informally restricted to system administrators. To request permission, please
+contact @felnne.
 
 Access to the *website* component is currently unrestricted (i.e. it is publicly/globally accessible).
 
@@ -224,19 +263,34 @@ The App Platform currently only supports source code repositories located in:
 
 * www.github.com
 * www.gitlab.com
+### Authentication and authorisation
 
 As the source code for this project is primarily held in the [BAS GitLab instance](https://gitlab.data.bas.ac.uk) it
 is necessary to mirror the repository from the BAS GitLab instance to GitLab.com. This is automatic using GitLab's
 mirroring functionality.
+For the frontend Flask application, Microsoft Azure's OAuth functionality is used with Active Directory user accounts
+from the NERC tenancy.
 
 ### Sentry error tracking
+For the backend Airtable database, Airflow's native permissions system is used with Airtable accounts.
 
 Not configured.
+#### Azure Active Directory
 
 ### Application logging
+The Projects Portfolio is registered as an Azure *App Registration* with an associated security principle.
+
+*App Roles* are defined within this app registration for the different permissions listed in the
+[Access Control](#access-control) section (specifically the 'Role (Azure)' column). These permissions are associated
+with the users and groups as required through the security principle. Additional ID token claims for the user's name
+and email address are used for personalisation. The app registration, roles, claims and other configuration options are
+defined as code using [Terraform](#terraform).
 
 Logs for the *website* component are written to *stdout/stderr* as appropriate, they can be accessed from the the
 DigitalOcean console.
+The [MSAL for Python](https://msal-python.readthedocs.io) library is used to implement the OAuth authorisation code
+grant in the Flask frontend. App roles and optional claims are included as claims in the ID token returned by this
+grant, stored in the browser session. The roles claim is checked by methods in the frontend app to verify permissions.
 
 ## Configuration
 
@@ -247,51 +301,128 @@ App Spec for this project. This specification is managed by Terraform in
 **Note:** In [Development Environments](#development-environment), environment variables are set using a local `.env`
 file.
 
-| Configuration Option | Description                                                                | Allowed Values                                                                             | Example Value                                                   |
-| -------------------- | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ | --------------------------------------------------------------- |
-| `AIRTABLE_KEY`       | Airtable API key                                                           | valid Airtable API key                                                                     | `keyrD2ea764604m6uQ`                                            |
-| `AIRTABLE_BASE`      | Airtable Base ID                                                           | valid Airtable base ID                                                                     | `appKn6jdVjvP75eUC`                                             |
-| `FLASK_APP`          | Entry point to Flask application                                           | valid reference to Python module/me                                                        | `bas_magic_projects_portfolio.app`                              |
-| `FLASK_ENV`          | Flask environment name                                                     | valid Flask environment name                                                               | `production`                                                    |
-| `FLASK_SESSION_KEY`  | Encryption key used to secure Flask sessions                               | [valid Flask session key](https://flask.palletsprojects.com/en/1.1.x/quickstart/#sessions) | `1ca0cb3f8b07fb0a116e4ba9382ea7695e97c4efba50cd7c` [1]          |
+| Configuration Option  | Description                                   | Example Value                                                                |
+| --------------------- | --------------------------------------------- | ---------------------------------------------------------------------------- |
+| `FLASK_APP`           | Entry point to Flask application              | `bas_magic_projects_portfolio.app`                                           |
+| `FLASK_ENV`           | Flask environment name                        | `production`                                                                 |
+| `FLASK_SESSION_KEY`   | Encryption key used to secure Flask sessions  | `65682e1a8e545f881b38c14e9bcfba9cfc0cdd1151479b88` [1]                       |
+| `AIRTABLE_KEY`        | Airtable API key                              | `keyrD2ea764604m6uQ`                                                         |
+| `AIRTABLE_BASE`       | Airtable Base ID                              | `appKn6jdVjvP75eUC`                                                          |
+| `AUTH_CLIENT_ID`      | Azure App Registration client ID              | `44a4edf5-0a30-473d-838e-6bdfb4178c0c` [2]                                   |
+| `AUTH_CLIENT_SECRET`  | Azure App Registration client secret          | `JgxIzLfbV5j.jJ0s~HNDib_Mbs72nA-3x1` [3]                                     |
+| `AUTH_CLIENT_TENANCY` | Azure tenancy containing the App Registration | `https://login.microsoftonline.com/b311db95-32ad-438f-a101-7ba061712a4e` [2] |
 
-[1] Generate with `python3 -c 'import os; print(os.urandom(24).hex())'`.
+[1] Generate with `python3 -c 'import os; print(os.urandom(24).hex())'`, see the
+[Flask quick start](https://flask.palletsprojects.com/en/1.1.x/quickstart/#sessions) for more information.
+
+[2] Retrieve these details from the Azure Portal for the application registration for this project.
+
+[3] Generate through the Azure Portal, see the
+[Microsoft documentation](https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-create-service-principal-portal#option-2-create-a-new-application-secret)
+for more information.
 
 ## Setup
 
 ### Terraform
 
-Terraform is used for configuring:
+Terraform resources are defined in [`provisioning/terraform/terraform.tf`](/provisioning/terraform/terraform.tf).
+
+[Terraform](https://terraform.io) is used for configuring:
 
 * the [GitLab project in GitLab.com](#gitlab-mirror-repository) as a deployment source for the DigitalOcean App Platform
-* DigitalOcean App Platform application
+* the [DigitalOcean App Platform](#digitalocean-app-platform) application
+* the [Microsoft Azure App Registration](#authentication-and-authorisation) (including app roles and claims)
 
-Access to the [BAS DigitalOcean account](https://gitlab.data.bas.ac.uk/WSF/bas-do) is required to provision these
-resources.
+Access to the [BAS DigitalOcean account](https://gitlab.data.bas.ac.uk/WSF/bas-do) and NERC Azure Tenancy are
+required to provision these resources. Docker and Docker Compose are required to run the Terraform binary required for
+resources in this project.
 
-**Note:** This Terraform configuration needs to be applied in stages as resources need to be manually configured before
-others are created.
+**Note:** This Terraform configuration needs to be applied in stages, as resources need to be manually configured before
+others are created. See the numbered steps in the commands below:
 
 ```shell
+# step 1 - create Terraform container (includes Azure CLI client)
 $ cd provisioning/terraform
 $ docker-compose run terraform
 
+# step 2 - setup Terraform and ensure syntax is valid and formatting normalised
 $ terraform init
 $ terraform validate
 $ terraform fmt
 
+# step 3 - sign in to Azure CLI to allow access to Azure managed resources
+$ az login --allow-no-subscriptions
+
+# step 4  - create Azure resources
+$ terraform apply --target azuread_application.magic_projects_portfolio
+$ terraform apply --target azuread_service_principal.magic_projects_portfolio
+
+# step 5 - configure Azure resources (see manual steps section)
+
+# step 6 - create the GitLab mirror repository
 $ terraform apply --target gitlab_project.magic_projects_portfolio_mirror
 $ terraform apply --target gitlab_deploy_token.magic_projects_portfolio_mirror_do_app
-# configure repository mirroring (see manual steps)
-# set DigitalOcean encrypted variables to initial cleartext values (see notes in Terraform.tf)
+
+# step 7 - configure repository mirroring (see manual steps section)
+
+# step 8 - set DigitalOcean encrypted variables to initial cleartext values (see notes in terraform.tf)
+
+# step 9 - create DigitalOcean app
 $ terraform apply --target digitalocean_app.magic_projects_portfolio
-# retrieve ciphertext values for app spec from DigitalOcean console and update configuration to match
-# ensure all changes are in sync
+
+# step 10  - retrieve ciphertext values for encrypted env variables from spec in DigitalOcean console
+#           and update configuration to match
+
+# step 11 - ensure all changes are in sync (Terraform should report no changes will be made)
+$ terraform plan
+
+# step 12 - if ok, apply configuration to update state
 $ terraform apply
 
+# step 13 - quit and remove Terraform container
 $ exit
 $ docker-compose down
 ```
+
+#### Manual steps
+
+##### Azure resources
+
+To configure the app registration:
+
+1. login to the [Azure Portal](https://portal.azure.com) and select *Azure Active Directory* -> *App registrations*
+1. select the app registration representing this project
+1. select the *Branding* page:
+   * set the *Logo* to the project avatar from
+   * set the *Homepage* to the Flask frontend endpoint
+   * set the *Publisher domain* to *bas.ac.uk*
+1. select the *Certificates & secrets* page and click the *New client secret* button:
+   * set the *Description* to: `app`
+   * set *Expires* to: *24 months*
+1. select the *Manifest* page:
+   * set the `accessTokenAcceptedVersion` property to: `2`
+
+Once complete, copy the relevant client ID, secret and tenancy endpoint from the app registration for use in settings.
+
+To configure the service principle (app roles):
+
+1. login to the [Azure Portal](https://portal.azure.com) and select *Azure Active Directory* ->
+   *Enterprise applications*
+1. select the app registration representing this project (hint: search by application ID, name is unreliable)
+1. select the *Properties* page:
+   * set *User assignment required?* to: *Yes*
+1. select the *Users & groups* page and click the *Add user/group* button:
+   * for *User and groups*: click to add selections and search for the `G_BAS_MAGIC_App` group
+   * for *Select a role*: click to add selects and choose `BAS.MAGIC.Portfolio.Projects.Read.All`
+1. repeat the previous step, choosing the same group but with the `BAS.MAGIC.Portfolio.Projects.Write.All` role
+
+**Note:** If permissions are broadened from just MAGIC, move this section to usage or implementation sections.
+
+##### Repository mirroring
+
+1. configure [repository mirroring](https://gitlab.data.bas.ac.uk/WSF/bas-gitlab#repository-mirroring) between the
+   BAS GitLab instance and the corresponding GitLab.com repository created by Terraform by creating a personal
+   access token in GitLab.com
 
 #### Terraform remote state
 
@@ -311,14 +442,6 @@ the [BAS Web & Applications Team](mailto:servicedesk@bas.ac.uk) to request acces
 
 See the [BAS Terraform Remote State](https://gitlab.data.bas.ac.uk/WSF/terraform-remote-state) project for how these
 permissions to remote state are enforced.
-
-### Manual steps
-
-Once provisioned the following steps need to be taken manually:
-
-1. configure [repository mirroring](https://gitlab.data.bas.ac.uk/WSF/bas-gitlab#repository-mirroring) between the
-   BAS GitLab instance and the corresponding GitLab.com repository created by Terraform by creating a personal 
-   access token in GitLab.com
 
 ## Development
 

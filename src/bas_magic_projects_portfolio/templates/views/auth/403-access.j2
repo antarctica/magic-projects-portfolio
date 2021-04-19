@@ -1,0 +1,12 @@
+{% extends 'bas_style_kit/layouts/bsk_standard.j2' %}
+
+{% block main_content_classes %}{{ super() }} bsk-pattern-problem-with-service{% endblock %}
+{% block main_content %}
+    <h1 class="bsk-page-header">Sorry, you are not allowed to use this service</h1>
+    <p class="bsk-lead">Only members of MAGIC can use this service.</p>
+    <p>
+        Please contact the
+        <a href="https://nercacuk.sharepoint.com/sites/BASDigitalw/internal-services/service-desk/Pages/magic.aspx">MAGIC Helpdesk</a>
+        for more information and support.
+    </p>
+{% endblock %}

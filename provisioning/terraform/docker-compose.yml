@@ -1,7 +1,9 @@
 services:
   terraform:
-    image: hashicorp/terraform:0.14.8
-    entrypoint: ash
+    # local image is workaround for requested docker tag not yet existing on DockerHub
+    build: .
+    image: zenika/terraform-azure-cli:release-5.1_terraform-0.14.8_azcli-2.20.0
+    entrypoint: bash
     working_dir: /workspace
     volumes:
       - ./:/workspace/

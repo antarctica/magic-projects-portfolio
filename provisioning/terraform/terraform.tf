@@ -13,6 +13,10 @@ terraform {
       source  = "gitlabhq/gitlab"
       version = "~> 3.1"
     }
+    azuread = {
+      source  = "hashicorp/azuread"
+      version = "~> 1.4"
+    }
   }
 
   # AWS S3 Remote state backend
@@ -50,6 +54,20 @@ provider "digitalocean" {
 # Terraform source: https://registry.terraform.io/providers/gitlabhq/gitlab/latest
 provider "gitlab" {
   base_url = "https://gitlab.com/api/v4/"
+}
+
+# Azure Active Directory provider
+#
+# The BAS preferred identity management provider
+#
+# See https://www.terraform.io/docs/providers/azuread/guides/azure_cli.html for how to configure credentials to use
+# this provider using the Azure CLI.
+#
+# AWS source: https://azure.microsoft.com/en-us/services/active-directory/
+# Terraform source: https://www.terraform.io/docs/providers/azuread/index.html
+provider "azuread" {
+  # NERC Production AD
+  tenant_id = "b311db95-32ad-438f-a101-7ba061712a4e"
 }
 
 # MAGIC Projects Portfolio - GitLab mirror
@@ -153,8 +171,117 @@ resource "digitalocean_app" "magic_projects_portfolio" {
         scope = "RUN_AND_BUILD_TIME"
         type  = "GENERAL"
       }
+      env {
+        key   = "AUTH_CLIENT_ID"
+        value = "44a4edf5-0a30-473d-838e-6bdfb4178c0c"
+        scope = "RUN_AND_BUILD_TIME"
+        type  = "GENERAL"
+      }
+      env {
+        key   = "AUTH_CLIENT_SECRET"
+        value = "EV[1:tB0tmR1Yx+hLAbgMHOPYuCi8XJKDdhjE:UiBCLLaIqccqFuGt+CaSamI3wHET3fVLmaXITymAEcMxMr45lnNxS4kwwtZQ4rInfC0=]"
+        scope = "RUN_AND_BUILD_TIME"
+        type  = "SECRET"
+      }
+      env {
+        key   = "AUTH_CLIENT_TENANCY"
+        value = "https://login.microsoftonline.com/b311db95-32ad-438f-a101-7ba061712a4e"
+        scope = "RUN_AND_BUILD_TIME"
+        type  = "GENERAL"
+      }
 
       run_command = "waitress-serve --port $PORT bas_magic_projects_portfolio.app:app"
     }
   }
+}
+
+# MAGIC Projects Portfolio - Azure AD App Registration
+#
+# This resource relies on the Azure Active Directory Terraform provider being previously configured
+#
+# Azure source: https://docs.microsoft.com/en-us/azure/active-directory/develop/active-directory-how-applications-are-added
+# Terraform source: https://www.terraform.io/docs/providers/azuread/r/application.html
+resource "azuread_application" "magic_projects_portfolio" {
+  display_name               = "MAGIC Projects Portfolio"
+  owners                     = ["7aa5b9f2-25c1-4a88-8627-c0d7d1326b55"]
+  public_client              = false
+  available_to_other_tenants = false
+  homepage                   = "https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio"
+  oauth2_allow_implicit_flow = false
+  group_membership_claims    = "None"
+
+  reply_urls = [
+    "http://localhost:5000/auth/callback",
+    "${digitalocean_app.magic_projects_portfolio.live_url}/auth/callback"
+  ]
+
+  required_resource_access {
+    # Microsoft graph
+    resource_app_id = "00000003-0000-0000-c000-000000000000"
+
+    resource_access {
+      # 'offline_access' scope
+      id   = "7427e0e9-2fba-42fe-b0c0-848c9e6a8182"
+      type = "Scope"
+    }
+    resource_access {
+      # 'openid' scope
+      id   = "37f7f235-527c-4136-accd-4a02d197296e"
+      type = "Scope"
+    }
+    resource_access {
+      # 'email' scope
+      id   = "64a6cdd6-aab1-4aaf-94b8-3cc8405e90d0"
+      type = "Scope"
+    }
+    resource_access {
+      # 'profile' scope
+      id   = "14dad69e-099b-42c9-810b-d002981feec1"
+      type = "Scope"
+    }
+  }
+
+  optional_claims {
+    id_token {
+      name = "email"
+    }
+    id_token {
+      name = "family_name"
+    }
+    id_token {
+      name = "given_name"
+    }
+  }
+
+  app_role {
+    allowed_member_types = [
+      "User"
+    ]
+    description  = "Read all projects in the MAGIC Projects Portfolio."
+    display_name = "BAS.MAGIC.Portfolio.Projects.Read.All"
+    is_enabled   = true
+    value        = "BAS.MAGIC.Portfolio.Projects.Read.All"
+  }
+
+  app_role {
+    allowed_member_types = [
+      "User"
+    ]
+    description  = "Update or remove all projects in the MAGIC Projects Portfolio."
+    display_name = "BAS.MAGIC.Portfolio.Projects.Write.All"
+    is_enabled   = true
+    value        = "BAS.MAGIC.Portfolio.Projects.Write.All"
+  }
+}
+
+# MAGIC Projects Portfolio - Azure AD Enterprise application (security principle)
+#
+# This resource implicitly depends on the 'azuread_application.magic_projects_portfolio' resource
+# This resource relies on the Azure Active Directory Terraform provider being previously configured
+#
+# Azure source: https://docs.microsoft.com/en-us/azure/active-directory/develop/active-directory-how-applications-are-added
+# Terraform source: https://www.terraform.io/docs/providers/azuread/r/service_principal.html
+resource "azuread_service_principal" "magic_projects_portfolio" {
+  application_id               = azuread_application.magic_projects_portfolio.application_id
+  app_role_assignment_required = true
 }

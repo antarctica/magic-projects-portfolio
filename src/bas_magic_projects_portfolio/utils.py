@@ -1,6 +1,7 @@
-import typing as t
+from typing import Any, Callable, Dict, Iterable, List, Optional, Tuple, Union
 
 from bas_style_kit_jinja_templates import BskTemplates
+from flask import session
 from werkzeug.datastructures import Headers
 from werkzeug.wrappers import BaseResponse
 
@@ -9,29 +10,29 @@ from werkzeug.wrappers import BaseResponse
 Python type for Flask responses
 Source: https://stackoverflow.com/a/58866777
 """
-_str_bytes = t.Union[str, bytes]
-_data_type = t.Union[
+_str_bytes = Union[str, bytes]
+_data_type = Union[
     _str_bytes,
     BaseResponse,
-    t.Dict[str, t.Any],
-    t.Callable[
-        [t.Dict[str, t.Any], t.Callable[[str, t.List[t.Tuple[str, str]]], None]],
-        t.Iterable[bytes],
+    Dict[str, Any],
+    Callable[
+        [Dict[str, Any], Callable[[str, List[Tuple[str, str]]], None]],
+        Iterable[bytes],
     ],
 ]
-_status_type = t.Union[int, _str_bytes]
-_headers_type = t.Union[
+_status_type = Union[int, _str_bytes]
+_headers_type = Union[
     Headers,
-    t.Dict[_str_bytes, _str_bytes],
-    t.Iterable[t.Tuple[_str_bytes, _str_bytes]],
+    Dict[_str_bytes, _str_bytes],
+    Iterable[Tuple[_str_bytes, _str_bytes]],
 ]
 
-FlaskResponseType = t.Union[
+FlaskResponseType = Union[
     _data_type,
-    t.Tuple[_data_type],
-    t.Tuple[_data_type, _status_type],
-    t.Tuple[_data_type, _headers_type],
-    t.Tuple[_data_type, _status_type, _headers_type],
+    Tuple[_data_type],
+    Tuple[_data_type, _status_type],
+    Tuple[_data_type, _headers_type],
+    Tuple[_data_type, _status_type, _headers_type],
 ]
 
 
@@ -312,3 +313,26 @@ def grid_projects(projects: list, group_property: str) -> dict:
             gridded_projects[group][project["fields"]["_status"]].append(project)
 
     return gridded_projects
+
+
+def check_permissions(required_roles: List[str]) -> bool:
+    """
+    Check whether the current application user has a set of required roles.
+
+    The roles granted to a user are recorded as part of their OAuth ID token, which is stored in the session under the
+    'user' key.
+
+    To return true, this list of roles must contain at least all the roles in `required_roles`, otherwise this method
+    returns false.
+
+    :type required_roles: List[str]
+    :param required_roles: List of roles required to view information or complete an action
+    :return: Boolean decision, True if allowed, False if not allowed
+    """
+    try:
+        user: Optional[Dict[str, Union[str, List[str]]]] = session.get("user")
+        if set(required_roles).issubset(user["roles"]):
+            return True
+        return False
+    except KeyError:
+        return False
