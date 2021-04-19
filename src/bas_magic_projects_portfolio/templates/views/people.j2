@@ -8,8 +8,9 @@
             (View by
             <a href="{{ url_for('all_projects', group_property='strategic-objectives') }}">Strategic Objectives</a>,
             <a href="{{ url_for('all_projects', group_property='activity-areas') }}">Activity Areas</a>)
-            <a class="bsk-btn bsk-btn-success bsk-pull-right" href="https://airtable.com/shraeffFV5201B3zn"
-               target="_blank"><i class="far fa-fw fa-plus" aria-hidden="true"></i> Add Project</a>
+            <a class="bsk-btn bsk-btn-success bsk-pull-right" href="{{ url_for('add_project') }}" target="_blank">
+                <i class="far fa-fw fa-plus" aria-hidden="true"></i> Add Project
+            </a>
         </div>
     </header>
     {% for person in projects.values() %}

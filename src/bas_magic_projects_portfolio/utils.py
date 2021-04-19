@@ -40,6 +40,9 @@ def configure_bas_style_kit_templates() -> BskTemplates:
     """
     Configure BAS Style Kit Jinja Templates object for application.
 
+    This application overrides (rather than appends to) the default navigation launcher entries, as part of prototyping
+    a navbar for internal applications with a user login.
+
     :rtype: BskTemplates
     :return: BAS Style Kit templates configuration
     """
@@ -66,18 +69,28 @@ def configure_bas_style_kit_templates() -> BskTemplates:
     )
 
     bsk_templates.bsk_container_classes = ["bsk-container-fluid"]
-    bsk_templates.bsk_site_nav_launcher.append(
+    bsk_templates.bsk_site_nav_launcher = [
+        {
+            "value": "BAS Digital Workspace",
+            "href": "https://nercacuk.sharepoint.com/sites/BASDigitalw",
+        },
+        {
+            "value": "BAS Public Website",
+            "href": "https://www.bas.ac.uk",
+        },
+        {
+            "value": "BAS Data Catalogue",
+            "href": "https://data.bas.ac.uk",
+        },
         {
             "value": "MAGIC Team (BAS Digital Workspace)",
             "href": "https://nercacuk.sharepoint.com/sites/BASDigitalw/people-teams/magic/Pages/default.aspx",
-        }
-    )
-    bsk_templates.bsk_site_nav_launcher.append(
+        },
         {
             "value": "MAGIC Team (BAS Public Website)",
             "href": "https://www.bas.ac.uk/team/magic",
-        }
-    )
+        },
+    ]
 
     return bsk_templates
 

@@ -13,8 +13,9 @@
               <a href="{{ url_for('all_projects', group_property='activity-areas') }}">Activity Areas</a>,
             {% endif %}
             <a href="{{ url_for('all_projects_by_person') }}">People</a>)
-            <a class="bsk-btn bsk-btn-success bsk-pull-right" href="https://airtable.com/shraeffFV5201B3zn"
-               target="_blank"><i class="far fa-fw fa-plus" aria-hidden="true"></i> Add Project</a>
+            <a class="bsk-btn bsk-btn-success bsk-pull-right" href="{{ url_for('add_project') }}" target="_blank">
+                <i class="far fa-fw fa-plus" aria-hidden="true"></i> Add Project
+            </a>
         </div>
     </header>
     <section class="bsk-container-fluid app-status-grid">
