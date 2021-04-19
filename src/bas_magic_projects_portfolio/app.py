@@ -3,6 +3,7 @@ from typing import Dict, List, Optional, Union
 
 # noinspection PyPackageRequirements
 from airtable import Airtable
+from bas_style_kit_jinja_templates import BskTemplates
 from flask import flash, Flask, redirect, render_template, request, session, url_for
 from jinja2 import PackageLoader, PrefixLoader
 from msal import ConfidentialClientApplication
@@ -20,6 +21,11 @@ from bas_magic_projects_portfolio.utils import (
 )
 
 app: Flask = Flask(__name__)
+
+app.config["SESSION_TYPE"]: str = environ.get("SESSION_TYPE")
+app.config["BSK_TEMPLATES"]: BskTemplates = configure_bas_style_kit_templates()
+app.config["AIRTABLE_KEY"]: str = environ.get("AIRTABLE_KEY")
+app.config["AIRTABLE_BASE"]: str = environ.get("AIRTABLE_BASE")
 app.config["AUTH_CLIENT_ID"]: str = environ.get("AUTH_CLIENT_ID")
 app.config["AUTH_CLIENT_SECRET"]: str = environ.get("AUTH_CLIENT_SECRET")
 app.config["AUTH_CLIENT_TENANCY"]: str = environ.get("AUTH_CLIENT_TENANCY")
@@ -33,10 +39,7 @@ app.jinja_loader = PrefixLoader(
         "bas_style_kit": PackageLoader("bas_style_kit_jinja_templates"),
     }
 )
-app.config["BSK_TEMPLATES"] = configure_bas_style_kit_templates()
 
-app.config["airtable_key"] = environ.get("AIRTABLE_KEY", None)
-app.config["airtable_base"] = environ.get("AIRTABLE_BASE", None)
 auth: ConfidentialClientApplication = ConfidentialClientApplication(
     client_id=app.config["AUTH_CLIENT_ID"],
     client_credential=app.config["AUTH_CLIENT_SECRET"],
@@ -44,24 +47,24 @@ auth: ConfidentialClientApplication = ConfidentialClientApplication(
 )
 
 airtable_projects = Airtable(
-    base_key=app.config["airtable_base"],
+    base_key=app.config["AIRTABLE_BASE"],
     table_name="Projects (V2)",
-    api_key=app.config["airtable_key"],
+    api_key=app.config["AIRTABLE_KEY"],
 )
 airtable_project_links = Airtable(
-    base_key=app.config["airtable_base"],
+    base_key=app.config["AIRTABLE_BASE"],
     table_name="Project Links (V2)",
-    api_key=app.config["airtable_key"],
+    api_key=app.config["AIRTABLE_KEY"],
 )
 airtable_project_roles = Airtable(
-    base_key=app.config["airtable_base"],
+    base_key=app.config["AIRTABLE_BASE"],
     table_name="Project Roles (V2)",
-    api_key=app.config["airtable_key"],
+    api_key=app.config["AIRTABLE_KEY"],
 )
 airtable_people = Airtable(
-    base_key=app.config["airtable_base"],
+    base_key=app.config["AIRTABLE_BASE"],
     table_name="People (V2)",
-    api_key=app.config["airtable_key"],
+    api_key=app.config["AIRTABLE_KEY"],
 )
 
 
@@ -173,7 +176,7 @@ def add_project() -> redirect:
 
 
 @app.route("/projects/<string:project_id>/-/delete")
-def delete_project(project_id: str) -> Response:
+def delete_project(project_id: str) -> redirect:
     """
     Delete a project specified by its ID (authenticated).
 
@@ -183,7 +186,7 @@ def delete_project(project_id: str) -> Response:
 
     :type project_id: str
     :param project_id: ID of project to delete
-    :rtype: Response
+    :rtype: redirect
     :return: Redirect back to all projects list
     """
     if not session.get("user"):
@@ -197,7 +200,6 @@ def delete_project(project_id: str) -> Response:
 
     airtable_projects.delete(record_id=project_id)
     flash(f"Project '{project['fields']['Title']}' removed successfully", "success")
-    # noinspection PyUnresolvedReferences
     return redirect(url_for("all_projects", group_property="strategic-objectives"))
 
 
@@ -244,7 +246,7 @@ def add_project_link(project_id: str) -> redirect:
 
 
 @app.route("/project-links/<string:link_id>/-/delete")
-def delete_project_link(link_id: str) -> Response:
+def delete_project_link(link_id: str) -> redirect:
     """
     Delete a project link specified by its ID (authenticated).
 
@@ -254,7 +256,7 @@ def delete_project_link(link_id: str) -> Response:
 
     :type link_id: str
     :param link_id: ID of project link to delete
-    :rtype: Response
+    :rtype: redirect
     :return: Redirect back to project link belonged to
     """
     if not session.get("user"):
