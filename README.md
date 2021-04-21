@@ -1,76 +1,45 @@
 # MAGIC Projects Portfolio
 
-Proof of concept projects portfolio implementation for MAGIC.
+Projects portfolio for the [Mapping and Geographic Information Centre (MAGIC)](https://www.bas.ac.uk/team/magic) at the
+[British Antarctic Survey](https://www.bas.ac.uk).
 
-[View Portfolio](https://magic-projects-portfolio-zax8o.ondigitalocean.app).
+[View Portfolio (Restricted)](https://magic-projects-portfolio-zax8o.ondigitalocean.app).
+
+**Note:** This project is designed to meet an internal need within MAGIC. It has been open-sourced in case it's of use
+to others with similar needs.
 
 ## Status
 
-This project is an early alpha.
+This project is a mature alpha. After some real world testing it will progress to a beta and if successful, a live,
+production, service.
 
-### Projects population
-
-Whilst the data model is development the number of projects contained in the portfolio are very limited and is certainly
-not representative of the number of projects happening within MAGIC.
-
-Once it has stabilised, it is expected there the bulk of active projects will be added relatively quickly, followed by
-an editing period to consolidate project information and agree common definitions of what is and isn't a project for
-example. New projects will then be added as they occur and historic projects may be back populated if it's felt this
-would be useful.
-
-### Implementation
-
-Currently [Airtable](https://airtable.com/tblOq1igQAPd3QcHb) is used as a database, backend and data entry/management
-interface. This allows the data model can be iterated quickly and to gives a UI for managing data easily.
-
-A [v2 data model (internal)](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues/13) is currently
-being implemented.
-
-The frontend component is currently a Flask application hosted in the DigitalOcean App Platform. It currently loads
-records dynamically from Airtable. As the number of records grow this may prove unsustainable as an approach given
-Airtable's rate limits. Once the data model has stabilised it may desirable/necessary to render content statically.
-
-Further information on upcoming changes to this project can be found in the issues and milestones in
-[GitLab (internal)](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues).
-
-**Note:** This project is designed to meet an internal need within the
-[Mapping and Geographic Information Centre (MAGIC)](https://www.bas.ac.uk/team/magic) at BAS. It has been open-sourced
-in case it's of use to others with similar needs.
+Whilst an alpha, there are significant performance limitations, partially complete features, and general rough edges.
 
 ## Purpose
 
-This project is used to help:
+This project is intended to help people understand the things MAGIC are working on, at a relatively high 'project'
+level. In addition, this Portfolio shows:
+
+1. how these projects relate to the Strategic Objectives and Activity Areas defined in the
+   [MAGIC Strategy (Internal)](https://nercacuk.sharepoint.com/sites/BASDigitalw/people-teams/magic/MAGIC%20Documents/MAGIC-Strategy-2021.pdf).
+1. how MAGIC team members relate to these projects
+1. the status of each project (proposal, complete, historic, etc.)
+1. links to more in-depth/detailed information about each project (e.g. proposal documents/plans, specifications, etc.)
+
+These links could include information held in:
+
+* other BAS tools - such as the Digital Workspace, RMS, GitLab, etc.
+* external websites - such as UKRI Gateway to Research, ESA funding database, etc.
+
+The audience for this Portfolio is:
 
 * MAGIC team leaders
 * MAGIC team members
-* BAS senior leaders
-* BAS staff in other teams
-* the general public? ([#15](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues/15) (Internal))
+* other BAS staff (? [#34](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues/34) (Internal))
+* the public (? [#15](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues/15) (Internal))
 
-Understand the activities MAGIC are working on. These are generally called projects but this can be considered any
-endeavour including:
-
-* discrete projects or large tasks (e.g. digitising historic mapping)
-* grant funded work (e.g. NERC funded science)
-* externally focused work (e.g. ESA projects)
-* internally commissioned work (e.g. projects that help MAGIC perform its functions)
-* advice, training and outreach activities (e.g. drop-in sessions and end-user training)
-* business as usual support to BAS or UK Government functions (e.g. MAGIC Helpdesk, Operations support, APC)
-
-These activities span across the various Activity Areas and Strategic Objectives outlined in the [MAGIC Strategy]().
-
-The Projects Portfolio is intended to show:
-
-* how projects/activities fall under these different areas and objectives
-* how MAGIC team members relate to these activities
-* the status of each activity (ongoing, complete, historic, etc.)
-* links to other information about each activity (e.g. grant proposals, project charters, etc.)
-
-It is expected that in-depth/detailed information about each project will be held elsewhere, either in other BAS tools
-(such as the Digital Workspace or SharePoint generally) or on websites ran by others (e.g. UKRI Gateway to Research).
 ## Usage
 
-This project therefore aims to index high level information about projects only.
 * [MAGIC Projects Portfolio (Restricted)](https://magic-projects-portfolio-zax8o.ondigitalocean.app).
 * [MAGIC Projects Portfolio database [Airtable] (Restricted)](https://airtable.com/tblMOrCQYic2zq3R8).
 
@@ -147,60 +116,51 @@ See [#28](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues/
 **Note:** You need permission to *view projects* and *change projects* to complete this task. See the
 [Access Control](#access-control) section for more information.
 
-## Implementation
 1. follow the steps to [View Projects](#to-view-projects) to access and sign in to the Projects Portfolio
 1. click the name of the project to be deleted
 1. on the project details page, for the relevant link, select the broken link icon shown to the right of the sidebar
 
-This project is comprised of several components:
 ### Access control
 
-1. data store
-    * for holding information about products
-    * implemented using an Airtable base with associated input web forms
-1. website
-    * for displaying projects in the portfolio
-    * implemented as a Flask application, hosted in DigitalOcean App Platform
 Different permissions are required to access or change projects within the Portfolio website, and/or the backend
 database, summarised in the table below:
 
-Product information is persisted within the *data store* component using an internally developed
-[Data Model](#data-model).
 | Permission                    | Role (Azure)                             | Role (Airtable) | Assigned To          |
 | ----------------------------- | ---------------------------------------- | --------------- | -------------------- |
 | *view projects*               | `BAS.MAGIC.Portfolio.Projects.Write.All` | N/A             | MAGIC team members   |
 | *change projects*             | `BAS.MAGIC.Portfolio.Projects.Read.All`  | N/A             | MAGIC team members   |
 | *access the backend database* | N/A                                      | *Editor*        | Specific Individuals |
 
-Project information can be managed (created, modified, destroyed) through a User Interface provided by the *data store*
-component, accessible to [Project Editors](#project-editors). Information can also be accessed/managed programmatically
-through an API.
 In most circumstances, only the *view projects* and *change projects* permissions are required to use the Projects
 Portfolio. These permissions are assigned to all MAGIC team members (using the central
 [MAGIC security group (internal)](https://gitlab.data.bas.ac.uk/MAGIC/general/-/wikis/Azure-authentication#magic-security-group)).
 
-Project information is displayed within the *website* component, which retrieves information from the *data store*
-using its API and renders it using templates. It also includes links to create new projects (via web forms provided by
-the *data store* component) and remove existing projects (via the *data store* API).
 The *access the backend database* permission is only needed to access, and update, the backend Airtable database.
 This is not normally needed, and is informally restricted to system administrators. To request permission, please
 contact @felnne.
 
-Access to the *website* component is currently unrestricted (i.e. it is publicly/globally accessible).
+## Implementation
 
-### Project editors
+[Airtable](https://airtable.com/tblOq1igQAPd3QcHb) is used as a database and application backend. This tool was chosen
+so that the application [Data Model](#data-model) can iterated quickly, as it offers a pre-built admin UI, data entry
+forms and API for accessing information.
 
-Editing rights to data within the *data store* are restricted to MAGIC team leaders and system administrators.
+A Flask application, hosted in the DigitalOcean App Platform, is used as a frontend application. This tool was chosen
+to give greater control over how projects are displayed and to allow the backend to be changed in the future without
+end-users being aware.
 
-To request changes to existing data please open an [Issue](#issue-tracking)
+The Flask frontend communicates with the Airtable backend using the Airtable API dynamically at runtime. Microsoft
+Azure is used to enforce permissions in the Flask frontend. Airtable permissions are used to control access to the
+backend.
 
 ### Data model
 
-As this project is developed its data model is evolving, it is currently version 2. The data model is currently
-defined in Airtable as a:
+The data model for this application is held in Airtable, specifically in these tables:
 
 * [schema](https://airtable.com/tblHIqNhOKnt1m56Y/viwJXOfFKPjirDqAv?blocks=hide)
 * [set of code lists](https://airtable.com/tblsGJvKQPxLikViW/viwIFtXh5iuxylLsA?blocks=hide)
+
+There have been multiple versions/iterations of this data model. The current revision is **V2**.
 
 #### Projects
 
@@ -214,70 +174,62 @@ People represent individuals (MAGIC team members), they consist of a name and OR
 
 Project links represent URLs associated with a project (e.g. a link to project's grant proposal or GitLab project).
 
-Project links have a type so that the *website* component can understand the target of each link. Currently this is
-only used to highlight where a link relates to the project (e.g. a website for the project) or GitLab/GitHub projects.
+Project links have a type so the frontend can understand the system it links to. This functionality is not yet used.
 
 #### Project Roles
 
-Project roles represents which people are associated with which projects. These associations are contextual and time
-limited (e.g. 'for this project, this person was it's leader from 2010 until 2020').
+Project roles represent which people are associated with which projects. These associations are contextual (e.g.
+project leader or member).
 
 ### Jinja templates
 
 A series of [Jinja2](https://jinja.palletsprojects.com/) templates are used for rendering pages in the *website*
 component.
 
-Templates use the [BAS Style Kit Jinja Templates](https://pypi.org/project/bas-style-kit-jinja-templates/) and styled
-using the [BAS Style Kit](https://style-kit.web.bas.ac.uk).
+Templates use the [BAS Style Kit Jinja Templates](https://pypi.org/project/bas-style-kit-jinja-templates/).
 
 ### Feedback and contact forms
 
-As this project is not intended for use by external users, feedback forms point to the project issue tracker in GitLab.
+Feedback forms point to the project issue tracker in GitLab, as we are not expecting feedback from externals.
 
 ### DigitalOcean App Platform
 
 The [DigitalOcean App Platform](https://www.digitalocean.com/products/app-platform/) is used to run this application.
+The app platform manages deploying and running the Flask frontend.
 
-This is partly to prove and understand the features this platform offers (for possible use in other projects) and to
-avoid spending time setting up and configuring infrastructure (as this project was initially an idea at risk of not
-being adopted).
-
-The app platform manages the deployment and runtime of the *website* component. It is controlled by an 'app spec' which
-configures:
-
-* the components within the application (currently only a web process)
-* the location of the source code repository used for the application
-* environment variables used to [Configure](#configuration), and the command to run, the application
+This was chosen partly to prove and understand the features this platform offers (for use in other projects), and to
+avoid spending time setting up and configuring infrastructure (as this project's usefulness is still unproven).
 
 #### Application Docker Image
 
-The App Platform automatically builds and deploys a container for running the *website* component using
-[Cloud Native Buildpacks](https://buildpacks.io). For this application, the Python buildpack is used using the
-[`provisioning/do-app-platform/requirements.txt`](/provisioning/do-app-platform/requirements.txt) requirements file.
-
-This file depends on the [Application Python Package](#python-package).
+The App Platform automatically builds and deploys a container for running the Flask frontend using
+[Cloud Native Buildpacks](https://buildpacks.io). For this application, the Python buildpack is used, with the
+[`provisioning/do-app-platform/requirements.txt`](/provisioning/do-app-platform/requirements.txt) requirements file
+used as an input. This requirements file depends on the [Application Python Package](#python-package).
 
 #### GitLab mirror repository
 
-The App Platform currently only supports source code repositories located in:
+As the App Platform only supports source code repositories located in Github.com or GitLab.com, it is necessary to
+mirror the repository from the BAS GitLab instance to GitLab.com. This is automatic using GitLab's repo mirroring.
 
-* www.github.com
-* www.gitlab.com
+### Sentry error tracking
+
+Not yet configured, see [#35 (Internal)](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues/35).
+
+### Application logging
+
+Logs for the *website* component are written to *stdout/stderr* as appropriate. In the DigitalOcean App Platform,
+logs can be accessed through the [DigitalOcean console](https://cloud.digitalocean.com).
+
 ### Authentication and authorisation
 
-As the source code for this project is primarily held in the [BAS GitLab instance](https://gitlab.data.bas.ac.uk) it
-is necessary to mirror the repository from the BAS GitLab instance to GitLab.com. This is automatic using GitLab's
-mirroring functionality.
 For the frontend Flask application, Microsoft Azure's OAuth functionality is used with Active Directory user accounts
 from the NERC tenancy.
 
-### Sentry error tracking
 For the backend Airtable database, Airflow's native permissions system is used with Airtable accounts.
 
-Not configured.
 #### Azure Active Directory
 
-### Application logging
 The Projects Portfolio is registered as an Azure *App Registration* with an associated security principle.
 
 *App Roles* are defined within this app registration for the different permissions listed in the
@@ -286,17 +238,14 @@ with the users and groups as required through the security principle. Additional
 and email address are used for personalisation. The app registration, roles, claims and other configuration options are
 defined as code using [Terraform](#terraform).
 
-Logs for the *website* component are written to *stdout/stderr* as appropriate, they can be accessed from the the
-DigitalOcean console.
 The [MSAL for Python](https://msal-python.readthedocs.io) library is used to implement the OAuth authorisation code
 grant in the Flask frontend. App roles and optional claims are included as claims in the ID token returned by this
 grant, stored in the browser session. The roles claim is checked by methods in the frontend app to verify permissions.
 
 ## Configuration
 
-Application configuration options for the *website* component are set using environment variables in the DigitalOcean
-App Spec for this project. This specification is managed by Terraform in
-[`provisioning/terraform/terraform.tf`](/provisioning/terraform/terraform.tf).
+Application configuration options for the Flask frontend are set using environment variables in the DigitalOcean
+App Spec in [Terraform](#terraform).
 
 **Note:** In [Development Environments](#development-environment), environment variables are set using a local `.env`
 file.
@@ -531,22 +480,24 @@ $ pre-commit run --all-files
 
 ### Templates
 
-Application templates use the Flask application's Jinja environment configured to use general templates from the
-[BAS Style Kit Jinja Templates](https://pypi.org/project/bas-style-kit-jinja-templates) package (for layouts, etc.) and
-application specific templates from the [`templates/`](/templates/) directory.
+Application templates use the Flask application's Jinja environment configured to load templates from:
+
+* the [BAS Style Kit Jinja Templates](https://pypi.org/project/bas-style-kit-jinja-templates) package
+* the [`src/bas_magic_projects_portfolio/templates/`](/src/bas_magic_projects_portfolio/templates/) directory
 
 Styles, components and patterns from the [BAS Style Kit](https://style-kit.web.bas.ac.uk) should be used where possible.
 Configuration options for Style Kit Jinja Templates are set in the `app.py` module, including loading local styles and
-scripts defined in [`static/`](/static/).
+scripts defined in [`static/`](/src/bas_magic_projects_portfolio/static/).
 
-Application views should inherit from the application layout, [`app.j2`](/templates/layouts/app.j2).
+Application views should inherit from the application layout,
+[`app.j2`](/src/bas_magic_projects_portfolio/templates/layouts/app.j2).
 [includes](https://jinja.palletsprojects.com/en/2.11.x/templates/#include) and
 [macros](https://jinja.palletsprojects.com/en/2.11.x/templates/#macros) should be used to breakdown and reuse content
 within views.
 
 ### Testing
 
-Not configured.
+Not configured, see [#36 (Internal)](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues/36).
 
 #### Continuous Integration
 
@@ -556,11 +507,11 @@ All commits will trigger a Continuous Integration process using GitLab's CI/CD p
 
 ### Python Package
 
-This project is distributed as a Python package, available through the 
-[BAS GitLab Python registry](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/packages), installable 
+This project is distributed as a Python package, available through the
+[BAS GitLab Python registry](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/packages), installable
 using Pip.
 
-Both source and binary (Python wheel) packages are built automatically during 
+Both source and binary (Python wheel) packages are built automatically during
 [Continuous Deployment](#continuous-deployment) for all tagged releases.
 
 A shared public access deploy token is used to allow this Python package to installed anonymously:
@@ -576,15 +527,15 @@ $ python3 -m pip install bas-magic-projects-portfolio --extra-index-url https://
 
 ### DigitalOcean App Platform (Deployment)
 
-Commits made against the master branch will be mirrored to the 
-[GitLab.com mirror repository](#gitlab-mirror-repository), which will update the `requirements.txt` file used to 
-specify which version of the application [Application Python Package](#python-package) is installed.
+Commits made against the master branch will be mirrored to the
+[GitLab.com mirror repository](#gitlab-mirror-repository). This includes the
+[`requirements.txt`](/provisioning/do-app-platform/requirements.txt) file used to specify which version of the
+application [Application Python Package](#python-package) is installed. This file should be updated as part of each
+[Release](#release-procedure).
 
-A forced deployment of the DigitalOcean App Platform app will be triggered automatically during
-[Continuous Deployment](#continuous-deployment) for all tagged releases.
-
-A force deployment is used to ensure the [Deployment Docker Container](#application-docker-image) is updated to use the 
-application [Application Python Package](#python-package) version specified in the `requirements.txt` file.
+The DigitalOcean App Platform app will be force deployed during [Continuous Deployment](#continuous-deployment) for
+all git tags. Force deploys ensure the [Deployment Docker Container](#application-docker-image) does not cache build 
+dependencies (i.e. this application).
 
 ### Continuous Deployment
 
