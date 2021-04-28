@@ -24,7 +24,8 @@ from bas_magic_projects_portfolio.utils import (
 
 app: Flask = Flask(__name__)
 
-app.config["SESSION_TYPE"]: str = environ.get("SESSION_TYPE")
+app.config["SESSION_PERMANENT"]: str = True
+app.config["PERMANENT_SESSION_LIFETIME"]: int = 60 * 60 * 12  # 12 hours
 app.config["BSK_TEMPLATES"]: BskTemplates = configure_bas_style_kit_templates()
 app.config["AIRTABLE_KEY"]: str = environ.get("AIRTABLE_KEY")
 app.config["AIRTABLE_BASE"]: str = environ.get("AIRTABLE_BASE")
