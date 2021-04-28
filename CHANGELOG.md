@@ -18,6 +18,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 
+* Application session changed to 12 hours (from indefinite)
+  [#43](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues/43)
 * Splitting sidebar on project details page into multiple sections arranged horizontally to better use space
   [#46](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues/46)
 

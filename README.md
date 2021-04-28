@@ -270,6 +270,11 @@ file.
 [Microsoft documentation](https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-create-service-principal-portal#option-2-create-a-new-application-secret)
 for more information.
 
+### Session length
+
+Configuration options for Flask's session are hard-coded within the application. Their effect is to use permanent 
+sessions with the fixed duration of 12 hours - meaning users will need to re-authenticate at least every 12 hours.
+
 ## Setup
 
 ### Terraform
