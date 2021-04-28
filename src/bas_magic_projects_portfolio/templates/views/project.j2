@@ -13,51 +13,11 @@
             <p class="bsk-lead">{{ project.fields.Description }}</p>
             <p><mark>What goes here?</mark></p>
         </div>
-        <div class="bsk-col-12-md-4">
-            <aside class="bsk-sidebar bsk-sidebar-default app-project-details">
+    </div>
+    <div class="bsk-row">
+        <div class="bsk-col-12-md-3">
+            <div class="bsk-sidebar bsk-sidebar-default app-project-details">
                 <dl class="bsk-dl-lg">
-                    <dt>Strategic Objectives</dt>
-                    {% for stragetic_objective in project.fields['Strategic Objectives'] %}
-                        <dd>
-                            {% if stragetic_objective == "Support to BAS Operations" %}
-                                <i class="far fa-fw fa-snowplow" aria-hidden="true"></i>
-                            {% elif stragetic_objective == "Support to BAS Science" %}
-                                <i class="far fa-fw fa-vial" aria-hidden="true"></i>
-                            {% elif stragetic_objective == "Support to BAS Infrastructure Modernisation" %}
-                                <i class="far fa-fw fa-warehouse-alt" aria-hidden="true"></i>
-                            {% elif stragetic_objective == "Support to FCDO" %}
-                                <i class="far fa-fw fa-landmark-alt" aria-hidden="true"></i>
-                            {% elif stragetic_objective == "Commissioned research & services" %}
-                                <i class="far fa-fw fa-analytics" aria-hidden="true"></i>
-                            {% elif stragetic_objective == "BAT geospatial Infrastructure" %}
-                                <i class="far fa-fw fa-map-pin" aria-hidden="true"></i>
-                            {% elif stragetic_objective == "UK Antarctic geospatial leadership" %}
-                                <i class="far fa-fw fa-flag-alt" aria-hidden="true"></i>
-                            {% endif %}
-                            {{ stragetic_objective }}
-                        </dd>
-                    {% endfor %}
-                    <dt>Activity Areas</dt>
-                    {% for activity_area in project.fields['Activity Areas'] %}
-                        <dd>
-                            {% if activity_area == "Remote sensing & EO data access/processing" %}
-                                <i class="far fa-fw fa-satellite" aria-hidden="true"></i>
-                            {% elif activity_area == "Topographic mapping & cartography" %}
-                                <i class="far fa-fw fa-map" aria-hidden="true"></i>
-                            {% elif activity_area == "Survey & geomatics" %}
-                                <i class="far fa-fw fa-ruler" aria-hidden="true"></i>
-                            {% elif activity_area == "Geospatial web services & applications" %}
-                                <i class="far fa-fw fa-desktop" aria-hidden="true"></i>
-                            {% elif activity_area == "Operational sea-ice information" %}
-                                <i class="far fa-fw fa-ship" aria-hidden="true"></i>
-                            {% elif activity_area == "Geospatial science projects" %}
-                                <i class="far fa-fw fa-vial" aria-hidden="true"></i>
-                            {% elif activity_area == "Training" %}
-                                <i class="far fa-fw fa-user-graduate" aria-hidden="true"></i>
-                            {% endif %}
-                            {{ activity_area }}
-                        </dd>
-                    {% endfor %}
                     <dt>Project Duration</dt>
                     <dd>
                         {% if project.fields.Duration == 'Open Ended' %}
@@ -119,6 +79,12 @@
                             </dd>
                         {% endfor %}
                     {% endif %}
+                </dl>
+            </div>
+        </div>
+        <div class="bsk-col-12-md-3">
+            <div class="bsk-sidebar bsk-sidebar-default app-project-details">
+                <dl class="bsk-dl-lg">
                     {% if project_links | length > 0 %}
                         <dt>Links</dt>
                         <dd>
@@ -142,24 +108,66 @@
                         </dd>
                     {% endif %}
                 </dl>
-            </aside>
-            <div>
-                {% for link in project_links %}
-                    {% if link.fields.Type == 'Self' %}
-                        <a class="bsk-btn bsk-btn-block bsk-btn-primary" href="{{ link.fields.URL }}"
-                   target="_blank"><i class="far fa-fw fa-globe" aria-hidden="true"></i> View Project</a>
-                    {% endif %}
-                {% endfor %}
-                <a class="bsk-btn bsk-btn-block bsk-btn-default" href="{{ url_for('add_project_role', project_id=project.id) }}"
-                   target="_blank">
-                    <i class="far fa-fw fa-user-plus" aria-hidden="true"></i> Add Role</a>
-                <a class="bsk-btn bsk-btn-block bsk-btn-default" href="{{ url_for('add_project_link', project_id=project.id) }}"
-                   target="_blank">
-                    <i class="far fa-fw fa-link" aria-hidden="true"></i> Add Link</a>
-                <a class="bsk-btn bsk-btn-block bsk-btn-danger"
-                   href="{{ url_for('delete_project', project_id=project.id) }}">
-                    <i class="far fa-fw fa-trash-alt" aria-hidden="true"></i> Delete Project</a>
             </div>
+        </div>
+        <div class="bsk-col-12-md-3">
+            <div class="bsk-sidebar bsk-sidebar-default app-project-details">
+                <dl class="bsk-dl-lg">
+                    <dt>Strategic Objectives</dt>
+                    {% for stragetic_objective in project.fields['Strategic Objectives'] %}
+                        <dd>
+                            {% if stragetic_objective == "Support to BAS Operations" %}
+                                <i class="far fa-fw fa-snowplow" aria-hidden="true"></i>
+                            {% elif stragetic_objective == "Support to BAS Science" %}
+                                <i class="far fa-fw fa-vial" aria-hidden="true"></i>
+                            {% elif stragetic_objective == "Support to BAS Infrastructure Modernisation" %}
+                                <i class="far fa-fw fa-warehouse-alt" aria-hidden="true"></i>
+                            {% elif stragetic_objective == "Support to FCDO" %}
+                                <i class="far fa-fw fa-landmark-alt" aria-hidden="true"></i>
+                            {% elif stragetic_objective == "Commissioned research & services" %}
+                                <i class="far fa-fw fa-analytics" aria-hidden="true"></i>
+                            {% elif stragetic_objective == "BAT geospatial Infrastructure" %}
+                                <i class="far fa-fw fa-map-pin" aria-hidden="true"></i>
+                            {% elif stragetic_objective == "UK Antarctic geospatial leadership" %}
+                                <i class="far fa-fw fa-flag-alt" aria-hidden="true"></i>
+                            {% endif %}
+                            {{ stragetic_objective }}
+                        </dd>
+                    {% endfor %}
+                    <dt>Activity Areas</dt>
+                    {% for activity_area in project.fields['Activity Areas'] %}
+                        <dd>
+                            {% if activity_area == "Remote sensing & EO data access/processing" %}
+                                <i class="far fa-fw fa-satellite" aria-hidden="true"></i>
+                            {% elif activity_area == "Topographic mapping & cartography" %}
+                                <i class="far fa-fw fa-map" aria-hidden="true"></i>
+                            {% elif activity_area == "Survey & geomatics" %}
+                                <i class="far fa-fw fa-ruler" aria-hidden="true"></i>
+                            {% elif activity_area == "Geospatial web services & applications" %}
+                                <i class="far fa-fw fa-desktop" aria-hidden="true"></i>
+                            {% elif activity_area == "Operational sea-ice information" %}
+                                <i class="far fa-fw fa-ship" aria-hidden="true"></i>
+                            {% elif activity_area == "Geospatial science projects" %}
+                                <i class="far fa-fw fa-vial" aria-hidden="true"></i>
+                            {% elif activity_area == "Training" %}
+                                <i class="far fa-fw fa-user-graduate" aria-hidden="true"></i>
+                            {% endif %}
+                            {{ activity_area }}
+                        </dd>
+                    {% endfor %}
+                </dl>
+            </div>
+        </div>
+        <div class="bsk-col-12-md-3">
+            {% for link in project_links %}
+                {% if link.fields.Type == 'Self' %}
+                    <a class="bsk-btn bsk-btn-block bsk-btn-primary" href="{{ link.fields.URL }}"
+               target="_blank"><i class="far fa-fw fa-globe" aria-hidden="true"></i> View Project</a>
+                {% endif %}
+            {% endfor %}
+            <a class="bsk-btn bsk-btn-block bsk-btn-default" href="{{ url_for('add_project_role', project_id=project.id) }}" target="_blank"><i class="far fa-fw fa-user-plus" aria-hidden="true"></i> Add Role</a>
+            <a class="bsk-btn bsk-btn-block bsk-btn-default" href="{{ url_for('add_project_link', project_id=project.id) }}" target="_blank"><i class="far fa-fw fa-link" aria-hidden="true"></i> Add Link</a>
+            <a class="bsk-btn bsk-btn-block bsk-btn-danger" href="{{ url_for('delete_project', project_id=project.id) }}"><i class="far fa-fw fa-trash-alt" aria-hidden="true"></i> Delete Project</a>
         </div>
     </div>
 {% endblock %}

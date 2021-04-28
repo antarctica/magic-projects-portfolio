@@ -14,6 +14,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * Ungrouped projects list (shown by default)
   [#44](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues/44)
 
+### Changed
+
+* Splitting sidebar on project details page into multiple sections arranged horizontally to better use space
+  [#46](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues/46)
+
 ## [0.2.0] - 2021-04-21
 
 ### Added
