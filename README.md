@@ -3,7 +3,7 @@
 Projects portfolio for the [Mapping and Geographic Information Centre (MAGIC)](https://www.bas.ac.uk/team/magic) at the
 [British Antarctic Survey](https://www.bas.ac.uk).
 
-[View Portfolio (Restricted)](https://magic-projects-portfolio-zax8o.ondigitalocean.app).
+[View Portfolio (Restricted, MAGIC)](https://magic-projects-portfolio-895c5.ondigitalocean.app).
 
 **Note:** This project is designed to meet an internal need within MAGIC. It has been open-sourced in case it's of use
 to others with similar needs.
@@ -40,7 +40,7 @@ The audience for this Portfolio is:
 
 ## Usage
 
-* [MAGIC Projects Portfolio (Restricted)](https://magic-projects-portfolio-zax8o.ondigitalocean.app).
+* [MAGIC Projects Portfolio (Restricted)](https://magic-projects-portfolio-895c5.ondigitalocean.app).
 * [MAGIC Projects Portfolio database [Airtable] (Restricted)](https://airtable.com/tblMOrCQYic2zq3R8).
 
 ### To view projects
@@ -127,8 +127,8 @@ database, summarised in the table below:
 
 | Permission                    | Role (Azure)                             | Role (Airtable) | Assigned To          |
 | ----------------------------- | ---------------------------------------- | --------------- | -------------------- |
-| *view projects*               | `BAS.MAGIC.Portfolio.Projects.Write.All` | N/A             | MAGIC team members   |
-| *change projects*             | `BAS.MAGIC.Portfolio.Projects.Read.All`  | N/A             | MAGIC team members   |
+| *view projects*               | `BAS.MAGIC.Portfolio.Projects.Read.All`  | N/A             | MAGIC team members   |
+| *change projects*             | `BAS.MAGIC.Portfolio.Projects.Write.All` | N/A             | MAGIC team members   |
 | *access the backend database* | N/A                                      | *Editor*        | Specific Individuals |
 
 In most circumstances, only the *view projects* and *change projects* permissions are required to use the Projects
@@ -272,7 +272,7 @@ for more information.
 
 ### Session length
 
-Configuration options for Flask's session are hard-coded within the application. Their effect is to use permanent 
+Configuration options for Flask's session are hard-coded within the application. Their effect is to use permanent
 sessions with the fixed duration of 12 hours - meaning users will need to re-authenticate at least every 12 hours.
 
 ## Setup
@@ -539,7 +539,7 @@ application [Application Python Package](#python-package) is installed. This fil
 [Release](#release-procedure).
 
 The DigitalOcean App Platform app will be force deployed during [Continuous Deployment](#continuous-deployment) for
-all git tags. Force deploys ensure the [Deployment Docker Container](#application-docker-image) does not cache build 
+all git tags. Force deploys ensure the [Deployment Docker Container](#application-docker-image) does not cache build
 dependencies (i.e. this application).
 
 ### Continuous Deployment

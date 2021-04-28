@@ -18,6 +18,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+* Incorrect link to project (old link)
+  [#42](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues/42)
+* Incorrect roles listed for user permissions
+  [#42](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues/42)
+* Various whitespace and other minor corrections
+  [#42](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues/42)
 * Incorrect field used for project link URLs (preventing them from working)
   [#49](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues/49)
 
