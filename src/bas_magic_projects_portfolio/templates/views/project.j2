@@ -25,7 +25,11 @@
                         {% elif project.fields.Duration == 'Fixed Term' %}
                             <i class="far fa-fw fa-tachometer-average" aria-hidden="true"></i>
                         {% endif %}
-                        {{ project.fields.Duration }}</dd>
+                        {{ project.fields.Duration }}
+                        {% if project.fields.Duration == 'Fixed Term' %}
+                            ({{ project.fields._formatted_temporal_extent }})
+                        {% endif %}
+                    </dd>
                     {% if project.fields.Duration == 'Fixed Term' %}
                         <dt>Project Status</dt>
                         <dd class="app-project-status">

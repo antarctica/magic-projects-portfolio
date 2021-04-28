@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Any, Callable, Dict, Iterable, List, Optional, Tuple, Union
 
 from bas_style_kit_jinja_templates import BskTemplates
@@ -201,6 +202,52 @@ def index_project_roles(roles: list) -> dict:
         _roles[role["id"]] = role
 
     return _roles
+
+
+def format_project_temporal_extent(project: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    Format a project temporal extent as a text string.
+
+    Only applies to projects with a fixed term duration. Projects must have a start date but may have an unbound end
+    date, represented by '..'. The temporal extent is assumed to an ISO 8601 date interval, which will currently be
+    reduced to a set of dates.
+
+    As Airtable encodes the timezone in datetime's using 'Z' instead of an offset ('+00:00') the Python `fromisoformat`
+    method cannot parse it - a workaround is used to replace the the shorthand offset with a full version.
+
+    The formatted date will be added as a new '_formatted_temporal_extent' field.
+
+    E.g.
+    - '2009-04-26/2020-05-06' will become '2009 - 2020'
+    - '2009-04-26/..' will become '2009 - ..'
+
+    :type project: dict
+    :param project: a project
+    :rtype: dict
+    :return: project with a '_formatted_temporal_extent' field
+    """
+    if project["fields"]["Duration"] == "Open Ended":
+        project["fields"]["_formatted_temporal_extent"] = ".. - .."
+        return project
+
+    _temporal_extent: Dict[str, str] = {"start": "", "end": ".."}
+    if project["fields"]["Duration"] == "Fixed Term":
+        temporal_extent: List[str] = str(project["fields"]["Temporal Extent"]).split(
+            "/"
+        )
+        temporal_extent[0] = temporal_extent[0].replace("Z", "+00:00")
+        _temporal_extent["start"] = str(datetime.fromisoformat(temporal_extent[0]).year)
+        if temporal_extent[1] != "..":
+            temporal_extent[1] = temporal_extent[1].replace("Z", "+00:00")
+            _temporal_extent["end"] = str(
+                datetime.fromisoformat(temporal_extent[1]).year
+            )
+
+        project["fields"][
+            "_formatted_temporal_extent"
+        ] = f"{_temporal_extent['start']} - {_temporal_extent['end']}"
+
+    return project
 
 
 def group_people_by_project_roles(roles: list, people: dict) -> dict:

@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 * Ungrouped projects list (shown by default)
   [#44](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues/44)
+* Initial temporal extent support for projects (years only)
+  [#26](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues/26)
 
 ### Changed
 
