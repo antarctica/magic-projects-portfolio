@@ -103,7 +103,7 @@
                                     {% else %}
                                         <i class="far fa-fw fa-external-link" aria-hidden="true"></i>
                                     {% endif %}
-                                    <a href="{{ link.fields.Link }}">{{ link.fields.Title }}</a>
+                                    <a href="{{ link.fields.URL }}">{{ link.fields.Title }}</a>
                                     <a class="bsk-pull-right"
                                        href="{{ url_for('delete_project_link', link_id=link.id) }}"><i
                                             class="far fa-fw fa-unlink bsk-text-danger" aria-hidden="true"></i></a>

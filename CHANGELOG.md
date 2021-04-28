@@ -16,6 +16,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 * Initial temporal extent support for projects (years only)
   [#26](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues/26)
 
+### Fixed
+
+* Incorrect field used for project link URLs (preventing them from working)
+  [#49](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues/49)
+
 ### Changed
 
 * Application session changed to 12 hours (from indefinite)
