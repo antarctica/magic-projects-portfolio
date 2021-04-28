@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+* Ungrouped projects list (shown by default)
+  [#44](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues/44)
+
 ## [0.2.0] - 2021-04-21
 
 ### Added

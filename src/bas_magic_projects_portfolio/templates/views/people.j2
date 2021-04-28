@@ -6,8 +6,9 @@
             These are the things we're working on grouped by
             <strong>Person</strong>
             (View by
-            <a href="{{ url_for('all_projects', group_property='strategic-objectives') }}">Strategic Objectives</a>,
-            <a href="{{ url_for('all_projects', group_property='activity-areas') }}">Activity Areas</a>)
+            <a href="{{ url_for('all_projects_grouped', group_property='strategic-objectives') }}">Strategic Objectives</a>,
+            <a href="{{ url_for('all_projects_grouped', group_property='activity-areas') }}">Activity Areas</a>,
+            or <a href="{{ url_for('all_projects') }}">Ungrouped</a>)
             <a class="bsk-btn bsk-btn-success bsk-pull-right" href="{{ url_for('add_project') }}" target="_blank">
                 <i class="far fa-fw fa-plus" aria-hidden="true"></i> Add Project
             </a>
