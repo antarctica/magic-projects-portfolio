@@ -3,14 +3,18 @@
 {% block app_main_content %}
     <header>
         <div class="bsk-alert bsk-alert-info bsk-alert-highlight">
-            These are the things we're working on grouped by
-            <strong>{{ group_property | replace('-', ' ') | title }}</strong>
+            These are the things we're working on
+            {% if group_property != 'status' %}
+                grouped by
+                <strong>{{ group_property | replace('-', ' ') | title }}</strong>
+            {% endif %}
+
             (View by
             {% if group_property != 'strategic-objectives' %}
-                <a href="{{ url_for('all_projects', group_property='strategic-objectives') }}">Strategic Objectives</a>,
+                <a href="{{ url_for('all_projects_grouped', group_property='strategic-objectives') }}">Strategic Objectives</a>,
             {% endif %}
             {% if group_property != 'activity-areas' %}
-              <a href="{{ url_for('all_projects', group_property='activity-areas') }}">Activity Areas</a>,
+              <a href="{{ url_for('all_projects_grouped', group_property='activity-areas') }}">Activity Areas</a>,
             {% endif %}
             <a href="{{ url_for('all_projects_by_person') }}">People</a>)
             <a class="bsk-btn bsk-btn-success bsk-pull-right" href="{{ url_for('add_project') }}" target="_blank">
@@ -59,58 +63,107 @@
         </div>
     </section>
 
-    {% for grouped_property_value, grouped_property_projects in projects.items() %}
-        {% if grouped_property_projects %}
-        <section>
-            <h2 class="bsk-page-header app-project-group-page-header">{% if grouped_property_value == 'none' %}
-                (Unknown){% else %}{{ grouped_property_value }}{% endif %}</h2>
-            <div class="bsk-container-fluid app-status-grid">
-                <div class="bsk-row">
-                    <div class="bsk-col-24-md-4 app-status-lane app-status-wrapper app-status-proposed">
-                        {% for project in grouped_property_projects.proposed %}
-                            <div class="app-project">
-                                <a href="{{ url_for('single_project', project_id=project.id) }}">{{ project.fields.Title }}</a>
-                            </div>
-                        {% endfor %}
-                    </div>
-                    <div class="bsk-col-24-md-4 app-status-wrapper app-status-lane app-status-under-development">
-                        {% for project in grouped_property_projects.under_development %}
-                            <div class="app-project">
-                                <a href="{{ url_for('single_project', project_id=project.id) }}">{{ project.fields.Title }}</a>
-                            </div>
-                        {% endfor %}
-                    </div>
-                    <div class="bsk-col-24-md-4 app-status-wrapper app-status-lane app-status-on-going">
-                        {% for project in grouped_property_projects.on_going %}
-                            <div class="app-project">
-                                <a href="{{ url_for('single_project', project_id=project.id) }}">{{ project.fields.Title }}</a>
-                            </div>
-                        {% endfor %}
-                    </div>
-                    <div class="bsk-col-24-md-4 app-status-wrapper app-status-lane app-status-complete">
-                        {% for project in grouped_property_projects.complete %}
-                            <div class="app-project">
-                                <a href="{{ url_for('single_project', project_id=project.id) }}">{{ project.fields.Title }}</a>
-                            </div>
-                        {% endfor %}
-                    </div>
-                    <div class="bsk-col-24-md-4 app-status-wrapper app-status-historical-archive">
-                        {% for project in grouped_property_projects.historical_archive %}
-                            <div class="app-project">
-                                <a href="{{ url_for('single_project', project_id=project.id) }}">{{ project.fields.Title }}</a>
-                            </div>
-                        {% endfor %}
-                    </div>
-                    <div class="bsk-col-24-md-4 app-status-wrapper app-duration-lane app-status-open-ended">
-                        {% for project in grouped_property_projects.open_ended %}
-                            <div class="app-project">
-                                <a href="{{ url_for('single_project', project_id=project.id) }}">{{ project.fields.Title }}</a>
-                            </div>
-                        {% endfor %}
-                    </div>
+    {% if group_property == 'status' %}
+        <div class="bsk-container-fluid app-status-grid">
+            <div class="bsk-row">
+                <div class="bsk-col-24-md-4 app-status-lane app-status-wrapper app-status-proposed">
+                    {% for project in projects.proposed %}
+                        <div class="app-project">
+                            <a href="{{ url_for('single_project', project_id=project.id) }}">{{ project.fields.Title }}</a>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="bsk-col-24-md-4 app-status-wrapper app-status-lane app-status-under-development">
+                    {% for project in projects.under_development %}
+                        <div class="app-project">
+                            <a href="{{ url_for('single_project', project_id=project.id) }}">{{ project.fields.Title }}</a>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="bsk-col-24-md-4 app-status-wrapper app-status-lane app-status-on-going">
+                    {% for project in projects.on_going %}
+                        <div class="app-project">
+                            <a href="{{ url_for('single_project', project_id=project.id) }}">{{ project.fields.Title }}</a>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="bsk-col-24-md-4 app-status-wrapper app-status-lane app-status-complete">
+                    {% for project in projects.complete %}
+                        <div class="app-project">
+                            <a href="{{ url_for('single_project', project_id=project.id) }}">{{ project.fields.Title }}</a>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="bsk-col-24-md-4 app-status-wrapper app-status-historical-archive">
+                    {% for project in projects.historical_archive %}
+                        <div class="app-project">
+                            <a href="{{ url_for('single_project', project_id=project.id) }}">{{ project.fields.Title }}</a>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="bsk-col-24-md-4 app-status-wrapper app-duration-lane app-status-open-ended">
+                    {% for project in projects.open_ended %}
+                        <div class="app-project">
+                            <a href="{{ url_for('single_project', project_id=project.id) }}">{{ project.fields.Title }}</a>
+                        </div>
+                    {% endfor %}
                 </div>
             </div>
-        </section>
-        {% endif %}
-    {% endfor %}
+        </div>
+    {% else %}
+        {% for grouped_property_value, grouped_property_projects in projects.items() %}
+            {% if grouped_property_projects %}
+            <section>
+                <h2 class="bsk-page-header app-project-group-page-header">{% if grouped_property_value == 'none' %}
+                    (Unknown){% else %}{{ grouped_property_value }}{% endif %}</h2>
+                <div class="bsk-container-fluid app-status-grid">
+                    <div class="bsk-row">
+                        <div class="bsk-col-24-md-4 app-status-lane app-status-wrapper app-status-proposed">
+                            {% for project in grouped_property_projects.proposed %}
+                                <div class="app-project">
+                                    <a href="{{ url_for('single_project', project_id=project.id) }}">{{ project.fields.Title }}</a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="bsk-col-24-md-4 app-status-wrapper app-status-lane app-status-under-development">
+                            {% for project in grouped_property_projects.under_development %}
+                                <div class="app-project">
+                                    <a href="{{ url_for('single_project', project_id=project.id) }}">{{ project.fields.Title }}</a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="bsk-col-24-md-4 app-status-wrapper app-status-lane app-status-on-going">
+                            {% for project in grouped_property_projects.on_going %}
+                                <div class="app-project">
+                                    <a href="{{ url_for('single_project', project_id=project.id) }}">{{ project.fields.Title }}</a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="bsk-col-24-md-4 app-status-wrapper app-status-lane app-status-complete">
+                            {% for project in grouped_property_projects.complete %}
+                                <div class="app-project">
+                                    <a href="{{ url_for('single_project', project_id=project.id) }}">{{ project.fields.Title }}</a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="bsk-col-24-md-4 app-status-wrapper app-status-historical-archive">
+                            {% for project in grouped_property_projects.historical_archive %}
+                                <div class="app-project">
+                                    <a href="{{ url_for('single_project', project_id=project.id) }}">{{ project.fields.Title }}</a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="bsk-col-24-md-4 app-status-wrapper app-duration-lane app-status-open-ended">
+                            {% for project in grouped_property_projects.open_ended %}
+                                <div class="app-project">
+                                    <a href="{{ url_for('single_project', project_id=project.id) }}">{{ project.fields.Title }}</a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </section>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
 {% endblock %}

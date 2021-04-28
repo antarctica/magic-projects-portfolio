@@ -95,9 +95,12 @@ def configure_bas_style_kit_templates() -> BskTemplates:
     return bsk_templates
 
 
-def group_projects(projects: list, group_property: str) -> dict:
+def group_projects(projects: list, group_property: str) -> dict:  # noqa: C901
     """
     Group a set of projects by a common property.
+
+    Note: This function is (rightly) flagged as too complex due to the number of branches etc.
+    It needs to be refactored once we know what it needs to do.
 
     :type projects: list
     :param projects: collection of projects to group
@@ -109,11 +112,21 @@ def group_projects(projects: list, group_property: str) -> dict:
     group_properties = {
         "strategic-objectives": "Strategic Objectives",
         "activity-areas": "Activity Areas",
+        "status": "_status",
     }
     grouped_projects = {"none": []}
 
     for project in projects:
         try:
+            if group_property == "status":
+                project["fields"]["_status"] = None
+                if project["fields"]["Duration"] == "Fixed Term":
+                    project["fields"]["_status"] = (
+                        str(project["fields"]["Status"]).lower().replace(" ", "_")
+                    )
+                elif project["fields"]["Duration"] == "Open Ended":
+                    project["fields"]["_status"] = "open_ended"
+
             if isinstance(project["fields"][group_properties[group_property]], str):
                 if (
                     project["fields"][group_properties[group_property]]
@@ -306,14 +319,13 @@ def grid_projects(projects: list, group_property: str) -> dict:
     :rtype: dict
     :return: projects grouped by status and common property
     """
-    for project in projects:
-        project["fields"]["_status"] = None
-        if project["fields"]["Duration"] == "Fixed Term":
-            project["fields"]["_status"] = (
-                str(project["fields"]["Status"]).lower().replace(" ", "_")
-            )
-        elif project["fields"]["Duration"] == "Open Ended":
-            project["fields"]["_status"] = "open_ended"
+    projects_grouped_by_status = group_projects(
+        projects=projects, group_property="status"
+    )
+    projects = []
+    for project_status in projects_grouped_by_status.values():
+        for project in project_status:
+            projects.append(project)
 
     grouped_projects = group_projects(projects=projects, group_property=group_property)
 

@@ -17,6 +17,7 @@ from bas_magic_projects_portfolio.utils import (
     grid_people,
     grid_projects,
     group_people_by_project_roles,
+    group_projects,
     index_people,
 )
 
@@ -91,7 +92,7 @@ def index() -> Response:
     :rtype: Response
     :return: Redirect back to all projects list
     """
-    return redirect(url_for("all_projects", group_property="strategic-objectives"))
+    return redirect(url_for("all_projects"))
 
 
 @app.route("/people")
@@ -125,9 +126,9 @@ def all_projects_by_person() -> FlaskResponseType:
 
 
 @app.route("/projects/-/group/<string:group_property>")
-def all_projects(group_property: str) -> FlaskResponseType:
+def all_projects_grouped(group_property: str) -> FlaskResponseType:
     """
-    Show all projects page (authenticated).
+    Show all projects grouped by property page (authenticated).
 
     Projects are loaded from Airtable and grouped by a shared property.
 
@@ -156,6 +157,37 @@ def all_projects(group_property: str) -> FlaskResponseType:
     )
 
 
+@app.route("/projects")
+def all_projects() -> FlaskResponseType:
+    """
+    Show all projects page (authenticated).
+
+    Projects are loaded from Airtable.
+
+    Requires the 'BAS.MAGIC.Portfolio.Projects.Read.All' role.
+
+    :rtype: FlaskResponseType
+    :return: Jinja view or redirect
+    """
+    if not session.get("user"):
+        return redirect(url_for("auth_sign_in"))
+    if not check_permissions(required_roles=["BAS.MAGIC.Portfolio.Projects.Read.All"]):
+        # noinspection PyUnresolvedReferences
+        return render_template("app/views/auth/403-permissions.j2")
+
+    group_property: str = "status"
+    projects = airtable_projects.get_all()
+
+    # noinspection PyUnresolvedReferences
+    return render_template(
+        "app/views/projects.j2",
+        projects=group_projects(projects=projects, group_property=group_property),
+        projects_total=len(projects),
+        group_property=group_property,
+        user=session.get("user"),
+    )
+
+
 @app.route("/projects/add")
 def add_project() -> redirect:
     """
@@ -170,7 +202,7 @@ def add_project() -> redirect:
     """
     if not check_permissions(required_roles=["BAS.MAGIC.Portfolio.Projects.Write.All"]):
         flash("You do not have permission to add projects", "danger")
-        return redirect(url_for("all_projects", group_property="strategic-objectives"))
+        return redirect(url_for("all_projects"))
 
     return redirect("https://airtable.com/shraeffFV5201B3zn")
 
@@ -200,7 +232,7 @@ def delete_project(project_id: str) -> redirect:
 
     airtable_projects.delete(record_id=project_id)
     flash(f"Project '{project['fields']['Title']}' removed successfully", "success")
-    return redirect(url_for("all_projects", group_property="strategic-objectives"))
+    return redirect(url_for("all_projects"))
 
 
 @app.route("/project-roles/<string:project_id>/add")
