@@ -93,6 +93,10 @@
   border-left-color: #2B8CC4;
 }
 
+.app-project-progress {
+  margin-bottom: 30px;
+}
+
 .app-project-details .app-project-status .app-status-proposed {
   color: #2E358B;
 }

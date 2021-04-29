@@ -11,9 +11,16 @@
     <div class="bsk-row">
         <div class="bsk-col-12-md-8">
             <p class="bsk-lead">{{ project.fields.Description }}</p>
-            <p><mark>What goes here?</mark></p>
         </div>
     </div>
+    {% if project.fields.Progress %}
+    <div class="bsk-row app-project-progress">
+        <div class="bsk-col-12-md-8">
+            <h2 class="bsk-h4">Current status</h2>
+            <p>{{ project.fields.Progress }}</p>
+        </div>
+    </div>
+    {% endif %}
     <div class="bsk-row">
         <div class="bsk-col-12-md-3">
             <div class="bsk-sidebar bsk-sidebar-default app-project-details">
