@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   [#44](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues/44)
 * Initial temporal extent support for projects (years only)
   [#26](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues/26)
+* Initial progress/status description for projects
+  [#45](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues/45)
 
 ### Fixed
 
