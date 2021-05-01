@@ -86,6 +86,20 @@ def page_not_found(e: Exception) -> FlaskResponseType:
     return render_template("app/views/404.j2"), 404
 
 
+@app.route("/favicon.ico")
+def favicon() -> redirect:
+    """
+    Redirect requests for local favicon to BAS Style Kit.
+
+    :rtype: redirect
+    :return: Redirect to BAS Style Kit favicon
+    """
+    return redirect(
+        "https://cdn.web.bas.ac.uk/bas-style-kit/0.6.1/img/favicon/favicon.ico",
+        code=301,
+    )
+
+
 @app.route("/")
 def index() -> Response:
     """
