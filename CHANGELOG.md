@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+* Added a favicon route to prevent browser errors
+  [#57](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues/57)
 * Multiple activity areas and strategic objectives now aligned in project details
   [#56](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues/56)
 * Sections/boxes in the project details use an equal height
