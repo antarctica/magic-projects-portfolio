@@ -13,7 +13,7 @@
             <p class="bsk-lead">{{ project.fields.Description }}</p>
         </div>
     </div>
-    {% if project.fields.Progress %}
+    {% if project.fields.Progress and project.fields.Progress != '\n' %}
     <div class="bsk-row app-project-progress">
         <div class="bsk-col-12-md-8">
             <h2 class="bsk-h4">Current status</h2>
