@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+* Columns in the Projects grid now extend to an even height
+  [#55](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues/55)
 * Project progress (status) being shown when blank
   [#51](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues/51)
 

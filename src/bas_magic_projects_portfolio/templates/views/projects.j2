@@ -22,92 +22,83 @@
             </a>
         </div>
     </header>
-    <section class="bsk-container-fluid app-status-grid">
-        <div class="bsk-row">
-            <div class="bsk-col-24-md-4 app-status-wrapper app-status-proposed">
-                <header>
-                    <i class="far fa-fw fa-lightbulb" aria-hidden="true"></i>
-                    Idea/Concept
-                </header>
-            </div>
-            <div class="bsk-col-24-md-4 app-status-wrapper app-status-under-development">
-                <header>
-                    <i class="far fa-fw fa-pencil-paintbrush" aria-hidden="true"></i>
-                    Under Development
-                </header>
-            </div>
-            <div class="bsk-col-24-md-4 app-status-wrapper app-status-on-going">
-                <header>
-                    <i class="far fa-fw fa-cog fa-spin" aria-hidden="true"></i>
-                    Active
-                </header>
-            </div>
-            <div class="bsk-col-24-md-4 app-status-wrapper app-status-complete">
-                <header>
-                    <i class="far fa-fw fa-check" aria-hidden="true"></i>
-                    Completed
-                </header>
-            </div>
-            <div class="bsk-col-24-md-4 app-status-wrapper app-status-historical-archive">
-                <header>
-                    <i class="far fa-fw fa-boxes-alt" aria-hidden="true"></i>
-                    Archived
-                </header>
-            </div>
-            <div class="bsk-col-24-md-4 app-status-wrapper app-status-open-ended">
-                <header>
-                    <i class="far fa-fw fa-redo fa-spin" aria-hidden="true"></i>
-                    Open Ended
-                </header>
-            </div>
+    <section class="app-status-grid">
+        <div class="app-status-header app-status-proposed">
+
+                <i class="far fa-fw fa-lightbulb" aria-hidden="true"></i>
+                Idea/Concept
+
+        </div>
+        <div class="app-status-header app-status-under-development">
+                <i class="far fa-fw fa-pencil-paintbrush" aria-hidden="true"></i>
+                Under Development
+
+        </div>
+        <div class="app-status-header app-status-on-going">
+                <i class="far fa-fw fa-cog fa-spin" aria-hidden="true"></i>
+                Active
+
+        </div>
+        <div class="app-status-header app-status-complete">
+                <i class="far fa-fw fa-check" aria-hidden="true"></i>
+                Completed
+
+        </div>
+        <div class="app-status-header app-status-historical-archive">
+                <i class="far fa-fw fa-boxes-alt" aria-hidden="true"></i>
+                Archived
+
+        </div>
+        <div class="app-status-header app-status-open-ended">
+                <i class="far fa-fw fa-redo fa-spin" aria-hidden="true"></i>
+                Open Ended
+
         </div>
     </section>
 
     {% if group_property == 'status' %}
-        <div class="bsk-container-fluid app-status-grid">
-            <div class="bsk-row">
-                <div class="bsk-col-24-md-4 app-status-lane app-status-wrapper app-status-proposed">
-                    {% for project in projects.proposed %}
-                        <div class="app-project">
-                            <a href="{{ url_for('single_project', project_id=project.id) }}">{{ project.fields.Title }}</a>
-                        </div>
-                    {% endfor %}
-                </div>
-                <div class="bsk-col-24-md-4 app-status-wrapper app-status-lane app-status-under-development">
-                    {% for project in projects.under_development %}
-                        <div class="app-project">
-                            <a href="{{ url_for('single_project', project_id=project.id) }}">{{ project.fields.Title }}</a>
-                        </div>
-                    {% endfor %}
-                </div>
-                <div class="bsk-col-24-md-4 app-status-wrapper app-status-lane app-status-on-going">
-                    {% for project in projects.on_going %}
-                        <div class="app-project">
-                            <a href="{{ url_for('single_project', project_id=project.id) }}">{{ project.fields.Title }}</a>
-                        </div>
-                    {% endfor %}
-                </div>
-                <div class="bsk-col-24-md-4 app-status-wrapper app-status-lane app-status-complete">
-                    {% for project in projects.complete %}
-                        <div class="app-project">
-                            <a href="{{ url_for('single_project', project_id=project.id) }}">{{ project.fields.Title }}</a>
-                        </div>
-                    {% endfor %}
-                </div>
-                <div class="bsk-col-24-md-4 app-status-wrapper app-status-historical-archive">
-                    {% for project in projects.historical_archive %}
-                        <div class="app-project">
-                            <a href="{{ url_for('single_project', project_id=project.id) }}">{{ project.fields.Title }}</a>
-                        </div>
-                    {% endfor %}
-                </div>
-                <div class="bsk-col-24-md-4 app-status-wrapper app-duration-lane app-status-open-ended">
-                    {% for project in projects.open_ended %}
-                        <div class="app-project">
-                            <a href="{{ url_for('single_project', project_id=project.id) }}">{{ project.fields.Title }}</a>
-                        </div>
-                    {% endfor %}
-                </div>
+        <div class="app-status-grid">
+            <div class="app-status-wrapper app-status-proposed">
+                {% for project in projects.proposed %}
+                    <div class="app-project">
+                        <a href="{{ url_for('single_project', project_id=project.id) }}">{{ project.fields.Title }}</a>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="app-status-wrapper app-status-under-development">
+                {% for project in projects.under_development %}
+                    <div class="app-project">
+                        <a href="{{ url_for('single_project', project_id=project.id) }}">{{ project.fields.Title }}</a>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="app-status-wrapper app-status-on-going">
+                {% for project in projects.on_going %}
+                    <div class="app-project">
+                        <a href="{{ url_for('single_project', project_id=project.id) }}">{{ project.fields.Title }}</a>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="app-status-wrapper app-status-complete">
+                {% for project in projects.complete %}
+                    <div class="app-project">
+                        <a href="{{ url_for('single_project', project_id=project.id) }}">{{ project.fields.Title }}</a>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="app-status-wrapper app-status-historical-archive">
+                {% for project in projects.historical_archive %}
+                    <div class="app-project">
+                        <a href="{{ url_for('single_project', project_id=project.id) }}">{{ project.fields.Title }}</a>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="app-status-wrapper app-status-open-ended">
+                {% for project in projects.open_ended %}
+                    <div class="app-project">
+                        <a href="{{ url_for('single_project', project_id=project.id) }}">{{ project.fields.Title }}</a>
+                    </div>
+                {% endfor %}
             </div>
         </div>
     {% else %}
@@ -116,50 +107,48 @@
             <section>
                 <h2 class="bsk-page-header app-project-group-page-header">{% if grouped_property_value == 'none' %}
                     (Unknown){% else %}{{ grouped_property_value }}{% endif %}</h2>
-                <div class="bsk-container-fluid app-status-grid">
-                    <div class="bsk-row">
-                        <div class="bsk-col-24-md-4 app-status-lane app-status-wrapper app-status-proposed">
-                            {% for project in grouped_property_projects.proposed %}
-                                <div class="app-project">
-                                    <a href="{{ url_for('single_project', project_id=project.id) }}">{{ project.fields.Title }}</a>
-                                </div>
-                            {% endfor %}
-                        </div>
-                        <div class="bsk-col-24-md-4 app-status-wrapper app-status-lane app-status-under-development">
-                            {% for project in grouped_property_projects.under_development %}
-                                <div class="app-project">
-                                    <a href="{{ url_for('single_project', project_id=project.id) }}">{{ project.fields.Title }}</a>
-                                </div>
-                            {% endfor %}
-                        </div>
-                        <div class="bsk-col-24-md-4 app-status-wrapper app-status-lane app-status-on-going">
-                            {% for project in grouped_property_projects.on_going %}
-                                <div class="app-project">
-                                    <a href="{{ url_for('single_project', project_id=project.id) }}">{{ project.fields.Title }}</a>
-                                </div>
-                            {% endfor %}
-                        </div>
-                        <div class="bsk-col-24-md-4 app-status-wrapper app-status-lane app-status-complete">
-                            {% for project in grouped_property_projects.complete %}
-                                <div class="app-project">
-                                    <a href="{{ url_for('single_project', project_id=project.id) }}">{{ project.fields.Title }}</a>
-                                </div>
-                            {% endfor %}
-                        </div>
-                        <div class="bsk-col-24-md-4 app-status-wrapper app-status-historical-archive">
-                            {% for project in grouped_property_projects.historical_archive %}
-                                <div class="app-project">
-                                    <a href="{{ url_for('single_project', project_id=project.id) }}">{{ project.fields.Title }}</a>
-                                </div>
-                            {% endfor %}
-                        </div>
-                        <div class="bsk-col-24-md-4 app-status-wrapper app-duration-lane app-status-open-ended">
-                            {% for project in grouped_property_projects.open_ended %}
-                                <div class="app-project">
-                                    <a href="{{ url_for('single_project', project_id=project.id) }}">{{ project.fields.Title }}</a>
-                                </div>
-                            {% endfor %}
-                        </div>
+                <div class="app-status-grid">
+                    <div class="app-status-wrapper app-status-proposed">
+                        {% for project in grouped_property_projects.proposed %}
+                            <div class="app-project">
+                                <a href="{{ url_for('single_project', project_id=project.id) }}">{{ project.fields.Title }}</a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="app-status-wrapper app-status-under-development">
+                        {% for project in grouped_property_projects.under_development %}
+                            <div class="app-project">
+                                <a href="{{ url_for('single_project', project_id=project.id) }}">{{ project.fields.Title }}</a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="app-status-wrapper app-status-on-going">
+                        {% for project in grouped_property_projects.on_going %}
+                            <div class="app-project">
+                                <a href="{{ url_for('single_project', project_id=project.id) }}">{{ project.fields.Title }}</a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="app-status-wrapper app-status-complete">
+                        {% for project in grouped_property_projects.complete %}
+                            <div class="app-project">
+                                <a href="{{ url_for('single_project', project_id=project.id) }}">{{ project.fields.Title }}</a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="app-status-wrapper app-status-historical-archive">
+                        {% for project in grouped_property_projects.historical_archive %}
+                            <div class="app-project">
+                                <a href="{{ url_for('single_project', project_id=project.id) }}">{{ project.fields.Title }}</a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="app-status-wrapper app-status-open-ended">
+                        {% for project in grouped_property_projects.open_ended %}
+                            <div class="app-project">
+                                <a href="{{ url_for('single_project', project_id=project.id) }}">{{ project.fields.Title }}</a>
+                            </div>
+                        {% endfor %}
                     </div>
                 </div>
             </section>
