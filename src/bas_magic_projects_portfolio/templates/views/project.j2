@@ -21,155 +21,160 @@
         </div>
     </div>
     {% endif %}
-    <div class="bsk-row">
-        <div class="bsk-col-12-md-3">
-            <div class="bsk-sidebar bsk-sidebar-default app-project-details">
-                <dl class="bsk-dl-lg">
-                    <dt>Project Duration</dt>
-                    <dd>
-                        {% if project.fields.Duration == 'Open Ended' %}
-                            <i class="far fa-fw fa-redo fa-spin" aria-hidden="true"></i>
-                        {% elif project.fields.Duration == 'Fixed Term' %}
-                            <i class="far fa-fw fa-tachometer-average" aria-hidden="true"></i>
-                        {% endif %}
-                        {{ project.fields.Duration }}
-                        {% if project.fields.Duration == 'Fixed Term' %}
-                            ({{ project.fields._formatted_temporal_extent }})
+    <div class="app-project-details">
+        <div class="app-project-details-block bsk-sidebar bsk-sidebar-default">
+            <dl class="bsk-dl-lg">
+                <dt>Project Duration</dt>
+                <dd>
+                    {% if project.fields.Duration == 'Open Ended' %}
+                        <i class="far fa-fw fa-redo fa-spin" aria-hidden="true"></i>
+                    {% elif project.fields.Duration == 'Fixed Term' %}
+                        <i class="far fa-fw fa-tachometer-average" aria-hidden="true"></i>
+                    {% endif %}
+                    {{ project.fields.Duration }}
+                    {% if project.fields.Duration == 'Fixed Term' %}
+                        ({{ project.fields._formatted_temporal_extent }})
+                    {% endif %}
+                </dd>
+                {% if project.fields.Duration == 'Fixed Term' %}
+                    <dt>Project Status</dt>
+                    <dd class="app-project-status">
+                        {% if project.fields.Status == 'Proposed' %}
+                            <i class="far fa-fw fa-lightbulb app-status-proposed" aria-hidden="true"></i>
+                            <span class="app-status-proposed">Idea/Concept</span>
+                        {% elif project.fields.Status == 'Under Development' %}
+                            <i class="far fa-fw fa-pencil-paintbrush app-status-under-development" aria-hidden="true"></i>
+                            <span class="app-status-under-development">Under Development</span>
+                        {% elif project.fields.Status == 'On Going' %}
+                            <i class="far fa-fw fa-cog fa-spin app-status-on-going" aria-hidden="true"></i>
+                            <span class="app-status-on-going">Active</span>
+                        {% elif project.fields.Status == 'Complete' %}
+                            <i class="far fa-fw fa-check app-status-complete" aria-hidden="true"></i>
+                            <span class="app-status-complete">Completed</span>
+                        {% elif project.fields.Status == 'Historical Archive' %}
+                            <i class="far fa-fw fa-boxes-alt app-status-historical-archive" aria-hidden="true"></i>
+                            <span class="app-status-historical-archive">Archived</span>
                         {% endif %}
                     </dd>
-                    {% if project.fields.Duration == 'Fixed Term' %}
-                        <dt>Project Status</dt>
-                        <dd class="app-project-status">
-                            {% if project.fields.Status == 'Proposed' %}
-                                <i class="far fa-fw fa-lightbulb app-status-proposed" aria-hidden="true"></i>
-                                <span class="app-status-proposed">Idea/Concept</span>
-                            {% elif project.fields.Status == 'Under Development' %}
-                                <i class="far fa-fw fa-pencil-paintbrush app-status-under-development" aria-hidden="true"></i>
-                                <span class="app-status-under-development">Under Development</span>
-                            {% elif project.fields.Status == 'On Going' %}
-                                <i class="far fa-fw fa-cog fa-spin app-status-on-going" aria-hidden="true"></i>
-                                <span class="app-status-on-going">Active</span>
-                            {% elif project.fields.Status == 'Complete' %}
-                                <i class="far fa-fw fa-check app-status-complete" aria-hidden="true"></i>
-                                <span class="app-status-complete">Completed</span>
-                            {% elif project.fields.Status == 'Historical Archive' %}
-                                <i class="far fa-fw fa-boxes-alt app-status-historical-archive" aria-hidden="true"></i>
-                                <span class="app-status-historical-archive">Archived</span>
-                            {% endif %}
-                        </dd>
-                    {% endif %}
-                    {% if project_roles.principal_investigator | length == 1 %}
-                        <dt>Project Lead</dt>
+                {% endif %}
+                {% if project_roles.principal_investigator | length == 1 %}
+                    <dt>Project Lead</dt>
+                    <dd>
+                        <i class="far fa-fw fa-user-crown" aria-hidden="true"></i>
+                        {{ project_roles.principal_investigator[0].person.fields['Name'] }}
+                    </dd>
+                {% elif project_roles.principal_investigator | length > 1 %}
+                    <dt>Project Leads</dt>
+                    {% for pi in project_roles.principal_investigator %}
                         <dd>
                             <i class="far fa-fw fa-user-crown" aria-hidden="true"></i>
-                            {{ project_roles.principal_investigator[0].person.fields['Name'] }}
+                            {{ pi.person.fields['Name'] }}
                         </dd>
-                    {% elif project_roles.principal_investigator | length > 1 %}
-                        <dt>Project Leads</dt>
-                        {% for pi in project_roles.principal_investigator %}
-                            <dd>
-                                <i class="far fa-fw fa-user-crown" aria-hidden="true"></i>
-                                {{ pi.person.fields['Name'] }}
-                            </dd>
-                        {% endfor %}
-                    {% else %}
-                        <dt>Project Lead</dt>
+                    {% endfor %}
+                {% else %}
+                    <dt>Project Lead</dt>
+                    <dd>
+                        <a href="{{ url_for('add_project_role', project_id=project.id) }}" target="_blank">
+                            <i class="far fa-fw fa-user-plus" aria-hidden="true"></i>
+                            Set Project Lead
+                        </a>
+                    </dd>
+                {% endif %}
+                {% if project_roles.co_investigator | length > 0 %}
+                    <dt>Project Members</dt>
+                    {% for co_i in project_roles.co_investigator %}
                         <dd>
-                            <a href="{{ url_for('add_project_role', project_id=project.id) }}" target="_blank">
-                                <i class="far fa-fw fa-user-plus" aria-hidden="true"></i>
-                                Set Project Lead
-                            </a>
+                            <i class="far fa-fw fa-user" aria-hidden="true"></i>
+                            {{ co_i.person.fields['Name'] }}
                         </dd>
-                    {% endif %}
-                    {% if project_roles.co_investigator | length > 0 %}
-                        <dt>Project Members</dt>
-                        {% for co_i in project_roles.co_investigator %}
-                            <dd>
-                                <i class="far fa-fw fa-user" aria-hidden="true"></i>
-                                {{ co_i.person.fields['Name'] }}
-                            </dd>
+                    {% endfor %}
+                {% endif %}
+            </dl>
+        </div>
+
+        <div class="app-project-details-block bsk-sidebar bsk-sidebar-default">
+            <dl class="bsk-dl-lg">
+                {% if project_links | length > 0 %}
+                    <dt>Links</dt>
+                    <dd>
+                        {% for link in project_links %}
+                            <div>
+                                {% if link.fields.Type == 'Self' %}
+                                    <i class="far fa-fw fa-globe" aria-hidden="true"></i>
+                                {% elif link.fields.Type == 'BAS GitLab' %}
+                                    <i class="fab fa-fw fa-gitlab" aria-hidden="true"></i>
+                                {% elif link.fields.Type == 'GitHub' %}
+                                    <i class="fab fa-fw fa-github" aria-hidden="true"></i>
+                                {% else %}
+                                    <i class="far fa-fw fa-external-link" aria-hidden="true"></i>
+                                {% endif %}
+                                <a href="{{ link.fields.URL }}">{{ link.fields.Title }}</a>
+                                <a class="bsk-pull-right"
+                                   href="{{ url_for('delete_project_link', link_id=link.id) }}"><i
+                                        class="far fa-fw fa-unlink bsk-text-danger" aria-hidden="true"></i></a>
+                            </div>
                         {% endfor %}
-                    {% endif %}
-                </dl>
-            </div>
+                    </dd>
+                {% endif %}
+            </dl>
         </div>
-        <div class="bsk-col-12-md-3">
-            <div class="bsk-sidebar bsk-sidebar-default app-project-details">
-                <dl class="bsk-dl-lg">
-                    {% if project_links | length > 0 %}
-                        <dt>Links</dt>
-                        <dd>
-                            {% for link in project_links %}
-                                <div>
-                                    {% if link.fields.Type == 'Self' %}
-                                        <i class="far fa-fw fa-globe" aria-hidden="true"></i>
-                                    {% elif link.fields.Type == 'BAS GitLab' %}
-                                        <i class="fab fa-fw fa-gitlab" aria-hidden="true"></i>
-                                    {% elif link.fields.Type == 'GitHub' %}
-                                        <i class="fab fa-fw fa-github" aria-hidden="true"></i>
-                                    {% else %}
-                                        <i class="far fa-fw fa-external-link" aria-hidden="true"></i>
-                                    {% endif %}
-                                    <a href="{{ link.fields.URL }}">{{ link.fields.Title }}</a>
-                                    <a class="bsk-pull-right"
-                                       href="{{ url_for('delete_project_link', link_id=link.id) }}"><i
-                                            class="far fa-fw fa-unlink bsk-text-danger" aria-hidden="true"></i></a>
-                                </div>
-                            {% endfor %}
-                        </dd>
-                    {% endif %}
-                </dl>
-            </div>
-        </div>
-        <div class="bsk-col-12-md-3">
-            <div class="bsk-sidebar bsk-sidebar-default app-project-details">
-                <dl class="bsk-dl-lg">
-                    <dt>Strategic Objectives</dt>
+
+        <div class="app-project-details-block bsk-sidebar bsk-sidebar-default">
+            <dl class="bsk-dl-lg">
+                <dt>Strategic Objectives</dt>
+                <dd>
+                    <ul class="fa-ul">
                     {% for stragetic_objective in project.fields['Strategic Objectives'] %}
-                        <dd>
+                        <li>
                             {% if stragetic_objective == "Support to BAS Operations" %}
-                                <i class="far fa-fw fa-snowplow" aria-hidden="true"></i>
+                                <span class="fa-li"><i class="far fa-fw fa-snowplow" aria-hidden="true"></i></span>
                             {% elif stragetic_objective == "Support to BAS Science" %}
-                                <i class="far fa-fw fa-vial" aria-hidden="true"></i>
+                                <span class="fa-li"><i class="far fa-fw fa-vial" aria-hidden="true"></i></span>
                             {% elif stragetic_objective == "Support to BAS Infrastructure Modernisation" %}
-                                <i class="far fa-fw fa-warehouse-alt" aria-hidden="true"></i>
+                                <span class="fa-li"><i class="far fa-fw fa-warehouse-alt" aria-hidden="true"></i></span>
                             {% elif stragetic_objective == "Support to FCDO" %}
-                                <i class="far fa-fw fa-landmark-alt" aria-hidden="true"></i>
+                                <span class="fa-li"><i class="far fa-fw fa-landmark-alt" aria-hidden="true"></i></span>
                             {% elif stragetic_objective == "Commissioned research & services" %}
-                                <i class="far fa-fw fa-analytics" aria-hidden="true"></i>
+                                <span class="fa-li"><i class="far fa-fw fa-analytics" aria-hidden="true"></i></span>
                             {% elif stragetic_objective == "BAT geospatial Infrastructure" %}
-                                <i class="far fa-fw fa-map-pin" aria-hidden="true"></i>
+                                <span class="fa-li"><i class="far fa-fw fa-map-pin" aria-hidden="true"></i></span>
                             {% elif stragetic_objective == "UK Antarctic geospatial leadership" %}
-                                <i class="far fa-fw fa-flag-alt" aria-hidden="true"></i>
+                                <span class="fa-li"><i class="far fa-fw fa-flag-alt" aria-hidden="true"></i></span>
                             {% endif %}
                             {{ stragetic_objective }}
-                        </dd>
+                        </li>
                     {% endfor %}
-                    <dt>Activity Areas</dt>
-                    {% for activity_area in project.fields['Activity Areas'] %}
-                        <dd>
+                    </ul>
+                </dd>
+                <dt>Activity Areas</dt>
+                <dd>
+                    <ul class="fa-ul">
+                        {% for activity_area in project.fields['Activity Areas'] %}
+                            <li>
                             {% if activity_area == "Remote sensing & EO data access/processing" %}
-                                <i class="far fa-fw fa-satellite" aria-hidden="true"></i>
+                                <span class="fa-li"><i class="far fa-fw fa-satellite" aria-hidden="true"></i></span>
                             {% elif activity_area == "Topographic mapping & cartography" %}
-                                <i class="far fa-fw fa-map" aria-hidden="true"></i>
+                                <span class="fa-li"><i class="far fa-fw fa-map" aria-hidden="true"></i></span>
                             {% elif activity_area == "Survey & geomatics" %}
-                                <i class="far fa-fw fa-ruler" aria-hidden="true"></i>
+                                <span class="fa-li"><i class="far fa-fw fa-ruler" aria-hidden="true"></i></span>
                             {% elif activity_area == "Geospatial web services & applications" %}
-                                <i class="far fa-fw fa-desktop" aria-hidden="true"></i>
+                                <span class="fa-li"><i class="far fa-fw fa-desktop" aria-hidden="true"></i></span>
                             {% elif activity_area == "Operational sea-ice information" %}
-                                <i class="far fa-fw fa-ship" aria-hidden="true"></i>
+                                <span class="fa-li"><i class="far fa-fw fa-ship" aria-hidden="true"></i></span>
                             {% elif activity_area == "Geospatial science projects" %}
-                                <i class="far fa-fw fa-vial" aria-hidden="true"></i>
+                                <span class="fa-li"><i class="far fa-fw fa-vial" aria-hidden="true"></i></span>
                             {% elif activity_area == "Training" %}
-                                <i class="far fa-fw fa-user-graduate" aria-hidden="true"></i>
+                                <span class="fa-li"><i class="far fa-fw fa-user-graduate" aria-hidden="true"></i></span>
                             {% endif %}
                             {{ activity_area }}
-                        </dd>
-                    {% endfor %}
-                </dl>
-            </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </dd>
+            </dl>
         </div>
-        <div class="bsk-col-12-md-3">
+
+        <div class="app-project-details-block">
             {% for link in project_links %}
                 {% if link.fields.Type == 'Self' %}
                     <a class="bsk-btn bsk-btn-block bsk-btn-primary" href="{{ link.fields.URL }}"
