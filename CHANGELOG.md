@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+* Project progress (status) being shown when blank
+  [#51](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues/51)
+
 ## [0.3.0] - 2021-04-29
 
 ### Added
