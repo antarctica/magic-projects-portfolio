@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.3.1] - 2021-05-01
+
 ### Fixed
 
 * Added a favicon route to prevent browser errors
