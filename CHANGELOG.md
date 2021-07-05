@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
+* Re-labelled 'Idea/Concept' column in projects view to 'Proposed'
+  [#68](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues/57)
+
 ## [0.3.1] - 2021-05-01
 
 ### Fixed
