@@ -532,7 +532,7 @@ $ python3 -m pip install bas-magic-projects-portfolio --extra-index-url https://
 
 ### DigitalOcean App Platform (Deployment)
 
-Commits made against the master branch will be mirrored to the
+Commits made against the `main` branch will be mirrored to the
 [GitLab.com mirror repository](#gitlab-mirror-repository). This includes the
 [`requirements.txt`](/provisioning/do-app-platform/requirements.txt) file used to specify which version of the
 application [Application Python Package](#python-package) is installed. This file should be updated as part of each
@@ -555,7 +555,7 @@ For all releases:
 1. close release in `CHANGELOG.md`
 1. bump package version using `poetry version`
 1. update `provisioning/do-app-platform/requirements.txt` to match package version
-1. push changes, merge the release branch into `master` and tag with version
+1. push changes, merge the release branch into `main` and tag with version
 
 ## Feedback
 
