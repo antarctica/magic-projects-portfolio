@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 
+* Hiding 'Open Ended' column in projects view
+  [#69](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues/69)
 * Re-labelled 'Idea/Concept' column in projects view to 'Proposed'
   [#68](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues/68)
 

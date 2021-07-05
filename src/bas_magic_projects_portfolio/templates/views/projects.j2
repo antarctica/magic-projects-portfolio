@@ -38,9 +38,6 @@
         <div class="app-status-header app-status-historical-archive">
                 <i class="far fa-fw fa-boxes-alt" aria-hidden="true"></i> Archived
         </div>
-        <div class="app-status-header app-status-open-ended">
-                <i class="far fa-fw fa-redo fa-spin" aria-hidden="true"></i> Open Ended
-        </div>
     </section>
 
     {% if group_property == 'status' %}
@@ -75,13 +72,6 @@
             </div>
             <div class="app-status-wrapper app-status-historical-archive">
                 {% for project in projects.historical_archive %}
-                    <div class="app-project">
-                        <a href="{{ url_for('single_project', project_id=project.id) }}">{{ project.fields.Title }}</a>
-                    </div>
-                {% endfor %}
-            </div>
-            <div class="app-status-wrapper app-status-open-ended">
-                {% for project in projects.open_ended %}
                     <div class="app-project">
                         <a href="{{ url_for('single_project', project_id=project.id) }}">{{ project.fields.Title }}</a>
                     </div>
@@ -125,13 +115,6 @@
                     </div>
                     <div class="app-status-wrapper app-status-historical-archive">
                         {% for project in grouped_property_projects.historical_archive %}
-                            <div class="app-project">
-                                <a href="{{ url_for('single_project', project_id=project.id) }}">{{ project.fields.Title }}</a>
-                            </div>
-                        {% endfor %}
-                    </div>
-                    <div class="app-status-wrapper app-status-open-ended">
-                        {% for project in grouped_property_projects.open_ended %}
                             <div class="app-project">
                                 <a href="{{ url_for('single_project', project_id=project.id) }}">{{ project.fields.Title }}</a>
                             </div>
