@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.4.1] - 2021-07-06
+
+* Markdown rendering support
+  [#72](https://gitlab.data.bas.ac.uk/MAGIC/magic-projects-portfolio/-/issues/72)
+
 ## [0.4.0] - 2021-07-05
 
 ### Changed

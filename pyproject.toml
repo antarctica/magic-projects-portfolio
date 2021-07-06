@@ -21,6 +21,7 @@ bas-style-kit-jinja-templates = "^0.6.0"
 Flask = "^1.1.2"
 waitress = "^2.0.0"
 msal = "^1.11.0"
+Markdown = "^3.3.4"
 
 [tool.poetry.dev-dependencies]
 black = "^20.8b1"
