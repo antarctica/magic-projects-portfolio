@@ -14,6 +14,7 @@ from bas_magic_projects_portfolio.utils import (
     check_permissions,
     configure_bas_style_kit_templates,
     FlaskResponseType,
+    format_project_markdown,
     format_project_temporal_extent,
     grid_people,
     grid_projects,
@@ -342,6 +343,7 @@ def single_project(project_id: str) -> FlaskResponseType:
         return render_template("app/views/auth/403-permissions.j2")
 
     project = airtable_projects.get(record_id=project_id)
+    project = format_project_markdown(project=project)
     project = format_project_temporal_extent(project=project)
     project_links = airtable_project_links.search(
         field_name="Project", field_value=project["fields"]["Title"]

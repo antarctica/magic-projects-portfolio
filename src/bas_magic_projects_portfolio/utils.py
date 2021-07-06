@@ -3,6 +3,7 @@ from typing import Any, Callable, Dict, Iterable, List, Optional, Tuple, Union
 
 from bas_style_kit_jinja_templates import BskTemplates
 from flask import session
+from markdown import markdown
 from werkzeug.datastructures import Headers
 from werkzeug.wrappers import BaseResponse
 
@@ -246,6 +247,30 @@ def format_project_temporal_extent(project: Dict[str, Any]) -> Dict[str, Any]:
         project["fields"][
             "_formatted_temporal_extent"
         ] = f"{_temporal_extent['start']} - {_temporal_extent['end']}"
+
+    return project
+
+
+def format_project_markdown(project: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    Format project properties that support Markdown as HTML.
+
+    Properties which support rich text formatting are encoded using Markdown within Airtable. When disabled in this
+    application, this formatting needs to be converted to HTML for display.
+
+    :type project: dict
+    :param project: a project
+    :rtype: dict
+    :return: project with markdown encoded properties replaced by HTML encoded equivalents
+    """
+    if "Description" in project["fields"]:
+        project["fields"]["Description"] = markdown(
+            project["fields"]["Description"], output_format="html"
+        )
+    if "Progress" in project["fields"]:
+        project["fields"]["Progress"] = markdown(
+            project["fields"]["Progress"], output_format="html"
+        )
 
     return project
 
